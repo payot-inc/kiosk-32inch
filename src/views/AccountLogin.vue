@@ -6,7 +6,13 @@
       <div class="loginBox">
         <label>키오스크 로그인</label>
         <input type="text" class="textInput" placeholder="아이디" v-model="form.email" />
-        <input type="password" class="textInput" placeholder="비밀번호" v-model="form.password" />
+        <input
+          type="password"
+          class="textInput"
+          placeholder="비밀번호"
+          v-model="form.password"
+          @keydown.enter="kioskLogin"
+        />
         <v-btn block outlined height="90px" class="loginBtn" dark @click="kioskLogin">로그인</v-btn>
       </div>
     </div>
@@ -94,6 +100,7 @@ export default {
   align-items: center;
   padding: 120px;
   height: 100%;
+  background: #292929;
 }
 .loginTitle {
   font-size: 130px;
