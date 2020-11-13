@@ -61,7 +61,7 @@
             mdi-arrow-right-circle
           </v-icon>
         </div>
-        <div class="use btn" v-ripple @click="() => $router.push('/userLogin')">
+        <div class="use btn" v-ripple @click="nextStep(action[1])">
           <dl>
             <dt>이용하기</dt>
             <dd>충전금액 사용하기 (충전없이 사용가능)</dd>
@@ -70,7 +70,7 @@
             mdi-arrow-right-circle
           </v-icon>
         </div>
-        <div class="search btn" v-ripple @click="() => $router.push('/userHistory')">
+        <div class="search btn" v-ripple @click="nextStep(action[2])">
           <dl>
             <dt>조회하기</dt>
             <dd>나의 포인트 및 사용내역 조회하기</dd>
@@ -94,9 +94,9 @@ import Footer from '@/components/layout/FooterComponent.vue';
  * 메인페이지
  *
  * 사용자는 해당페이지에서 3가지의 기능을 가질 수 있다
- * 1. 이용하기 : UseMachine
+ * 1. 이용하기 : MachineSelect
  * 2. 충전하기 : ChargeType
- * 3. 조회하기 : UserUseList
+ * 3. 조회하기 : UseList
  */
 export default {
   name: 'Main',
@@ -107,8 +107,8 @@ export default {
     return {
       action: [
         { name: 'PointCharge', redirectRouteName: 'ChargeType', title: '충전하기' },
-        { name: 'UseMachine', redirectRouteName: 'UseMachine', title: '이용하기' },
-        { name: 'UseKioskList', redirectRouteName: 'UserUseList', title: '조회하기' },
+        { name: 'MachineSelect', redirectRouteName: 'MachineSelect', title: '이용하기' },
+        { name: 'UseList', redirectRouteName: 'UseList', title: '조회하기' },
       ],
     };
   },

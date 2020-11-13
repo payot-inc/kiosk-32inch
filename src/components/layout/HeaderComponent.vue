@@ -11,13 +11,13 @@
     </div>
     <div class="right-cont">
       <v-btn
-        v-if="$route.name !== 'Main'"
+        v-if="!['CashCharge', 'CardCharge', 'PaymentConfirm'].includes($route.name)"
         class="home_btn"
         color="rgba(0,0,0,0.3)"
         width="140px"
         height="140px"
         text-color="#fff"
-        @click="$refs.confirm.show(true)"
+        @click="goHome"
       >
         <v-icon size="60">mdi-home</v-icon>
       </v-btn>
@@ -42,6 +42,15 @@ export default {
       now: Date.now(),
       listener: null,
     };
+  },
+  methods: {
+    goHome() {
+      if(this.$route.name === 'UserLogin') {
+        this.$router.replace({ name: 'Main' });
+      } else {
+        this.$refs.confirm.show(true);
+      }
+    },
   },
   mounted() {
     const updateTime = () => {

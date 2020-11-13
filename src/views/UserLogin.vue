@@ -1,17 +1,46 @@
 <template>
-  <div>
-    사용자 로그인 페이지
+  <div class="userLogin" id="container">
+    <SubTitleBar title="전화번호 입력" />
+    <div class="inner">
+      <div v-if="mode === 'UseKioskList'" class="introText">
+        사용내역조회를 위한 전화번호를 입력해주세요
+      </div>
+      <div v-else class="introText">
+        포인트적립을 위한 전화번호를 입력해주세요
+      </div>
+      <LoginBox :setPhone="setPhone" />
+      <KioskGuide></KioskGuide>
+    </div>
+
+    <PasswordModal
+      :type="type"
+      :registNewPassword="registNewPassword"
+      :login="login"
+      :findPassword="findPassword"
+      :matchResetPassword="matchResetPassword"
+      :updatePassword="updatePassword"
+    />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
+import SubTitleBar from '@/components/SubTitleBar.vue';
+import LoginBox from '@/components/UserLogin/LoginBox.vue';
+import KioskGuide from '@/components/UserLogin/KioskGuide.vue';
+import PasswordModal from '@/components/UserLogin/PasswordModal.vue';
 
 export default {
   name: 'UserLogin',
+  components: {
+    SubTitleBar,
+    LoginBox,
+    KioskGuide,
+    PasswordModal,
+  },
   props: {
     mode: String, // 사용자가 선택했던 기능 : UseMachine(장비이용), PointCharge(포인트 충전), UseKioskList(키오스크 이용내역 조회)
-    done: Function, // 회원 검증이 이루어 지고 난 후의 액션
+    done: Function, // 회원 검증이 이루어 지고 난 후의 라우트 네임
   },
   data() {
     return {
@@ -35,7 +64,10 @@ export default {
     };
   },
   computed: {
-    ...mapState({ user: state => state.user }),
+    ...mapState({ 
+      user: state => state.user,
+      useUserPassword: state => state.kiosk.useUserPassword,
+    }),
   },
   watch: {
     phone(newValue) {
@@ -59,10 +91,16 @@ export default {
       validePassword: 'userLogin', // 회원의 비밀번호 여부 확인 { password },
       updateUserPassword: 'updateUserPassword', // 회원 비밀번호 변경 { mode: 'forgot' | 'update', password }
     }),
+    setPhone(phone) {
+      this.phone = phone;
+    },
     // 회원정보 조회
     findUser(phone) {
       this.isSignUser({ phone })
-        .then(() => (this.type = 'matchPassword'))
+        .then(() => {
+          if(this.useUserPassword) this.type = 'matchPassword';
+          else this.done();
+        })
         .catch(() => (this.type = 'newUser'));
     },
     // 신규회원 비밀번호 입력
@@ -74,21 +112,24 @@ export default {
     // 비밀번호 초기화
     findPassword() {
       this.updateUserPassword({ mode: 'forgot' })
-        .then(({ data }) => {
+        .then(({ password }) => {
           this.type = 'matchResetPassword';
+          this.resetPassword = password;
         })
         .catch(() => {});
     },
     // 임시비밀번호 확인
     matchResetPassword(password) {
       const valide = this.resetPassword === password;
-      this.type === valide ? 'inValideResetPassword' : 'matchResetPassword';
+      this.type = valide ? 'inValideResetPassword' : 'matchResetPassword';
       return valide;
     },
     // 비밀번호 변경
     updatePassword(password) {
-      this.updateUserPassword()
-        .then(this.done) // 변경이 완료되면 다음페이지로 이동
+      this.updateUserPassword({ mode: 'update', password: password })
+        .then(() => {
+          this.type = 'matchPassword';          
+        }) // 변경이 완료되면 다음페이지로 이동
         .catch(() => {});
     },
 
@@ -98,8 +139,11 @@ export default {
         const valideNewPassword = this.user.password === password;
         valideNewPassword && this.done();
       } else {
-        this.validePassword(password)
-          .then(this.done)
+        console.log('로그인 시도', password);
+        this.validePassword({ password })
+          .then(() => {
+            this.done();
+          })
           .catch(() => {
             this.type = 'inValidePassword';
           })
@@ -109,3 +153,19 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.userLogin {
+  .inner {
+    padding: 0 70px;
+    .introText {
+      font-size: 64px;
+      line-height: 88px;
+      color: #0085de;
+      word-break: keep-all;
+      font-weight: 500;
+      margin-bottom: 70px;
+    }
+  }
+}
+</style>
