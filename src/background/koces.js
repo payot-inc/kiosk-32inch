@@ -45,6 +45,6 @@ async function payment(companyName, amount) {
   return await request(params);
 }
 
-ipcMain.handle('pay', async (event, companyName, amount) => {
+ipcMain.handle('card-pay', async (event, companyName, amount) => {
   return await payment(companyName, amount);
 });

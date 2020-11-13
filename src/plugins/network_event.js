@@ -56,6 +56,7 @@ networkStatusChange$
   .subscribe(
     () => {
       // reboot
+      router.replace({ name: '' });
     },
     () => {},
   );

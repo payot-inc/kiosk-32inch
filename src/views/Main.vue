@@ -22,29 +22,37 @@
     <div class="inner">
       <div class="slide-view">
         <v-carousel
-          v-model="carousel"
-          :ontinuous="false"
-          :cycle="true"
+          v-model="adsIndex"
+          :continuous="false"
+          :cycle="false"
           :show-arrows="false"
           hide-delimiter-background
           delimiter-icon="mdi-minus"
           hide-delimiters
           height="1020"
-          interval="4000"
           touchless
         >
-          <v-carousel-item v-for="(item, i) in slides" :key="i" class="slide-item">
-            <video :src="item.video" autoplay loop v-if="item.video" :id="'video' + i" />
-            <img :src="item.image" v-else />
+          <v-carousel-item eager v-for="{ type, path, file } in ads" :key="file" class="slide-item">
+            <video
+              v-if="type === 'video'"
+              class="ad"
+              :src="`file://${path}`"
+              muted
+              style="height: 100%; width: auto;"
+            />
+            <img v-else class="ad" :src="`file://${path}`" />
           </v-carousel-item>
         </v-carousel>
+        <!-- <video v-if="ads.length !== 0" class="ad" :src="`file://${ads[1].path}`" muted autoplay /> -->
       </div>
       <div class="notice">
         <label>
           NEWS
         </label>
         <div class="slide-text">
-          {{ notification }}
+          <marquee scrollamount="10px" style="display: block;">
+            {{ notification }}
+          </marquee>
         </div>
       </div>
     </div>
@@ -105,6 +113,8 @@ export default {
   },
   data() {
     return {
+      adsIndex: 0,
+      ads: [],
       action: [
         { name: 'PointCharge', redirectRouteName: 'ChargeType', title: '충전하기' },
         { name: 'UseMachine', redirectRouteName: 'UseMachine', title: '이용하기' },
@@ -112,13 +122,51 @@ export default {
       ],
     };
   },
+  async created() {
+    await this.initalAd();
+  },
+  mounted() {
+    setTimeout(() => {
+      this.adsIndex = 1;
+    }, 4000);
+  },
   computed: {
     ...mapState({
       companyName: state => state.company.name,
-      notification: state => state.kiosk.notice,
+      notification: state => state.config.notice,
     }),
   },
+  watch: {
+    adsIndex(newValue) {
+      this.nextAd(newValue);
+    },
+  },
   methods: {
+    /** 광고 목록 가져오기 */
+    async initalAd() {
+      const list = await this.$adList();
+      this.ads = list;
+    },
+    /**  */
+    nextAd() {
+      const nowIndex = this.adsIndex;
+      const tag = document.getElementsByClassName('ad').item(nowIndex);
+      const tagName = tag.tagName.toLowerCase();
+      if (tagName === 'video') {
+        const video = document.createElement('video');
+        video.currentTime = 0;
+        tag.play();
+        tag.onended = () => {
+          this.pageChangeAD();
+        };
+      } else {
+        setTimeout(this.pageChangeAD, 4000);
+      }
+    },
+    pageChangeAD() {
+      const nextIndex = (this.adsIndex + 1) % this.ads.length;
+      this.adsIndex = nextIndex;
+    },
     /** 다음 단계로 이동 */
     nextStep({ name, redirectRouteName }) {
       this.$router.push({

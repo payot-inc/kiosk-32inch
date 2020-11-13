@@ -57,7 +57,7 @@ const routes = [
         name: 'ChargeType',
         component: ChargeType,
         beforeEnter: (to, from, next) => {
-          const allPayMode = Object.values(store.state.kiosk.payType).every();
+          const allPayMode = Object.values(store.state.kiosk.payType).every(state => state);
           if (allPayMode) {
             // 모든 결제 수단을 지원한다면
             next();
@@ -73,12 +73,26 @@ const routes = [
         path: '/CashCharge',
         name: 'CashCharge',
         component: CashCharge,
+        beforeEnter: (to, from, next) => {
+          store.commit('APPEND_ACTION', {
+            type: 'charge',
+            payMethod: 'cash',
+          });
+          next();
+        },
       },
       {
         /** 카드 충전 페이지 */
         path: '/CardCharge',
         name: 'CardCharge',
         component: CardCharge,
+        beforeEnter: (to, from, next) => {
+          store.commit('APPEND_ACTION', {
+            type: 'charge',
+            payMethod: 'card',
+          });
+          next();
+        },
       },
       {
         /** 장비 및 상품선택 페이지 */
@@ -97,7 +111,14 @@ const routes = [
         path: '/Result',
         name: 'Result',
         component: Result,
-        props: route => route.params,
+        props: route => {
+          const { params } = route;
+          const { totalPoint } = params;
+          let cloneUser = Object.assign({}, store.state.user);
+          cloneUser.point += totalPoint;
+
+          return params;
+        },
       },
     ],
   },

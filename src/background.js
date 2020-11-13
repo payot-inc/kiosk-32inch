@@ -4,13 +4,14 @@ import { app, protocol, BrowserWindow } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import AutoLaunch from 'auto-launch';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import path from 'path';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // import './background/logger';
 import './background/serialport';
 import './background/mqtt';
+import './background/ad';
 // !isDevelopment || require('./background/koces').default;
-
 let window;
 
 // Scheme must be registered before the app is ready
@@ -48,6 +49,7 @@ async function createWindow() {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      webSecurity: false,
     },
   });
 
@@ -83,6 +85,18 @@ app.on('activate', () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
+  // 디렉토리에 접근 가능하도록 설정
+  // file 프로토콜 활성
+  protocol.interceptFileProtocol(
+    'file',
+    (req, callback) => {
+      var url = req.url.substr(7);
+      callback({ path: path.normalize(url) });
+    },
+    error => {
+      if (error) console.error('Failed to register protocol');
+    },
+  );
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     try {

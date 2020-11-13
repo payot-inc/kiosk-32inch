@@ -1,9 +1,13 @@
 import axios from 'axios';
 
+const TIMEOUT_SEC = parseInt(process.env.VUE_APP_REQUEST_TIMEOUT, 10);
+
 export const coreAPI = axios.create({
-  baseURL: 'http://core.payot-coin.com',
+  baseURL: process.env.VUE_APP_CORE_API_HOST,
+  timeout: TIMEOUT_SEC,
 });
 
 export const kioskAPI = axios.create({
-  baseURL: 'http://kiosk.coin-machine.com/kiosk',
+  baseURL: process.env.VUE_APP_KIOSK_API_HOST,
+  timeout: TIMEOUT_SEC,
 });
