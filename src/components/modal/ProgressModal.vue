@@ -28,3 +28,19 @@ export default {
   mixins: [ModalMixin],
 };
 </script>
+
+<style lang="scss">
+.progressBox{
+  background: #fff;
+  border-radius: 20px;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding:60px;
+  dl{text-align:center;margin-top:60px;
+    dt{font-size:44px;font-weight:500;color:#292929}
+    dd{font-size:32px;color:#888;}
+  }
+}
+</style>

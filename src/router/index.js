@@ -17,6 +17,11 @@ import MachineSelect from '../views/MachineSelect.vue';
 import UseMachine from '../views/UseMachine.vue';
 import Result from '../views/Result.vue';
 
+import CustomPay from '../views/CustomPay.vue';
+import PaymentConfirm from '../views/PaymentConfirm.vue';
+
+import UseList from '../views/UseList.vue';
+
 import ErrorPage from '../views/Error.vue';
 import EmptyPage from '../views/404.vue';
 
@@ -120,6 +125,24 @@ const routes = [
           return params;
         },
       },
+      {
+        //** 포인트 및 사용내역 조회 페이지 */
+        path: '/UseList',
+        name: 'UseList',
+        component: UseList,
+      },
+      {
+        //** 커스텀 결제금액 선택 페이지 */
+        path: '/CustomPay',
+        name: 'CustomPay',
+        component: CustomPay,
+      },
+      {
+        //** 결제예정 확인 및 결제 페이지 */
+        path: '/PaymentConfirm',
+        name: 'PaymentConfirm',
+        component: PaymentConfirm,
+      }
     ],
   },
   {

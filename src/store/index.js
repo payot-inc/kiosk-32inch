@@ -37,6 +37,11 @@ export default new Vuex.Store({
   },
   getters: {
     machinePickList(state) {},
+    kioskEvent(state) {
+      return state.kiosk.events
+        .sort((a, b) => a.weekDay > b.weekDay)
+        .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
+    },
   },
   mutations: {
     /** 계정 정보 */
@@ -118,22 +123,25 @@ export default new Vuex.Store({
     /** 회원 비밀번호 확인 */
     async userLogin({ state }, { password }) {
       const { id } = state.user;
-      await kioskAPI({
+      console.log('id', id, 'password', password);
+      const res = await kioskAPI({
         method: 'POST',
         url: `/${id}/user/login`,
         data: { password },
       });
+      console.log(res);
     },
 
     /** 회원 비밀번호 변경 및 초기화 */
     async updateUserPassword({ commit, state }, { mode = 'forgot', password = null }) {
       const { id } = state.user;
+      console.log('id', id, 'mode', mode, 'password', password);
       const { data: user } = await kioskAPI({
         method: 'PUT',
         url: `/${id}/password`,
         data: { mode, password },
       });
-      commit('SET_USER', user);
+      commit('SET_USER', Object.assign({}, state.user, { tempPassword: user.password }));
 
       return user;
     },

@@ -7,7 +7,7 @@
         <dd>{{ message }}</dd>
       </dl>
       <div class="msgBottom">
-        <v-btn width="380px" height="90px" outlined @click="visible = false">{{
+        <v-btn width="380px" height="90px" outlined @click="visible = false;">{{
           submitButtonText
         }}</v-btn>
       </div>

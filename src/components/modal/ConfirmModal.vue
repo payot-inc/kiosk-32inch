@@ -1,16 +1,16 @@
 <template>
-  <v-dialog v-model="visible" width="800px" overlay-color="#000" overlay-opacity="0.8">
-    <div class="confirm">
-      <div class="top">
-        <span class="text1">{{ title }}</span>
-        <span class="text2">{{ message }}</span>
+    <v-dialog v-model="visible" width="800px" overlay-color="#000" overlay-opacity="0.8">
+      <div class="confirm">
+        <div class="top">
+          <span class="text1">{{ title }}</span>
+          <span class="text2">{{ message }}</span>
+        </div>
+        <div class="bottom">
+          <v-btn outlined class="cancle" @click="visible = false">{{ cancelButtonText }}</v-btn>
+          <v-btn outlined class="ok" @click="done">{{ submitButtonText }}</v-btn>
+        </div>
       </div>
-      <div class="bottom">
-        <v-btn outlined class="cancle" @click="visible = false">{{ cancelButtonText }}</v-btn>
-        <v-btn outlined class="ok" @click="done">{{ submitButtonText }}</v-btn>
-      </div>
-    </div>
-  </v-dialog>
+    </v-dialog>
 </template>
 
 <script>
