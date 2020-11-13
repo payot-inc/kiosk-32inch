@@ -1,10 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div>
-    현금 충전 페이지
-    <v-btn @click="open">열기</v-btn>
-    <!-- <button @click="open">열기</button> -->
-=======
   <div id="container">
     <SubTitleBar title="포인트충전(현금결제)" />
 
@@ -50,39 +44,10 @@
         <p>메인으로 이동합니다</p>
       </div>
     </div> -->
->>>>>>> josuwon
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
-import { ipcRenderer } from 'electron';
-
-export default {
-  name: 'ChargeCash',
-  data() {
-    return {
-      amount: 0,
-    };
-  },
-  mounted() {
-    ipcRenderer.on('cash-input', this.onInputAmount);
-  },
-  beforeDestroy() {
-    ipcRenderer.removeListener('cash-input', this.onInputAmount);
-  },
-  methods: {
-    open(state) {
-      ipcRenderer.invoke('cash-open', state);
-    },
-    onInputAmount(event, amount) {
-      this.amount += amount;
-      console.log(amount, this.amount);
-    },
-  },
-};
-</script>
-=======
 import SubTitleBar from '@/components/SubTitleBar.vue';
 import ChargeBox from '@/components/CashCharge/ChargeBox.vue';
 import EventTable from '@/components/CashCharge/EventTable.vue';
@@ -196,4 +161,3 @@ export default {
   }
 }
 </style>
->>>>>>> josuwon
