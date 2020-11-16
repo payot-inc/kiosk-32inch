@@ -133,7 +133,7 @@ export default {
   computed: {
     ...mapState({
       companyName: state => state.company.name,
-      notification: state => state.config.notice,
+      notification: state => state.kiosk.notice,
     }),
   },
   watch: {

@@ -5,24 +5,27 @@
       <strong>{{ tel }}</strong>
     </div>
     <div class="btns">
-      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn">
+      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn" @click="$refs.terms.open('user')">
         개인정보 취급방침</v-btn
       >
-      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn">
+      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn" @click="$refs.terms.open('info')">
         키오스크 이용약관</v-btn
       >
       <div class="version">V{{ version }}</div>
     </div>
 
-    <!-- <Terms ref="terms" /> -->
+    <Terms ref="terms" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { remote } from 'electron';
-// import Terms from '@/components/modal/terms.vue';
+import Terms from '@/components/modal/Terms.vue';
 export default {
+  components: {
+    Terms,
+  },
   methods: {
     tremsOpen(value) {
       this.$refs.terms.open(value);

@@ -1,4 +1,4 @@
-import { ipcMain } from 'electron';
+import { ipcMain, app } from 'electron';
 import fs from 'fs';
 import path from 'path';
 import util from 'util';
@@ -21,7 +21,7 @@ const isValideAdFile = fileName =>
 const AD_DIR =
   process.env.NODE_ENV === 'production'
     ? path.join('C:', 'kiosk', 'ad')
-    : path.join('/', 'Users', 'yonghee', 'Desktop', 'ad');
+    : path.join(app.getPath('documents'), 'kioks', 'ad');
 
 /** 광고 리소스 디렉토리가 없으면 생성 */
 hasDirectory(AD_DIR)

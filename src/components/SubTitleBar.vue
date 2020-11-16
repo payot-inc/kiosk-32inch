@@ -15,7 +15,7 @@ export default {
   methods: {
     backPage() {
       console.log('Click back page!');
-      if(['UserLogin', 'ChargeType', 'MachineSelect'].includes(this.$route.name)) {
+      if(['UserLogin', 'ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name)) {
         this.$router.replace({ name: 'Main' });
       } else {
         this.$router.go(-1);

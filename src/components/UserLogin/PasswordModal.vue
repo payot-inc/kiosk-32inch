@@ -100,6 +100,7 @@ export default {
         if (this.type === 'newUserPassword') {
           this.login(newValue);
         } else if (this.type === 'matchPassword') {
+          console.log('로그인시도');
           this.login(newValue);
         } else if(this.type === 'matchResetPassword') {
           const matching = this.matchResetPassword(this.password);

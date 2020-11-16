@@ -11,7 +11,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 import './background/serialport';
 import './background/mqtt';
 import './background/ad';
+import './background/kicc';
 // !isDevelopment || require('./background/koces').default;
+
 let window;
 
 // Scheme must be registered before the app is ready

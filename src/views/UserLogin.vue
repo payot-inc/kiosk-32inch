@@ -101,7 +101,10 @@ export default {
           if(this.useUserPassword) this.type = 'matchPassword';
           else this.done();
         })
-        .catch(() => (this.type = 'newUser'));
+        .catch(() => {
+          if(this.useUserPassword) this.type = 'newUser';
+          else this.done();
+        });
     },
     // 신규회원 비밀번호 입력
     registNewPassword(password) {

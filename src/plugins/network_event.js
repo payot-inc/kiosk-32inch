@@ -4,6 +4,7 @@ import router from '../router';
 import store from '../store';
 
 function nowNetworkStatus() {
+  console.log(navigator);
   return navigator.onLine === 'online';
 }
 
@@ -15,12 +16,13 @@ const networkStatusChange$ = combineLatest([
 /** 오프라인으로 변경시 2분이 경과하면 */
 networkStatusChange$
   .pipe(
-    debounceTime(2 * 60 * 1000),
+    debounceTime(0.03 * 60 * 1000),
     filter(state => !state),
   )
   .subscribe(
     () => {
       // 오류 페이지로 이동
+      console.log('go');
       router.replace({
         name: 'Error',
         params: {

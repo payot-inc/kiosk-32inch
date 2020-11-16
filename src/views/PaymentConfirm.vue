@@ -158,6 +158,10 @@ export default {
     },
     payment() {
       console.log('payment 호출');
+      if(this.usePoint === this.inputAmount) {
+        this.$router.push({ name: 'Result' });
+      }
+
       const allPayMode = Object.values(this.payType).every(state => state);
       if(allPayMode) {
         this.$refs.creditSelectModal.open(true);
