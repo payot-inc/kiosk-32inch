@@ -36,10 +36,23 @@ export default new Vuex.Store({
     },
   },
   getters: {
+    getEventRate: (state, getters) => (type, amount) => {
+      const kioskEvent = getters.kioskEvent;
+      const eventTarget = [
+        { min: 0, max: 10000 }, // 1만원 이상시
+        { min: 10000, max: 20000 }, // 1 ~ 2만원
+        { min: 20000, max: 30000 }, // 2 ~ 3만원
+        { min: 30000, max: 40000 }, // 4 ~ 5만원
+        { min: 40000, max: 50000 }, // 4 ~ 5만원
+        { min: 50000, max: Number.MAX_VALUE }, // 5 ~ 만원
+      ];
+      const index = eventTarget.findIndex(({ min, max }) => amount >= min && amount < max);
+      return kioskEvent.rule[type][index] / 100;
+    },
     machinePickList(state) {},
     kioskEvent(state) {
       return state.kiosk.events
-        .sort((a, b) => a.weekDay > b.weekDay)
+        .sort((a, b) => b.weekDay - a.weekDay)
         .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
     },
   },
@@ -148,12 +161,16 @@ export default new Vuex.Store({
 
     /** 회원 가입 */
     async userSignUp({ state }, { phone, password }) {
+      console.log(phone, password);
       const { id: companyId } = state.company;
       const { data: user } = await kioskAPI({
         method: 'POST',
         url: `/${companyId}/user/signup`,
         data: { phone, password },
       });
+      const { id: userId } = user;
+      this.commit('APPEND_ACTION', { userId });
+      // this.dispatch('pay');
 
       return user;
     },
@@ -164,14 +181,22 @@ export default new Vuex.Store({
     },
 
     /** 포인트 충전 및 장비 이용하기 */
-    async pay({ state }) {
-      const form = state.userAction;
+    async pay({ state, dispatch }) {
+      let form = state.userAction;
+
+      /** 가입되어있지 않은 회원이라면 */
+      if (!form.userId) {
+        const { phone, password } = state.user;
+        const user = await dispatch('userSignUp', { phone, password });
+        form.userId = user.id;
+      }
       const { data } = await kioskAPI({
         method: 'POST',
         url: `/pay`,
         data: { params: form },
       });
 
+      console.log('data', data);
       return data;
     },
   },

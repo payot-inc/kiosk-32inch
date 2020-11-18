@@ -1,6 +1,6 @@
 <template>
-  <v-dialog 
-    v-model="visible" 
+  <v-dialog
+    v-model="visible"
     width="800px"
     transition="slide-y-transition"
     overlay-opacity="0.8"
@@ -17,7 +17,7 @@
         <div class="myPoint">
           <div class="myPointCircle">
             <label>나의 포인트</label>
-            <span>{{ point | numeral('0,0')}}P</span>
+            <span>{{ point | numeral('0,0') }}P</span>
           </div>
         </div>
         <dl class="usePoint">
@@ -33,9 +33,7 @@
             <v-btn @click="addPoint(1000)" click="" outlined>1,000 추가</v-btn>
           </div>
 
-          <v-btn width="150px" outlined @click="usePoint = 0" class="clearBtn"
-            >초기화</v-btn
-          >
+          <v-btn width="150px" outlined @click="usePoint = 0" class="clearBtn">초기화</v-btn>
         </div>
 
         <div class="divider"></div>
@@ -62,9 +60,15 @@ export default {
       usePoint: 0,
     };
   },
+  watch: {
+    visible(newValue) {
+      if (newValue) this.$sound.singlePlay('./sound/use_point.mp3');
+      else this.$sound.singlePlay('./sound/pay_use_machine.mp3');
+    },
+  },
   methods: {
     addPoint(value) {
-      if(this.usePoint + value <= this.max) this.usePoint += value;
+      if (this.usePoint + value <= this.max) this.usePoint += value;
     },
     open(state) {
       this.visible = state;
@@ -76,9 +80,8 @@ export default {
       this.$emit('updateUsePoint', this.usePoint);
       this.closeModal();
     },
-  }
-  
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -116,32 +119,32 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding:40px 0;
-    .myPointCircle{
+    padding: 40px 0;
+    .myPointCircle {
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      width:320px;
-      height:320px;
-      background:#f2f2f2;
-      border-radius:50%;
+      width: 320px;
+      height: 320px;
+      background: #f2f2f2;
+      border-radius: 50%;
     }
     label {
       font-size: 28px;
       color: #888;
     }
-    
-    span{
+
+    span {
       font-size: 44px;
       font-weight: 600;
-      color:#0085de
+      color: #0085de;
     }
   }
   dl.usePoint {
     display: flex;
     align-items: center;
-    border-bottom: 6px solid #EE2073;
+    border-bottom: 6px solid #ee2073;
     flex-direction: row;
     justify-content: space-between;
     padding: 20px 0;
@@ -156,7 +159,7 @@ export default {
       text-align: right;
       font-size: 54px;
       font-weight: 600;
-      color: #EE2073;
+      color: #ee2073;
       span {
         font-size: 32px;
         color: #292929;
@@ -175,8 +178,8 @@ export default {
         height: 80px;
         font-size: 32px;
         border-radius: 10px;
-        border: 2px solid #EE2073;
-        color: #EE2073;
+        border: 2px solid #ee2073;
+        color: #ee2073;
       }
     }
     .pointBtn:last-child {

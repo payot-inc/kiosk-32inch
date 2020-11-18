@@ -60,12 +60,13 @@ export default {
     password(newValue) {
       if(newValue.length === 4) {
         this.$emit('submit', newValue);
-        this.password = '';
+        // this.password = '';
       }
     }
   },
   methods: {
     inputKey(value) {
+      this.$sound.playTouchSound();
       if (typeof value === 'number' && this.password.length < 4) {
         this.password += value;
       } else if (value === 'delete') {

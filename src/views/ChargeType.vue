@@ -47,6 +47,7 @@
 <script>
 import SubTitleBar from '@/components/SubTitleBar.vue';
 import UserInfo from '@/components/UserInfo.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'PayTypeSelect',
@@ -56,9 +57,14 @@ export default {
   },
   methods: {
     nextStep(type) {
+      this.$sound.playTouchSound();
+
       const routeName = type === 'cash' ? 'CashCharge' : 'CardCharge';
       this.$router.push({ name: routeName });
     },
+  },
+  mounted() {
+    this.$sound.singlePlay('./sound/select_pay_type.mp3');
   },
 };
 </script>

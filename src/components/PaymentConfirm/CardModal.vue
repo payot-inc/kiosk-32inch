@@ -9,47 +9,49 @@
   >
     <div class="paymentModal">
       <div class="paymentImg">
-        <img src="@/assets/img/paymentCash.gif" />
+        <img src="@/assets/img/paymentCard.png" />
       </div>
       <div class="priceInfo">
+        <dl v-if="userAction.type === 'charge'">
+          <dt>선택상품</dt>
+          <dd>2,000포인트 충전</dd>
+        </dl>
         <dl>
           <dt>결제금액</dt>
-          <dd>{{ realAmount | numeral(0, 0) }}원</dd>
+          <dd>2,000원</dd>
         </dl>
-        <dl class="nowPrice">
-          <dt>투입금액</dt>
-          <dd>{{ currentMoney | numeral(0, 0) }}원</dd>
+        <dl>
+          <dt>나의포인트</dt>
+          <dd>{{ user.point | numeral(0, 0) }}</dd>
+        </dl>
+        <dl>
+          <dt>추가적립금</dt>
+          <dd>{{ appendPoint | numeral(0, 0) }}</dd>
+        </dl>
+        <dl class="lastPoint">
+          <dt>최종포인트</dt>
+          <dd>{{ (appendPoint + user.point) | numeral(0, 0) }}</dd>
         </dl>
       </div>
       <div class="guide">
-        <strong>결제금액 만큼 현금을 투입해주세요</strong>
-        <p>결제금액 보다 초과투입시 나머지 금액은 포인트로 적립됩니다</p>
+        <strong>IC카드를 투입구에 넣어주세요</strong>
+        <p>삑소리 이후에 카드를 투입하시고, <br />결제가 끝날때까지 카드를 빼지 마세요</p>
       </div>
-      <div class="counter">
-        <span>{{ count }}</span>
-      </div>
-      <!-- <V-btn class="closeBtn" width="120px" height="120px" outlined @click="close">
-        <v-icon>fa-times</v-icon>
-      </V-btn> -->
     </div>
   </v-dialog>
 </template>
 
 <script>
 import { ipcRenderer } from 'electron';
-import { mapActions, mapMutations, mapState } from 'vuex';
-import { log } from 'winston';
+import { mapGetters, mapState } from 'vuex';
 export default {
-  name: 'CashModal',
+  name: 'CardModal',
   props: {
     realAmount: Number,
   },
   data() {
     return {
       visible: false,
-      currentMoney: 0,
-      count: 60,
-      timer: null,
     };
   },
   computed: {
@@ -57,70 +59,44 @@ export default {
       user: state => state.user,
       userAction: state => state.userAction,
     }),
+    ...mapGetters({
+      kioskEvent: 'kioskEvent',
+    }),
+    eventRate() {
+      const eventTarget = [
+        { min: 0, max: 10000 }, // 1만원 이상시
+        { min: 10000, max: 20000 }, // 1 ~ 2만원
+        { min: 20000, max: 30000 }, // 2 ~ 3만원
+        { min: 30000, max: 40000 }, // 4 ~ 5만원
+        { min: 40000, max: 50000 }, // 4 ~ 5만원
+        { min: 50000, max: Number.MAX_VALUE }, // 5 ~ 만원
+      ];
+      const index = eventTarget.findIndex(
+        ({ min, max }) => this.realAmount >= min && this.realAmount < max,
+      );
+      return this.kioskEvent.rule['card'][index] / 100;
+    },
+    appendPoint() {
+      return this.eventRate * this.realAmount;
+    },
   },
   watch: {
-    currentMoney(newValue) {
-      if (newValue >= this.realAmount) {
-        clearInterval(this.timer);
-        ipcRenderer.invoke('cash-open', false);
-        this.visible = false;
-        this.$emit('submit', newValue);
-      }
-    },
-    count(newValue) {
-      if (newValue === 0) this.timeOut();
-    },
     visible(newValue) {
       if (newValue) {
-        ipcRenderer.invoke('cash-open', true);
-        this.$sound.listPlay(['./sound/select_cash.mp3', './sound/input_cash_use_machine.mp3'], 0);
-      } else if (!newValue) {
-        ipcRenderer.invoke('cash-open', false);
+        this.$sound.listPlay(['./sound/select_card.mp3', './sound/card_use_helper.mp3'], 0);
+        // ipcRenderer.invoke('card-pay',);
+      } else {
+        // 카드결제 닫기
       }
     },
   },
   methods: {
-    ...mapMutations({
-      appendAction: 'APPEND_ACTION',
-    }),
-    ...mapActions({
-      appendEventPoint: 'appendEventPoint',
-      chargeInUse: 'chargeInUse',
-      pay: 'pay',
-      userSignUp: 'userSignUp',
-    }),
-    open(value) {
-      this.visible = value;
-      this.count = 60;
-      this.timer = setInterval(() => {
-        this.count--;
-      }, 1000);
+    open(state) {
+      this.visible = state;
     },
     close() {
-      clearInterval(this.timer);
-      if (this.currentMoney === 0) {
-        this.visible = false;
-      }
+      this.visible = !this.visible;
     },
-    timeOut() {
-      console.log('time out!');
-      clearInterval(this.timer);
-      this.visible = false;
-
-      this.$emit('submit', this.currentMoney);
-    },
-    onInputEvent(event, money) {
-      console.log('money', money);
-      this.currentMoney += money;
-    },
-  },
-  beforeDestroy() {
-    clearInterval(this.timer);
-    ipcRenderer.invoke('cash-open', false);
-    ipcRenderer.removeListener('cash-input', this.onInputEvent);
-  },
-  mounted() {
-    ipcRenderer.on('cash-input', this.onInputEvent);
   },
 };
 </script>
@@ -130,7 +106,6 @@ export default {
   width: 100%;
   background: #fff;
   padding: 60px;
-  padding-top: 120px;
   border-radius: 10px;
   position: relative;
   .paymentImg {
@@ -147,12 +122,12 @@ export default {
       align-items: center;
       margin-bottom: 20px;
       dt {
-        font-size: 36px;
+        font-size: 32px;
         font-weight: 500;
         color: #888;
       }
       dd {
-        font-size: 36px;
+        font-size: 32px;
         font-weight: 700;
       }
     }
@@ -164,6 +139,9 @@ export default {
     dl:last-child {
       margin-bottom: 0px;
     }
+    dl.lastPoint {
+      color: #ee2073;
+    }
   }
   .guide {
     text-align: center;
@@ -174,9 +152,10 @@ export default {
       font-size: 36px;
       letter-spacing: -1px;
       font-weight: 500;
+      margin-bottom: 20px;
+      display: block;
     }
     p {
-      margin-top: 20px;
       font-size: 28px;
       color: #ee2073;
       word-break: keep-all;

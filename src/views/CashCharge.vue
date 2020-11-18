@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <SubTitleBar title="포인트충전(현금결제)" />
+    <SubTitleBar title="포인트충전(현금결제)" :realAmount="realAmount" @cantBack="cantBack" />
 
     <div class="pointChage">
       <dl class="visualTitle">
@@ -14,28 +14,21 @@
         :appendPoint="appendPoint"
         :setPrice="setPrice"
       />
-      <EventTable 
-        :realAmount="realAmount" 
-        :rules="kioskEvent.rule['cash']"
-      />
+      <EventTable :realAmount="realAmount" :rules="kioskEvent.rule['cash']" />
     </div>
 
-    <ProgressModal 
-      ref="progress"
-      title="포인트를 적립 중 입니다"
-    />
+    <ProgressModal ref="progress" title="포인트를 적립 중 입니다" />
     <AlertModal
       ref="alert"
-      title="투입된 금액이 0원 입니다. "
+      title="투입된 금액이 0원 입니다"
       message="충전하실 금액만큼 지폐투입기에 현금을 넣고 완료버튼을 눌러주세요"
       mode="alert"
     />
     <AlertModal
-      ref="info"
-      :title="`투입된 금액이 ${realAmount}원 입니다. `"
-      message="충전이 완료되었습니다"
-      mode="info"
-      @onDismiss="nextPage()"
+      ref="backAlert"
+      title="투입된 금액이 있습니다"
+      message="투입된 금액이 있어 뒤로 가실수 없습니다"
+      mode="alert"
     />
 
     <!-- <div class="black-background" :class="black ? 'active': ''">
@@ -53,7 +46,9 @@ import ChargeBox from '@/components/CashCharge/ChargeBox.vue';
 import EventTable from '@/components/CashCharge/EventTable.vue';
 import AlertModal from '@/components/modal/AlertModal.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
-import { mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
+import { ipcRenderer } from 'electron';
+import { debounce } from 'lodash';
 export default {
   name: 'CashCharge',
   components: {
@@ -76,18 +71,7 @@ export default {
       return this.$store.getters.kioskEvent;
     },
     eventRate() {
-      const { realAmount, kioskEvent } = this;
-      const eventTarget = [
-        { min: 0, max: 10000 }, // 1만원 이상시
-        { min: 10000, max: 20000 }, // 1 ~ 2만원
-        { min: 20000, max: 30000 }, // 2 ~ 3만원
-        { min: 30000, max: 40000 }, // 4 ~ 5만원
-        { min: 40000, max: 50000 }, // 4 ~ 5만원
-        { min: 50000, max: Number.MAX_VALUE }, // 5 ~ 만원
-      ];
-
-      const index = eventTarget.findIndex(({ min, max }) => realAmount >= min && realAmount < max);
-      return kioskEvent.rule['cash'][index] / 100;
+      return this.$store.getters.getEventRate('cash', this.realAmount);
     },
     appendPoint() {
       const { eventRate, realAmount } = this;
@@ -96,22 +80,59 @@ export default {
     },
   },
   methods: {
-    addMoney(newMoney) {
-      this.realAmount += newMoney;
+    ...mapMutations({
+      appendAction: 'APPEND_ACTION',
+      setUser: 'SET_USER',
+    }),
+    ...mapActions({
+      userSignUp: 'userSignUp',
+      pay: 'pay',
+    }),
+    onInputMoneyEvent(event, money) {
+      console.log('money', money);
+      this.realAmount += money;
     },
     setPrice() {
-      console.log('setPrice');
-      if(this.realAmount <= 0) {
+      if (this.realAmount <= 0) {
         this.$refs.alert.show(true);
       } else {
-        this.$refs.info.show(true);
+        ipcRenderer.invoke('cash-open', false);
+        const { realAmount, appendPoint, eventRate } = this;
+        const totalPoint = realAmount + appendPoint;
+        this.appendAction({ realAmount, appendPoint, eventRate, totalPoint });
+
+        this.charge();
       }
     },
-    nextPage() {
-      this.$router.push({ name: 'Result' });
+    charge() {
+      this.$refs.progress.show(true);
+      this.serverPaymentRequest();
     },
-  }
-}
+    serverPaymentRequest: debounce(async function() {
+      const pay = await this.pay();
+
+      this.$router.push({ name: 'Result', params: { response: pay } });
+    }, 2000),
+    cantBack() {
+      console.log("can't back in CashCharge.vue");
+      this.$refs.backAlert.show(true);
+    },
+    delay(millisec) {
+      return new Promise(resolve => setTimeout(resolve, millisec));
+    },
+  },
+  mounted() {
+    ipcRenderer.invoke('cash-open', true);
+
+    ipcRenderer.on('cash-input', this.onInputMoneyEvent);
+
+    this.$sound.listPlay(['./sound/select_cash.mp3', './sound/point_append_cash_helper.mp3'], 0);
+  },
+  beforeDestroy() {
+    ipcRenderer.invoke('cash-open', false);
+    ipcRenderer.removeListener('cash-input', this.onInputMoneyEvent);
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -11,12 +11,19 @@
 export default {
   props: {
     title: String,
+    realAmount: {
+      type: Number,
+      default: -1,
+    },
   },
   methods: {
     backPage() {
+      this.$sound.playTouchSound();
       console.log('Click back page!');
       if(['UserLogin', 'ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name)) {
         this.$router.replace({ name: 'Main' });
+      } else if(this.realAmount > 0) {
+        this.$emit('cantBack');
       } else {
         this.$router.go(-1);
       }

@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "build:koces": "vue-cli-service electron:build --win --ia32 -p",
-    "build:kicc": "vue-cli-service electron:build --win --x64 -p",
+    "build:koces": "vue-cli-service electron:build --win --ia32",
+    "build:kicc": "vue-cli-service electron:build --win --x64",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"

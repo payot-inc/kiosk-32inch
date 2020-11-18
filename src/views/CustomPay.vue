@@ -6,7 +6,10 @@
     <div id="contents">
       <div class="coinPushBox">
         <dl class="headTitle">
-          <dt><span>{{selectedMachine.name}}</span>를 선택하셨습니다</dt>
+          <dt>
+            <span>{{ selectedMachine.name }}</span
+            >를 선택하셨습니다
+          </dt>
           <dd>투입할 금액을 입력해주세요</dd>
         </dl>
         <div class="numberView">
@@ -39,13 +42,7 @@
               >1,000원 추가</v-btn
             >
           </div>
-          <v-btn
-            width="200px"
-            height="90px"
-            elevation="0"
-            class="clear"
-            outlined
-            @click="clear"
+          <v-btn width="200px" height="90px" elevation="0" class="clear" outlined @click="clear"
             >초기화</v-btn
           >
         </div>
@@ -111,15 +108,18 @@ export default {
     },
     nextPage() {
       console.log('입력완료', this.inputAmount);
-      if(this.inputAmount <= 0) return;
+      if (this.inputAmount <= 0) return;
 
       const type = 'use';
       const { inputAmount } = this;
       this.appendAction({ inputAmount, type });
       this.$router.push({ name: 'PaymentConfirm' });
     },
-  }
-}
+  },
+  mounted() {
+    this.$sound.singlePlay('./sound/input_machine_amount.mp3');
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -127,7 +127,7 @@ export default {
   background: #fff;
   border-radius: 10px;
   padding: 40px;
-  border:3px solid #e2e2e2;
+  border: 3px solid #e2e2e2;
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
   .headTitle {
     dt {
@@ -198,7 +198,7 @@ export default {
   border-radius: 10px;
   margin-top: 30px;
   padding: 40px;
-  border:3px solid #e2e2e2;
+  border: 3px solid #e2e2e2;
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
   h4 {
     font-size: 36px;

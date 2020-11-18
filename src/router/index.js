@@ -118,9 +118,9 @@ const routes = [
         component: Result,
         props: route => {
           const { params } = route;
-          const { totalPoint } = params;
-          let cloneUser = Object.assign({}, store.state.user);
-          cloneUser.point += totalPoint;
+          // const { totalPoint } = params;
+          // let cloneUser = Object.assign({}, store.state.user);
+          // cloneUser.point += totalPoint;
 
           return params;
         },
@@ -142,7 +142,7 @@ const routes = [
         path: '/PaymentConfirm',
         name: 'PaymentConfirm',
         component: PaymentConfirm,
-      }
+      },
     ],
   },
   {

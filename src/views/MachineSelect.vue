@@ -84,15 +84,13 @@
       </v-tabs-items>
     </div>
 
-    <AlertModal 
-      ref="message" 
-      title="네트워크 오류" 
-      description="장치와의 통신이 원활하지 않습니다" 
+    <AlertModal
+      ref="message"
+      title="네트워크 오류"
+      message="장치와의 통신이 원활하지 않습니다"
+      mode="alert"
     />
-    <ProgressModal 
-      ref="progress" 
-      title="연결상 태 확인 중" 
-    />
+    <ProgressModal ref="progress" title="연결상 태 확인 중" />
     <OverlayGuide>
       <img src="@/assets/img/overlay_guide01.png" />
     </OverlayGuide>
@@ -105,7 +103,7 @@ import UserInfo from '@/components/UserInfo.vue';
 import AlertModal from '@/components/modal/AlertModal.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
 import OverlayGuide from '@/components/MachineSelect/OverlayGuide.vue';
-import { mapMutations, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import { groupBy } from 'lodash';
 export default {
   name: 'MachineSelect',
@@ -132,23 +130,45 @@ export default {
     }),
     categories() {
       return Object.keys(this.machinesByCategory);
-    }
+    },
   },
   mounted() {
     this.machinesByCategory = groupBy(this.machines, machine => machine.category);
+
+    if (this.useDeviceInputMode === 'custom') this.$sound.singlePlay('./sound/select_machine.mp3');
+    else if (this.useDeviceInputMode === 'product')
+      this.$sound.singlePlay('./sound/select_machine_product.mp3');
   },
   methods: {
     ...mapMutations({
       appendAction: 'APPEND_ACTION',
     }),
-    nextList(machine) {
+    ...mapActions({
+      deviceNetworkTest: 'deviceNetworkTest',
+    }),
+    async nextList(machine) {
       const { id: machineId } = machine;
+      try {
+        console.log('try');
+        this.$refs.progress.show(true);
+        await this.deviceNetworkTest(machine.mac);
+      } catch (error) {
+        console.log('catch');
+        this.$refs.progress.show(false);
+        this.$refs.alter.show(true);
+      } finally {
+        console.log('finally');
+        this.$refs.progress.show(false);
+      }
 
       this.eqListMove = 'off';
       this.goodsListMove = 'on';
       this.selectedMachine = machine;
-      if(this.useDeviceInputMode === 'custom') {
-        console.log('선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay', machine);
+      if (this.useDeviceInputMode === 'custom') {
+        console.log(
+          '선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay',
+          machine,
+        );
         this.appendAction(Object.assign({}, { machineId }));
         this.$router.push({ name: 'CustomPay' });
       }
@@ -158,8 +178,11 @@ export default {
       inputAmount = Number(inputAmount);
 
       console.log(machineId, inputAmount);
-      console.log('선택한 상품 vuex에 userAction에 추가\n상품선택 방법: prodcut 다음페이지: ProductPay', product);
-      this.appendAction(Object.assign({}, { machineId }, { inputAmount }));
+      console.log(
+        '선택한 상품 vuex에 userAction에 추가\n상품선택 방법: prodcut 다음페이지: ProductPay',
+        product,
+      );
+      this.appendAction(Object.assign({}, { machineId, inputAmount, type: 'use' }));
       this.$router.push({ name: 'PaymentConfirm', params: { productName: product.name } });
     },
     backList() {
@@ -167,7 +190,7 @@ export default {
       this.goodsListMove = 'off';
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -397,5 +420,3 @@ export default {
   }
 }
 </style>
-
-

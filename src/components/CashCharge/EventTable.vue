@@ -42,7 +42,7 @@
           </v-col>
           <v-col cols="4">
             <div class="eventItem" 
-              :class="{active:realAmount>=30000&&currentMoney<40000}"
+              :class="{active:realAmount>=30000&&realAmount<40000}"
             >
               <span class="name">
                 3만원 ~ 4만원 미만

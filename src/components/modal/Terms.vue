@@ -14,7 +14,7 @@
       </div>
 
       <div class="termsBottom">
-        <v-btn outlined @click="open">닫기</v-btn>
+        <v-btn outlined @click="close">닫기</v-btn>
       </div>
     </div>
   </v-dialog>
@@ -54,6 +54,9 @@ export default {
         this.serviceTerms.body = info.replace(/\n/g, '<br />');
         this.visible = !this.visible;
       }
+    },
+    close() {
+      this.visible = false;
     },
     touchBody() {
       this.touchCount++;

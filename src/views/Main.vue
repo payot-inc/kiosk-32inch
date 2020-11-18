@@ -169,6 +169,7 @@ export default {
     },
     /** 다음 단계로 이동 */
     nextStep({ name, redirectRouteName }) {
+      this.$sound.playTouchSound();
       this.$router.push({
         name: 'UserLogin',
         params: {

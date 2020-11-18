@@ -64,7 +64,7 @@ export default {
     };
   },
   computed: {
-    ...mapState({ 
+    ...mapState({
       user: state => state.user,
       useUserPassword: state => state.kiosk.useUserPassword,
     }),
@@ -79,8 +79,30 @@ export default {
       }
     },
     type(newValue) {
-      // 사운드 출력
+      if (newValue === 'findUser') {
+        this.$sound.singlePlay('./sound/input_phone_number.mp3');
+      } else if (newValue === 'matchPassword' || newValue === 'newUserPassword') {
+        this.$sound.singlePlay('./sound/input_password.mp3');
+      } else if (newValue === 'matchResetPassword') {
+        this.$sound.singlePlay('./sound/forgot_password_send.mp3');
+      } else if (newValue === 'inValideResetPassword' || newValue === 'newUser') {
+        this.$sound.singlePlay('./sound/set_password.mp3');
+      }
     },
+  },
+  mounted() {
+    // * 1. 이용하기 : MachineSelect
+    // * 2. 충전하기 : ChargeType
+    // * 3. 조회하기 : UseList
+    const mode = this.$route.params.mode;
+    console.log(mode);
+    if (mode === 'MachineSelect') {
+      this.$sound.listPlay(['./sound/machine_use.mp3', './sound/input_phone_number.mp3'], 0);
+    } else if (mode === 'PointCharge') {
+      this.$sound.listPlay(['./sound/point_append.mp3', './sound/input_phone_number.mp3'], 0);
+    } else if (mode === 'UseList') {
+      this.$sound.singlePlay('./sound/input_phone_number.mp3');
+    }
   },
   methods: {
     ...mapMutations({
@@ -98,11 +120,11 @@ export default {
     findUser(phone) {
       this.isSignUser({ phone })
         .then(() => {
-          if(this.useUserPassword) this.type = 'matchPassword';
+          if (this.useUserPassword) this.type = 'matchPassword';
           else this.done();
         })
         .catch(() => {
-          if(this.useUserPassword) this.type = 'newUser';
+          if (this.useUserPassword) this.type = 'newUser';
           else this.done();
         });
     },
@@ -131,7 +153,7 @@ export default {
     updatePassword(password) {
       this.updateUserPassword({ mode: 'update', password: password })
         .then(() => {
-          this.type = 'matchPassword';          
+          this.type = 'matchPassword';
         }) // 변경이 완료되면 다음페이지로 이동
         .catch(() => {});
     },

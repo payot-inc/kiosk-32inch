@@ -15,7 +15,7 @@
             </dl>
             <dl v-if="userAction.machineId">
               <dt>장비명</dt>
-              <dd>1번세탁기</dd>
+              <dd>{{ selectedMachine.name }}</dd>
             </dl>
             <dl>
               <dt>최종결제금액</dt>
@@ -26,13 +26,13 @@
               <dt>추가적립 포인트</dt>
               <dd>{{ userAction.appendPoint | numeral(0, 0) }} 포인트</dd>
             </dl>
-            <dl>
+            <!-- <dl>
               <dt>현금 초과 적립포인트</dt>
               <dd>0</dd>
-            </dl>
+            </dl> -->
             <dl class="myPoint">
               <dt>나의 남은 포인트</dt>
-              <dd>{{ user.point }} 포인트</dd>
+              <dd>{{ (user.point + userAction.totalPoint) | numeral(0, 0) }} 포인트</dd>
             </dl>
           </div>
 
@@ -42,11 +42,11 @@
         </div>
 
         <div class="finishBtns">
-          <v-btn class="left" height="100px" outlined>
+          <v-btn class="left" height="100px" outlined @click="goMachineSelect">
             <v-icon size="36px">fa-desktop</v-icon>
             <span>장비추가이용</span>
           </v-btn>
-          <v-btn class="right" height="100px" outlined>
+          <v-btn class="right" height="100px" outlined @click="replaceMain">
             <v-icon size="36px">fa-home</v-icon>
             <span>메인으로</span>
           </v-btn>
@@ -57,29 +57,86 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 export default {
+  props: {
+    response: Object,
+    pointPayError: {
+      type: Boolean,
+      default: false,
+    },
+  },
   name: 'Result',
   data() {
     return {
-      counter: 10,
+      counter: 100,
     };
   },
   mounted() {
     setInterval(() => this.counter--, 1000);
+
+    if (this.pointPayError) {
+      // 포인트전액결제 에러(400)
+      this.$sound.listPlay(['./sound/machine_run_error.mp3', './sound/sorry.mp3'], 0);
+    } else if (this.resultStatus) {
+      if (this.response.type === 'charge') {
+        this.$sound.singlePlay('./sound/point_append_finish.mp3');
+      } else if (this.response.type === 'use') {
+        this.$sound.singlePlay('./sound/machine_input_finish.mp3');
+      }
+    } else if (!this.resultStatus) {
+      this.$sound.listPlay(
+        ['./sound/machine_run_error.mp3', './sound/error_payback.mp3', './sound/sorry.mp3'],
+        0,
+      );
+    }
   },
-  // watch: {
-  //   counter(newValue) {
-  //     if(newValue === 0) this.$router.replace({ name: 'Main' });
-  //   },
-  // },
+  watch: {
+    counter(newValue) {
+      if (newValue === 0) {
+        this.replaceMain();
+      }
+    },
+  },
   computed: {
+    /**
+     *
+     * 일반 충전을 진행하여 해당페이지로 이동된 경우(charge)
+     * 장비이용하기 후 장비에 금액이 투입되고난 후(use)
+     * 장비이용하기를 진행하였지만 장비에 금액이 투입되지 않은 경우
+     * 장비이용하기를 진행하였지만 투입금액이 충분하지 않은 경우(charge)
+     *
+     */
+    resultStatus() {
+      // 요청과 응답이 동일하다면
+      const isValideRequest = this.userAction.type === this.response.type;
+
+      return isValideRequest;
+    },
     ...mapState({
       user: state => state.user,
       userAction: state => state.userAction,
     }),
+    selectedMachine() {
+      const machines = this.$store.state.machines;
+      return machines.find(machine => machine.id === this.userAction.machineId);
+    },
   },
-}
+  methods: {
+    ...mapMutations({
+      setUser: 'SET_USER',
+    }),
+    goMachineSelect() {
+      const point = this.user.point + this.userAction.totalPoint;
+      this.setUser(Object.assign({}, this.user, { point }));
+      this.$router.push({ name: 'MachineSelect' });
+    },
+    replaceMain() {
+      this.$sound.singlePlay('./sound/thank_you.mp3');
+      this.$router.replace({ name: 'Main' });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -96,13 +153,13 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    border:3px solid #e2e2e2;
+    border: 3px solid #e2e2e2;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
   }
   .finishTitle {
     width: 100%;
     color: #292929;
-    background: #FFF3F3;
+    background: #fff3f3;
     padding: 60px;
     min-height: 500px;
     text-align: center;

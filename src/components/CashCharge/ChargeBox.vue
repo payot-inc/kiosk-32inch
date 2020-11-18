@@ -23,7 +23,7 @@
       </dl>
       <dl>
         <dt>최종 나의 포인트</dt>
-        <dd>{{ (point + appendPoint) | numeral(0, 0) }}</dd>
+        <dd>{{ (point + appendPoint + realAmount) | numeral(0, 0) }}</dd>
       </dl>
       <v-btn outlined @click="setPrice">투입완료</v-btn>
     </div>
