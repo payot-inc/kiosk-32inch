@@ -211,7 +211,7 @@ export default {
       } else if (payMethod === 'cash' && this.inputAmount > this.usePoint + realAmount) {
         const eventRate = this.$store.getters.getEventRate(payMethod, realAmount);
         const appendPoint = Math.floor(realAmount * eventRate);
-        const totalPoint = realAmount;
+        const totalPoint = realAmount + appendPoint;
         const type = 'charge';
         const usePoint = 0;
         const machineId = null;
@@ -224,6 +224,11 @@ export default {
           usePoint,
           machineId,
         });
+      } else if(payMethod === 'card') {
+        const eventRate = this.$store.getters.getEventRate(payMethod, realAmount);
+        const appendPoint = Math.floor(realAmount * eventRate);
+        const totalPoint = realAmount + appendPoint - this.userAction.inputAmount;
+        this.appendAction({ realAmount, eventRate, appendPoint, totalPoint });
       }
 
       try {

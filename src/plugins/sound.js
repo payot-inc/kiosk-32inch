@@ -10,6 +10,13 @@ class AudioManager extends Audio {
     this.warring_volum = warringVolume;
   }
 
+  warningPlay() {
+    this.volume = this.warring_volum;
+    this.src = './sound/warning.mp3';
+    this.play();
+    this.onended = () => {};
+  }
+
   play() {
     this.currentTime = 0;
     this.pause();
@@ -39,4 +46,8 @@ class AudioManager extends Audio {
   }
 }
 
-Vue.prototype.$sound = new AudioManager();
+const sound = new AudioManager();
+
+Vue.prototype.$sound = sound;
+
+export default sound;

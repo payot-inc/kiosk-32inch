@@ -9,9 +9,17 @@ let sender; // (message) => {} serial 메시지 보내기
 
 const inputEvent = new Subject(0);
 
+// SerialPort.list()
+//   .then(list => list.find(({ manufacturer }) => manufacturer === 'wch.cn') || {})
+//   .then(device => device.path || '/dev/tty.usbserial-14220')
+//   .then(path => new SerialPort(path, { autoOpen: true, baudRate: 9600 }))
+//   .then(port => {
+//     port.pipe(parser);
+//     sender = message => port.write(`${message}\r\n`);
+//   });
 SerialPort.list()
-  .then(list => list.find(({ manufacturer }) => manufacturer === 'wch.cn') || {})
-  .then(device => device.comName || '/dev/tty.usbserial-14220')
+  .then(list => list.find(({ manufacturer }) => manufacturer === 'wch.cn'))
+  .then(device => device.path)
   .then(path => new SerialPort(path, { autoOpen: true, baudRate: 9600 }))
   .then(port => {
     port.pipe(parser);

@@ -12,6 +12,7 @@ import './background/serialport';
 import './background/mqtt';
 import './background/ad';
 import './background/kicc';
+// import './background/koces';
 // !isDevelopment || require('./background/koces').default;
 
 let window;
@@ -52,9 +53,11 @@ async function createWindow() {
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       webSecurity: false,
+      enableRemoteModule: true,
     },
   });
-
+  
+  // win.setMenu(null);
   window = win;
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

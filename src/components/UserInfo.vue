@@ -30,9 +30,6 @@ export default {
       user: state => state.user,
     }),
   },
-  mounted() {
-    console.log(this.$route.name);
-  }
 };
 </script>
 

@@ -106,9 +106,9 @@ export default {
     },
     charge() {
       this.$refs.progress.show(true);
-      this.serverPaymentRequest();
+      this.serverChargeRequest();
     },
-    serverPaymentRequest: debounce(async function() {
+    serverChargeRequest: debounce(async function() {
       const pay = await this.pay();
 
       this.$router.push({ name: 'Result', params: { response: pay } });

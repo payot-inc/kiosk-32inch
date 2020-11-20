@@ -47,7 +47,6 @@
 <script>
 import SubTitleBar from '@/components/SubTitleBar.vue';
 import UserInfo from '@/components/UserInfo.vue';
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'PayTypeSelect',

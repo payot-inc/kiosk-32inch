@@ -8,7 +8,7 @@ const request = params =>
     jsonp(HOST, { REQ: params.join('^') }, 'callback', response => {
       const isValide = response.SUC === '00'; // 카드결제 성공여부
       if (!isValide) {
-        return reject(new Error(response.MSG));
+        return reject(new Error(response));
       } else {
         return resolve(response);
       }

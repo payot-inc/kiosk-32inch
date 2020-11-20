@@ -38,7 +38,6 @@
 <script>
 import { ipcRenderer } from 'electron';
 import { mapActions, mapMutations, mapState } from 'vuex';
-import { log } from 'winston';
 export default {
   name: 'CashModal',
   props: {
@@ -103,14 +102,16 @@ export default {
       }
     },
     timeOut() {
-      console.log('time out!');
       clearInterval(this.timer);
       this.visible = false;
 
-      this.$emit('submit', this.currentMoney);
+      if(this.currentMoney > 0) {
+        this.$emit('submit', this.currentMoney);
+      } else {
+        this.$sound.singlePlay('./sound/cancel_pay.mp3');
+      }
     },
     onInputEvent(event, money) {
-      console.log('money', money);
       this.currentMoney += money;
     },
   },

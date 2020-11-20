@@ -5,6 +5,7 @@
     transition="slide-y-transition"
     overlay-opacity="0.8"
     overlay-color="#000"
+    persistent
   >
     <div class="paymentModal">
       <div class="paymentImg">
@@ -13,23 +14,23 @@
       <div class="priceInfo">
         <dl>
           <dt>선택상품</dt>
-          <dd>2,000포인트 충전</dd>
+          <dd>{{ selectedItem.name }} 충전</dd>
         </dl>
         <dl>
           <dt>결제금액</dt>
-          <dd>2,000원</dd>
+          <dd>{{ selectedItem.price | numeral(0, 0) }} 원</dd>
         </dl>
         <dl>
           <dt>나의포인트</dt>
-          <dd>2,400</dd>
+          <dd>{{ user.point | numeral(0, 0) }}</dd>
         </dl>
         <dl>
           <dt>추가적립금</dt>
-          <dd>500</dd>
+          <dd>{{ selectedItem.bonus | numeral(0, 0) }}</dd>
         </dl>
         <dl class="lastPoint"> 
           <dt>최종포인트</dt>
-          <dd>2,900</dd>
+          <dd>{{ (user.point + selectedItem.bonus) | numeral(0, 0) }}</dd>
         </dl>
       </div>
       <div class="guide">
@@ -42,8 +43,20 @@
 
 <script>
 import ModalMixin from '@/mixins/modal';
+import { mapState } from 'vuex';
 export default {
   name: 'CardModal',
+  props: {
+    selectedItem: {
+      type: Object,
+      default: null,
+    }
+  },
+  computed: {
+    ...mapState({
+      user: state => state.user,
+    }),
+  },
   mixins: [ModalMixin],
 };
 </script>

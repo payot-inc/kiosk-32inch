@@ -19,7 +19,6 @@ export default {
   methods: {
     backPage() {
       this.$sound.playTouchSound();
-      console.log('Click back page!');
       if(['UserLogin', 'ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name)) {
         this.$router.replace({ name: 'Main' });
       } else if(this.realAmount > 0) {

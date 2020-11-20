@@ -11,14 +11,14 @@
       <div class="pointItems fill-height">
         <v-row>
           <v-col cols="6" v-for="(col, i) in pointGoods" :key="col.id">
-            <div class="pointItem" @click="payConfirm(col.price, bonus[i])" v-ripple>
+            <div class="pointItem" @click="selectItem(col, bonus[i])" v-ripple>
               <div class="priceInfo">
                 <strong>{{ col.name }}</strong>
                 <span>{{ col.price | numeral('0,0') }} 원</span>
               </div>
               <div class="pointInfo">
                 <span>적립보너스</span>
-                <strong>+{{ bonus[i] | numeral('0,0') }}</strong>
+                <strong>+{{ 100 | numeral('0,0') }}</strong>
               </div>
             </div>
           </v-col>
@@ -26,15 +26,21 @@
       </div>
     </div>
 
-    <CardModal ref="cardModal" @onVisible="cardPay" />
+    <CardModal 
+      ref="cardModal" 
+      :selectedItem="selectedItem"
+      @onVisible="cardPay" 
+      @onDismiss="cardClose"
+    />
     <ConfirmModal
-      title="2,000포인트를 선택하셨습니다"
+      :title="`${selectedItem.name}를 선택하셨습니다`"
       message="결제를 진행할까요?"
       submitButtonText="네, 결제를 진행합니다"
       cancelButtonText="취소"
       ref="confirmModal"
       @submit="$refs.cardModal.show(true)"
     />
+    <ProgressModal ref="progress" title="포인트를 적립 중 입니다" />
   </div>
 </template>
 
@@ -45,7 +51,9 @@ import SubTitleBar from '@/components/SubTitleBar.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import CardModal from '@/components/CardCharge/CardModal.vue';
 import ConfirmModal from '@/components/modal/ConfirmModal.vue';
-import { mapGetters } from 'vuex';
+import ProgressModal from '@/components/modal/ProgressModal.vue';
+import { mapActions, mapMutations } from 'vuex';
+import { debounce } from 'lodash';
 export default {
   name: 'CardCharge',
   components: {
@@ -53,9 +61,11 @@ export default {
     UserInfo,
     CardModal,
     ConfirmModal,
+    ProgressModal,
   },
   data() {
     return {
+      selectedItem: {},
       pointGoods: [
         {
           name: '2,000 포인트',
@@ -93,24 +103,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({
-      kioskEvent: 'kioskEvent',
-    }),
     bonus() {
-      const eventTarget = [
-        { min: 0, max: 10000 }, // 1만원 이상시
-        { min: 10000, max: 20000 }, // 1 ~ 2만원
-        { min: 20000, max: 30000 }, // 2 ~ 3만원
-        { min: 30000, max: 40000 }, // 4 ~ 5만원
-        { min: 40000, max: 50000 }, // 4 ~ 5만원
-        { min: 50000, max: Number.MAX_VALUE }, // 5 ~ 만원
-      ];
-      return this.pointGoods.map(item => {
-        const index = eventTarget.findIndex(
-          ({ min, max }) => item.price >= min && item.price < max,
-        );
-        const eventRate = this.kioskEvent.rule['card'][index] / 100;
-        return item.price * eventRate;
+      return this.pointGoods.map(({ price }) => {
+        return price * this.$store.getters.getEventRate('card', price);
       });
     },
   },
@@ -118,9 +113,45 @@ export default {
     this.$sound.listPlay(['./sound/select_card.mp3', './sound/point_append_card_helper.mp3'], 0);
   },
   methods: {
-    cardPay() {
-      ipcRenderer.invoke('card-pay', 1000);
+    ...mapMutations({
+      appendAction: 'APPEND_ACTION',
+    }),
+    ...mapActions({
+      pay: 'pay',
+    }),
+    selectItem(item, bonus) {
+      this.selectedItem = Object.assign({}, item, { bonus });
+      this.$refs.confirmModal.show(true);
     },
+    cardPay() {
+      this.$sound.singlePlay('./sound/card_use_helper.mp3');
+      ipcRenderer.invoke('card-pay', null, this.selectedItem.price)
+        .then((value) => {
+          const realAmount = value;
+          const eventRate = this.$store.getters.getEventRate('card', value);
+          const appendPoint = value * eventRate;
+          const totalPoint = realAmount + appendPoint;
+
+          this.appendAction({ realAmount, appendPoint, totalPoint, eventRate });
+          this.$refs.progress.show(true);
+          this.serverChargeRequest();
+        })
+        .catch(err => {
+          console.log(err.message);
+          this.$sound.singlePlay('./sound/cancel_pay.mp3');
+          this.$refs.cardModal.show(false);
+        });
+    },
+    cardClose() {
+      ipcRenderer.invoke('card-close');
+    },
+    serverChargeRequest: debounce(async function() {
+      const pay = await this.pay();
+
+      this.$refs.progress.show(false);
+      this.$refs.cardModal.show(false);
+      this.$router.push({ name: 'Result', params: { response: pay } });
+    }, 2000),
   },
 };
 </script>

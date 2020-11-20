@@ -49,7 +49,6 @@ export default new Vuex.Store({
       const index = eventTarget.findIndex(({ min, max }) => amount >= min && amount < max);
       return kioskEvent.rule[type][index] / 100;
     },
-    machinePickList(state) {},
     kioskEvent(state) {
       return state.kiosk.events
         .sort((a, b) => b.weekDay - a.weekDay)

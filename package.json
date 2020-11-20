@@ -9,6 +9,7 @@
     "build:koces": "vue-cli-service electron:build --win --ia32",
     "build:kicc": "vue-cli-service electron:build --win --x64",
     "electron:serve": "vue-cli-service electron:serve",
+    "rebuild": "electron-builder install-app-deps",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },

@@ -2,6 +2,7 @@ import { ipcRenderer, remote } from 'electron';
 import { reboot, shutdown } from 'electron-shutdown-command';
 import store from '../store';
 import router from '../router';
+import sound from './sound.js';
 
 /**
  * 프로그램 실행시 키오스크 이벤트 푸시 구독하기
@@ -45,8 +46,13 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
         },
       });
       break;
+    case 'warning':
+      console.log('warning');
+      sound.warningPlay();
+      break;
     default:
       // 키오스크 상태 정보 갱신
+      console.log(payload, '갱신');
       store.dispatch('refreshKioskConfig');
       break;
   }

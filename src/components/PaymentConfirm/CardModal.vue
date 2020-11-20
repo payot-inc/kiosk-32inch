@@ -12,13 +12,13 @@
         <img src="@/assets/img/paymentCard.png" />
       </div>
       <div class="priceInfo">
-        <dl v-if="userAction.type === 'charge'">
+        <!-- <dl v-if="userAction.type === 'charge'">
           <dt>선택상품</dt>
-          <dd>2,000포인트 충전</dd>
-        </dl>
+          <dd>....</dd>
+        </dl> -->
         <dl>
           <dt>결제금액</dt>
-          <dd>2,000원</dd>
+          <dd>{{ realAmount | numeral(0, 0) }} 원</dd>
         </dl>
         <dl>
           <dt>나의포인트</dt>
@@ -61,20 +61,10 @@ export default {
     }),
     ...mapGetters({
       kioskEvent: 'kioskEvent',
+      pay: 'pay',
     }),
     eventRate() {
-      const eventTarget = [
-        { min: 0, max: 10000 }, // 1만원 이상시
-        { min: 10000, max: 20000 }, // 1 ~ 2만원
-        { min: 20000, max: 30000 }, // 2 ~ 3만원
-        { min: 30000, max: 40000 }, // 4 ~ 5만원
-        { min: 40000, max: 50000 }, // 4 ~ 5만원
-        { min: 50000, max: Number.MAX_VALUE }, // 5 ~ 만원
-      ];
-      const index = eventTarget.findIndex(
-        ({ min, max }) => this.realAmount >= min && this.realAmount < max,
-      );
-      return this.kioskEvent.rule['card'][index] / 100;
+      return this.$store.getters.getEventRate('card', this.realAmount);
     },
     appendPoint() {
       return this.eventRate * this.realAmount;
@@ -84,9 +74,19 @@ export default {
     visible(newValue) {
       if (newValue) {
         this.$sound.listPlay(['./sound/select_card.mp3', './sound/card_use_helper.mp3'], 0);
-        // ipcRenderer.invoke('card-pay',);
+
+        ipcRenderer.invoke('card-pay', this.realAmount)
+          .then(value => {
+            this.$emit('submit', value);
+            this.visible = false;
+          }).catch(error => {
+            console.log(error.message);
+            this.$sound.singlePlay('./sound/cancel_pay.mp3');
+            this.visible = false;
+          });
+
       } else {
-        // 카드결제 닫기
+        ipcRenderer.invoke('card-close');
       }
     },
   },

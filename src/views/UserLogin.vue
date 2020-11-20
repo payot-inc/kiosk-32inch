@@ -2,7 +2,7 @@
   <div class="userLogin" id="container">
     <SubTitleBar title="전화번호 입력" />
     <div class="inner">
-      <div v-if="mode === 'UseKioskList'" class="introText">
+      <div v-if="mode === 'UseList'" class="introText">
         사용내역조회를 위한 전화번호를 입력해주세요
       </div>
       <div v-else class="introText">

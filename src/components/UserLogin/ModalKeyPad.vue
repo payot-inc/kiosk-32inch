@@ -54,7 +54,7 @@ export default {
     };
   },
   watch: {
-    type(newValue) {
+    type() {
       this.clear();
     },
     password(newValue) {
