@@ -97,9 +97,13 @@ export default {
     const mode = this.$route.params.mode;
     console.log(mode);
     if (mode === 'MachineSelect') {
-      this.$sound.listPlay(['./sound/machine_use.mp3', './sound/input_phone_number.mp3'], 0);
+      const soundList = ['./sound/machine_use.mp3', './sound/input_phone_number.mp3'];
+      const delayList = [0];
+      this.$sound.listPlay(soundList, delayList);
     } else if (mode === 'PointCharge') {
-      this.$sound.listPlay(['./sound/point_append.mp3', './sound/input_phone_number.mp3'], 0);
+      const soundList = ['./sound/point_append.mp3', './sound/input_phone_number.mp3'];
+      const delayList = [0];
+      this.$sound.listPlay(soundList, delayList);
     } else if (mode === 'UseList') {
       this.$sound.singlePlay('./sound/input_phone_number.mp3');
     }

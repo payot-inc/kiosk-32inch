@@ -110,7 +110,9 @@ export default {
     },
   },
   mounted() {
-    this.$sound.listPlay(['./sound/select_card.mp3', './sound/point_append_card_helper.mp3'], 0);
+    const soundList = ['./sound/select_card.mp3', './sound/point_append_card_helper.mp3'];
+    const delayList = [250];
+    this.$sound.listPlay(soundList, delayList);
   },
   methods: {
     ...mapMutations({
@@ -123,10 +125,12 @@ export default {
       this.selectedItem = Object.assign({}, item, { bonus });
       this.$refs.confirmModal.show(true);
     },
-    cardPay() {
+    async cardPay() {
       this.$sound.singlePlay('./sound/card_use_helper.mp3');
+      await this.delay(500);
       ipcRenderer.invoke('card-pay', null, this.selectedItem.price)
         .then((value) => {
+          value = Number(value);
           const realAmount = value;
           const eventRate = this.$store.getters.getEventRate('card', value);
           const appendPoint = value * eventRate;
@@ -141,6 +145,9 @@ export default {
           this.$sound.singlePlay('./sound/cancel_pay.mp3');
           this.$refs.cardModal.show(false);
         });
+    },
+    delay(ms) {
+      return new Promise((resolve, reject) => setTimeout(resolve, ms));
     },
     cardClose() {
       ipcRenderer.invoke('card-close');

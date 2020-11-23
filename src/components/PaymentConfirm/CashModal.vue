@@ -29,7 +29,7 @@
         <span>{{ count }}</span>
       </div>
       <!-- <V-btn class="closeBtn" width="120px" height="120px" outlined @click="close">
-        <v-icon>fa-times</v-icon>
+        <v-icon>mdi-close</v-icon>
       </V-btn> -->
     </div>
   </v-dialog>
@@ -72,7 +72,9 @@ export default {
     visible(newValue) {
       if (newValue) {
         ipcRenderer.invoke('cash-open', true);
-        this.$sound.listPlay(['./sound/select_cash.mp3', './sound/input_cash_use_machine.mp3'], 0);
+        const soundList = ['./sound/select_cash.mp3', './sound/input_cash_use_machine.mp3'];
+        const delayList = [0];
+        this.$sound.listPlay(soundList, delayList);
       } else if (!newValue) {
         ipcRenderer.invoke('cash-open', false);
       }

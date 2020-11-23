@@ -18,7 +18,7 @@
           elevation="0"
           style="background:#fff"
         >
-          <v-icon size="80">fas fa-times-circle</v-icon>
+          <v-icon size="90">mdi-close-circle</v-icon>
         </v-btn>
 
         <ModalHeadNew
@@ -101,6 +101,9 @@ export default {
           this.login(newValue);
         } else if (this.type === 'matchPassword') {
           this.login(newValue);
+        } else if (this.type === 'inValidePassword') {
+          this.login(newValue);
+          this.resetData();
         } else if(this.type === 'matchResetPassword') {
           const matching = this.matchResetPassword(this.password);
         } else if(this.type === 'inValideResetPassword') {

@@ -11,6 +11,10 @@ span,strong,label,ul,li,a,b,ol{font-family:'SCDream';font-weight:400}
   font-family:'SCDream';
 }
 
+html::-webkit-scrollbar{
+  display:none;
+}
+
 #app{
   font-size:24px;
   font-family:'SCDream' !important;
@@ -92,4 +96,12 @@ $defaulColor: #0085DE;
 }
 .v-data-table{ 
   td{ font-size:32px !important;}
+}
+
+.theme--dark.v-tabs .v-tab--active:hover::before, .theme--dark.v-tabs .v-tab--active::before{
+  opacity: 0;
+}
+
+.theme--dark.v-tabs .v-tab:hover::before{
+  opacity: 0;
 }

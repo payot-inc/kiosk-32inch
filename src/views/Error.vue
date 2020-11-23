@@ -1,6 +1,6 @@
 <template>
   <div class="examine">
-    <v-icon>fa-lightbulb</v-icon>
+    <v-icon>mdi-lightbulb</v-icon>
     <dl>
       <dt>{{ title }}</dt>
       <dd v-if="message">

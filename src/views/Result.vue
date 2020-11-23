@@ -2,7 +2,7 @@
   <div class="finish" id="container">
     <div class="contents">
       <div class="finishTitle">
-        <v-icon>fa-check-circle</v-icon>
+        <v-icon>mdi-check-circle</v-icon>
         <h2>결제가 완료되었습니다</h2>
         <p v-if="userAction.machineId">결제하신 장비에서 시작하기 버튼을 눌러주세요</p>
       </div>
@@ -43,11 +43,11 @@
 
         <div class="finishBtns">
           <v-btn class="left" height="100px" outlined @click="goMachineSelect">
-            <v-icon size="36px">fa-desktop</v-icon>
+            <v-icon size="36px">mdi-washing-machine</v-icon>
             <span>장비추가이용</span>
           </v-btn>
           <v-btn class="right" height="100px" outlined @click="replaceMain">
-            <v-icon size="36px">fa-home</v-icon>
+            <v-icon size="36px">mdi-home</v-icon>
             <span>메인으로</span>
           </v-btn>
         </div>
@@ -77,18 +77,23 @@ export default {
 
     if (this.pointPayError) {
       // 포인트전액결제 에러(400)
-      this.$sound.listPlay(['./sound/machine_run_error.mp3', './sound/sorry.mp3'], 0);
+      const soundList = ['./sound/machine_run_error.mp3', './sound/sorry.mp3'];
+      const delayList = [0];
+      this.$sound.listPlay(soundList, delayList);
     } else if (this.resultStatus) {
       if (this.response.type === 'charge') {
-        this.$sound.singlePlay('./sound/point_append_finish.mp3');
+        const soundList = ['./sound/point_append_finish.mp3', './sound/thank_you.mp3'];
+        const delayList = [0];
+        this.$sound.listPlay(soundList, delayList);
       } else if (this.response.type === 'use') {
-        this.$sound.singlePlay('./sound/machine_input_finish.mp3');
+        const soundList = ['./sound/machine_input_finish.mp3', './sound/thank_you.mp3'];
+        const delayList = [0];
+        this.$sound.listPlay(soundList, delayList);
       }
     } else if (!this.resultStatus) {
-      this.$sound.listPlay(
-        ['./sound/machine_run_error.mp3', './sound/error_payback.mp3', './sound/sorry.mp3'],
-        0,
-      );
+      const soundList = ['./sound/machine_run_error.mp3', './sound/error_payback.mp3', './sound/sorry.mp3'];
+      const delayList = [0, 0];
+      this.$sound.listPlay(soundList, delayList);
     }
   },
   watch: {
@@ -132,7 +137,7 @@ export default {
       this.$router.push({ name: 'MachineSelect' });
     },
     replaceMain() {
-      this.$sound.singlePlay('./sound/thank_you.mp3');
+      // this.$sound.singlePlay('./sound/thank_you.mp3');
       this.$router.replace({ name: 'Main' });
     },
   },

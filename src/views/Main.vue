@@ -189,12 +189,15 @@ export default {
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  height:100%;
+
   .inner {
     position: relative;
     flex: 1;
     padding: 60px;
     padding-top: 0px;
     z-index: 2;
+    padding-bottom:0px;
   }
   .main-head {
     display: flex;
@@ -214,6 +217,7 @@ export default {
         font-weight: 400;
         span {
           position: absolute;
+          left:0px;
           bottom: 0px;
           width: 100%;
           height: 12px;
@@ -268,7 +272,7 @@ export default {
     border: 3px solid #ee2073;
     height: 100px;
     border-radius: 50px;
-    margin-top: 45px;
+    margin: 60px 0;
     overflow: hidden;
     label {
       width: 180px;
@@ -289,13 +293,13 @@ export default {
   }
   .mainBtns {
     width: 100%;
-    position: absolute;
-    bottom: 60px;
+    flex:1;
     padding: 0 15px;
     z-index: 5;
   }
   .btns-inner {
     display: flex;
+    height:100%;
     align-items: center;
     justify-content: space-around;
     border-radius: 30px 30px 0 0;
@@ -305,13 +309,14 @@ export default {
     background: #fff;
     z-index: 3;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+
     .btn {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: flex-end;
-      height: 500px;
+      height: 100%;
       padding: 45px;
       dl {
         dt {

@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
-import edge from 'electron-edge-js';
 import { takeRight, take } from 'lodash';
+import edge from 'electron-edge-js';
 
 const path = 'C:\\Koces\\PayotKoces.dll';
 const lib = edge.func(path);
@@ -33,6 +33,14 @@ function request(params) {
   });
 }
 
+// function request(params) {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve(params.amount);
+//     }, 3000);
+//   });
+// }
+
 async function payment(companyName, amount) {
   const params = {
     type: 'F1',
@@ -42,7 +50,12 @@ async function payment(companyName, amount) {
     payDate: '',
   };
 
-  return await request(params);
+  // return await request(params);
+
+  const req = await request(params);
+  console.log(req);
+
+  return req;
 }
 
 ipcMain.handle('card-pay', async (event, companyName, amount) => {

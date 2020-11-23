@@ -79,6 +79,7 @@ const routes = [
         name: 'CashCharge',
         component: CashCharge,
         beforeEnter: (to, from, next) => {
+          console.log(to, from ,next);
           store.commit('APPEND_ACTION', {
             type: 'charge',
             payMethod: 'cash',
@@ -161,7 +162,6 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
 
 router.beforeEach((to, from, next) => {
   const isAccountLogin = store.state.company.id;

@@ -73,11 +73,14 @@ export default {
   watch: {
     visible(newValue) {
       if (newValue) {
-        this.$sound.listPlay(['./sound/select_card.mp3', './sound/card_use_helper.mp3'], 0);
+        const soundList = ['./sound/select_card.mp3', './sound/card_use_helper.mp3'];
+        const delayList = [0];
+        this.$sound.listPlay(soundList, delayList);
+        
 
-        ipcRenderer.invoke('card-pay', this.realAmount)
+        ipcRenderer.invoke('card-pay', null, this.realAmount)
           .then(value => {
-            this.$emit('submit', value);
+            this.$emit('submit', Number(value));
             this.visible = false;
           }).catch(error => {
             console.log(error.message);

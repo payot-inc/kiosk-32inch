@@ -97,18 +97,16 @@ export default {
         this.$refs.alert.show(true);
       } else {
         ipcRenderer.invoke('cash-open', false);
-        const { realAmount, appendPoint, eventRate } = this;
-        const totalPoint = realAmount + appendPoint;
-        this.appendAction({ realAmount, appendPoint, eventRate, totalPoint });
 
-        this.charge();
+        this.$refs.progress.show(true);
+        this.serverChargeRequest();
       }
     },
-    charge() {
-      this.$refs.progress.show(true);
-      this.serverChargeRequest();
-    },
     serverChargeRequest: debounce(async function() {
+      const { realAmount, appendPoint, eventRate } = this;
+      const totalPoint = realAmount + appendPoint;
+      this.appendAction({ realAmount, appendPoint, eventRate, totalPoint });
+
       const pay = await this.pay();
 
       this.$router.push({ name: 'Result', params: { response: pay } });
@@ -122,11 +120,14 @@ export default {
     },
   },
   mounted() {
+    console.log('cash charge mount');
     ipcRenderer.invoke('cash-open', true);
 
     ipcRenderer.on('cash-input', this.onInputMoneyEvent);
 
-    this.$sound.listPlay(['./sound/select_cash.mp3', './sound/point_append_cash_helper.mp3'], 0);
+    const soundList = ['./sound/select_cash.mp3', './sound/point_append_cash_helper.mp3'];
+    const delayList = [250];
+    this.$sound.listPlay(soundList, delayList);
   },
   beforeDestroy() {
     ipcRenderer.invoke('cash-open', false);

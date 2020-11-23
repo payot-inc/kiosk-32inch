@@ -2,10 +2,12 @@ import { fromEvent, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map } from 'rxjs/operators';
 import router from '../router';
 import store from '../store';
+import { reboot } from 'electron-shutdown-command';
 
 function nowNetworkStatus() {
   console.log(navigator);
-  return navigator.onLine === 'online';
+  // return navigator.onLine === 'online';
+  return navigator.onLine;
 }
 
 const networkStatusChange$ = combineLatest([
@@ -16,7 +18,7 @@ const networkStatusChange$ = combineLatest([
 /** 오프라인으로 변경시 2분이 경과하면 */
 networkStatusChange$
   .pipe(
-    debounceTime(0.03 * 60 * 1000),
+    debounceTime(2 * 60 * 1000),
     filter(state => !state),
   )
   .subscribe(
@@ -49,16 +51,17 @@ networkStatusChange$
     () => {},
   );
 
-/** 오프라인 상태가 15분간 유지되는 경우 */
-networkStatusChange$
-  .pipe(
-    debounceTime(15 * 60 * 1000),
-    filter(state => !state),
-  )
-  .subscribe(
-    () => {
-      // reboot
-      router.replace({ name: '' });
-    },
-    () => {},
-  );
+// /** 오프라인 상태가 15분간 유지되는 경우 */
+// networkStatusChange$
+//   .pipe(
+//     debounceTime(15 * 60 * 1000),
+//     filter(state => !state),
+//   )
+//   .subscribe(
+//     () => {
+//       // reboot
+//       console.log('reboot!!');
+//       reboot();
+//     },
+//     () => {},
+//   );

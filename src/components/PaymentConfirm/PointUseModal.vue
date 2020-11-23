@@ -9,8 +9,8 @@
     <div class="pointUse">
       <div class="dialogHead">
         <span>포인트사용하기</span>
-        <v-btn outlined @click="closeModal" width="100px" height="100px">
-          <v-icon>fa-times</v-icon>
+        <v-btn icon @click="closeModal" width="80" height="80">
+          <v-icon color="#000" size="50">mdi-close</v-icon>
         </v-btn>
       </div>
       <div class="dialogBody">
@@ -80,6 +80,9 @@ export default {
       this.$emit('updateUsePoint', this.usePoint);
       this.closeModal();
     },
+    setPoint(point) {
+      this.usePoint = point;
+    },
   },
 };
 </script>
@@ -97,14 +100,11 @@ export default {
   background: #fff;
   height: 100px;
   overflow: hidden;
+  padding:0 20px 0 40px;
+
   span {
     font-size: 36px;
     color: #494949;
-    padding-left: 40px;
-  }
-  .v-btn {
-    border: 0px;
-    color: #fff;
   }
   .v-icon {
     font-size: 36px;

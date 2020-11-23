@@ -15,9 +15,15 @@
         새롭게 설정할 <br />비밀번호를 입력해주세요
       </dd>
     </dl>
-    <v-btn v-if="type !== 'matchResetPassword' && type !== 'inValideResetPassword'" outlined @click="$refs.confirm.show(true)">
+    <v-btn v-if="type !== 'matchResetPassword' && type !== 'inValideResetPassword'" 
+      @click="$refs.confirm.show(true)"
+      height="60"
+      class="pa-5"
+      style="font-size:24px;border-radius:30px;border:3px solid #d2d2d2;"
+      outlined 
+    >
       <span>비밀번호가 생각나지 않습니다</span>
-      <v-icon>fa-angle-right</v-icon>
+      <v-icon size="36" style="margin-left:15px;">mdi-chevron-right</v-icon>
     </v-btn>
     <ConfirmModal
       ref="confirm"
@@ -75,6 +81,8 @@ export default {
         font-weight:600;
       }
     }
+
+
   }
   p {
     font-size: 32px;
@@ -97,4 +105,6 @@ export default {
     span{font-size:24px;text-align:left;margin-left:30px;}
   }
 }
+
+
 </style>

@@ -52,6 +52,7 @@ export default {
   overflow: hidden;
   position: relative;
   z-index: 9;
+  
   .customer {
     padding-left: 30px;
     display: flex;

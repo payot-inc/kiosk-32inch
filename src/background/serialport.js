@@ -33,6 +33,7 @@ parser.on('data', data => {
     .split(':');
 
   if (cmd !== 'BILL' || !eventer) return;
+  console.log(data);
   inputEvent.next(parseInt(message, 10));
 });
 

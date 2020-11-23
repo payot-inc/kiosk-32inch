@@ -2,7 +2,7 @@
   <div class="bottom">
     <div class="passwordView">
       <div class="label">
-        <v-icon color="#aaa" size="30">fas fa-unlock</v-icon>
+        <v-icon color="#aaa" size="30">mdi-lock-open</v-icon>
         <span>비밀번호 생성</span>
       </div>
       <div class="password">
@@ -24,7 +24,7 @@
       </div>
       <div class="rowLine">
         <v-btn width="180px" height="90px" class="number del" elevation="0" @click="inputKey('delete')">
-          <v-icon size="40">fa-backspace</v-icon>
+          <v-icon size="40">mdi-backspace</v-icon>
         </v-btn>
         <v-btn width="180px" height="90px" class="number" elevation="0" @click="inputKey(0)"
           >0</v-btn
@@ -60,7 +60,9 @@ export default {
     password(newValue) {
       if(newValue.length === 4) {
         this.$emit('submit', newValue);
-        // this.password = '';
+        if(this.type !== 'newUser') {
+          this.password = '';
+        }
       }
     }
   },
@@ -77,7 +79,7 @@ export default {
     },
     clear() {
       this.password = '';
-    }
+    },
   },
 };
 </script>

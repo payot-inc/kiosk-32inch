@@ -12,6 +12,8 @@
             class="tabTitle"
             active-class="tabTitleActive"
             @click="backList"
+            translate="fade"
+            :ripple="true"
             >{{ category }}</v-tab
           >
         </v-tabs>
@@ -21,7 +23,10 @@
         <v-tab-item v-for="(category, i) in categories" :key="i" class="tabContents">
           <div class="listWrap">
             <div class="eqList" :class="eqListMove">
-              <div class="listTitle"><v-icon>fa-washer</v-icon>사용하실 장비를 선택해주세요</div>
+              <div class="listTitle">
+                <v-icon size="60" color="#fff" class="mr-4">mdi-washing-machine</v-icon>
+                <span>사용하실 장비를 선택해주세요</span>
+                </div>
               <div class="itemList">
                 <v-list flat three-line>
                   <v-list-item-group>
@@ -35,7 +40,7 @@
                           <dt>{{ machine.name }}</dt>
                           <dd>용량 {{ machine.size }}</dd>
                         </dl>
-                        <v-icon size="40">fas fa-angle-right</v-icon>
+                        <v-icon size="60">mdi-chevron-right</v-icon>
                       </div>
                     </v-list-item>
                   </v-list-item-group>
@@ -47,7 +52,7 @@
             <div class="goodsList" :class="goodsListMove">
               <div class="listTitle">
                 <v-btn width="100px" height="100px" elevation="0" class="backBtn" @click="backList">
-                  <v-icon size="40" color="#fff">fas fa-angle-left</v-icon>
+                  <v-icon size="50" color="#fff">mdi-chevron-left</v-icon>
                 </v-btn>
                 <dl>
                   <dt>
@@ -85,7 +90,7 @@
     </div>
 
     <AlertModal
-      ref="message"
+      ref="alter"
       title="네트워크 오류"
       message="장치와의 통신이 원활하지 않습니다"
       mode="alert"
@@ -152,6 +157,17 @@ export default {
         console.log('try');
         this.$refs.progress.show(true);
         await this.deviceNetworkTest(machine.mac);
+        this.eqListMove = 'off';
+        this.goodsListMove = 'on';
+        this.selectedMachine = machine;
+        if (this.useDeviceInputMode === 'custom') {
+          console.log(
+            '선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay',
+            machine,
+          );
+          this.appendAction(Object.assign({}, { machineId }));
+          this.$router.push({ name: 'CustomPay' });
+        }
       } catch (error) {
         console.log('catch');
         this.$refs.progress.show(false);
@@ -159,18 +175,6 @@ export default {
       } finally {
         console.log('finally');
         this.$refs.progress.show(false);
-      }
-
-      this.eqListMove = 'off';
-      this.goodsListMove = 'on';
-      this.selectedMachine = machine;
-      if (this.useDeviceInputMode === 'custom') {
-        console.log(
-          '선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay',
-          machine,
-        );
-        this.appendAction(Object.assign({}, { machineId }));
-        this.$router.push({ name: 'CustomPay' });
       }
     },
     nextPage(product) {
@@ -223,10 +227,10 @@ export default {
   color: #888 !important;
 }
 .tabTitleActive {
-  background: #fff;
+  background:#fff;
   border-radius: 20px 20px 0 0;
   border: 0px;
-  color: #0085de !important;
+  color: #0085de !important ;
 }
 .v-tabs-items {
   flex: 1;

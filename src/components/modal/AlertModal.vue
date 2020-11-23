@@ -36,9 +36,9 @@ export default {
   data() {
     return {
       type: {
-        info: { sorce: 'fa-info-circle', color: '#0085DE' },
-        alert: { sorce: 'fa-exclamation-circle', color: '#d22828' },
-        pass: { sorce: 'fa-envelope', color: '#c2c2c2' },
+        info: { sorce: 'mdi-information', color: '#0085DE' },
+        alert: { sorce: 'mdi-alert-circle', color: '#d22828' },
+        pass: { sorce: 'mdi-email', color: '#c2c2c2' },
       },
     };
   },

@@ -30,14 +30,33 @@ class AudioManager extends Audio {
     this.onended = () => {};
   }
 
-  listPlay(playList, startIndex) {
+  // 1. 재생이 되어야할 파일 목록
+  // 2. 재생간 딜레이
+  listPlay(playList, delayList) {
     this.volume = this.speak_volum;
-    this.src = playList[startIndex];
+    this.src = playList[0];
     this.onended = () => {
-      if (playList.length - 1 > startIndex) this.listPlay(playList, startIndex + 1);
+      if (playList.length > 1) { 
+        setTimeout(() => {
+          playList.shift();
+          delayList.shift();
+          this.listPlay(playList, delayList);
+        }, delayList.length === 0 ? 0 : delayList[0]);
+      }
     };
     this.play();
   }
+  // listPlay(playList, startIndex) {
+  //   this.volume = this.speak_volum;
+  //   this.src = playList[startIndex];
+  //   this.onended = () => {
+
+  //     if (playList.length - 1 > startIndex) { 
+  //       this.listPlay(playList, startIndex + 1);
+  //     }
+  //   };
+  //   this.play();
+  // }
 
   playTouchSound() {
     let touchSound = new Audio('./sound/touch.mp3');

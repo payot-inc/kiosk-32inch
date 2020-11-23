@@ -15,7 +15,7 @@
         v-bind:class="{active: joinAgree}"
         @click="toggleJoinAgree"
       >
-        <v-icon>fas fa-check</v-icon>
+        <v-icon>mdi-check</v-icon>
       </v-btn>
       <span>
         멤버쉽 회원가입을 위한<br>개인정보 수집 및 이용 및 제공에 동의합니다

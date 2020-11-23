@@ -59,7 +59,7 @@
               >{{ realAmount | numeral('0,0') }}원 결제하기</span
             >
             <span v-else>이용하기</span>
-            <v-icon>fa-angle-right</v-icon>
+            <v-icon size="46">mdi-chevron-right</v-icon>
           </v-btn>
         </div>
         <!-- orderBtn -->
@@ -158,6 +158,7 @@ export default {
     }),
     pointDone(point) {
       this.usePoint = point;
+      this.$refs.pointUseModal.setPoint(point);
     },
     delay(millisec) {
       return new Promise(resolve => setTimeout(resolve, millisec));
@@ -399,6 +400,7 @@ export default {
   .orderBtn {
     padding: 40px;
     .v-btn {
+      align-items: center;
       border-radius: 10px;
       font-size: 36px;
       color: #fff;
