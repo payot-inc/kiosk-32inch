@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div class="customer" @click="exitCount++">
+    <div class="customer">
       <span>고객센터</span>
       <strong>{{ tel }}</strong>
     </div>
@@ -20,8 +20,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import { remote } from 'electron';
 import Terms from '@/components/modal/Terms.vue';
+import { remote } from 'electron';
 export default {
   components: {
     Terms,
@@ -29,18 +29,6 @@ export default {
   methods: {
     tremsOpen(value) {
       this.$refs.terms.open(value);
-    },
-  },
-  data() {
-    return {
-      exitCount: 0,
-    };
-  },
-  watch: {
-    exitCount(newValue) {
-      if(newValue === 15) {
-        remote.app.exit();
-      }
     },
   },
   computed: {

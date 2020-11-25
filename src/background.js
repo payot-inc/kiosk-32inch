@@ -11,8 +11,8 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 import './background/serialport';
 import './background/mqtt';
 import './background/ad';
-import './background/kicc';
-// import './background/koces';
+// import './background/kicc';
+import './background/koces';
 // !isDevelopment || require('./background/koces').default;
 
 let window;
@@ -57,7 +57,9 @@ async function createWindow() {
     },
   });
   
-  win.setMenu(null);
+  if(!isDevelopment) {
+    win.setMenu(null);
+  }
   window = win;
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {

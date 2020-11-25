@@ -109,7 +109,7 @@ import AlertModal from '@/components/modal/AlertModal.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
 import OverlayGuide from '@/components/MachineSelect/OverlayGuide.vue';
 import { mapActions, mapMutations, mapState } from 'vuex';
-import { groupBy } from 'lodash';
+import { groupBy, sortBy } from 'lodash';
 export default {
   name: 'MachineSelect',
   components: {
@@ -132,13 +132,14 @@ export default {
     ...mapState({
       machines: state => state.machines,
       useDeviceInputMode: state => state.kiosk.useDeviceInputMode,
+      categories: state => state.kiosk.tabs,
     }),
-    categories() {
-      return Object.keys(this.machinesByCategory);
-    },
+    // categories() {
+    //   return Object.keys(this.machinesByCategory);
+    // },
   },
   mounted() {
-    this.machinesByCategory = groupBy(this.machines, machine => machine.category);
+    this.machinesByCategory = groupBy(sortBy(this.machines, 'sort'), machine => machine.category);
 
     if (this.useDeviceInputMode === 'custom') this.$sound.singlePlay('./sound/select_machine.mp3');
     else if (this.useDeviceInputMode === 'product')
@@ -160,6 +161,7 @@ export default {
         this.eqListMove = 'off';
         this.goodsListMove = 'on';
         this.selectedMachine = machine;
+        this.selectedMachine.products = sortBy(this.selectedMachine.products, 'sort');
         if (this.useDeviceInputMode === 'custom') {
           console.log(
             '선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay',

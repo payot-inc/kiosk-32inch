@@ -3,7 +3,8 @@
     <div class="passwordView">
       <div class="label">
         <v-icon color="#aaa" size="30">mdi-lock-open</v-icon>
-        <span>비밀번호 생성</span>
+        <span v-if="type === 'matchPassword' || type === 'inValidePassword' || type === 'newUserPassword' || type === 'matchResetPassword'">비밀번호 확인</span>
+        <span v-if="type === 'newUser' || type === 'inValideResetPassword'">비밀번호 생성</span>
       </div>
       <div class="password">
         <span v-for="num in 4" :key="num" :class="{ active: password.length >= num }"></span>

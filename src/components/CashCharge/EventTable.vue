@@ -116,7 +116,8 @@ export default {
       border-radius:10px;
     }
     dd{
-      overflow-y:auto;
+      // overflow-y:auto;
+      overflow: hidden;
       margin-top:15px;
       .eventItem{
         background:#fff;

@@ -20,6 +20,12 @@
       :matchResetPassword="matchResetPassword"
       :updatePassword="updatePassword"
     />
+    <AlertModal
+      ref="alert"
+      mode="alert"
+      title="회원조회 실패"
+      message="일치하는 회원이 없습니다"
+    />
   </div>
 </template>
 
@@ -29,6 +35,7 @@ import SubTitleBar from '@/components/SubTitleBar.vue';
 import LoginBox from '@/components/UserLogin/LoginBox.vue';
 import KioskGuide from '@/components/UserLogin/KioskGuide.vue';
 import PasswordModal from '@/components/UserLogin/PasswordModal.vue';
+import AlertModal from '@/components/modal/AlertModal.vue';
 
 export default {
   name: 'UserLogin',
@@ -37,6 +44,7 @@ export default {
     LoginBox,
     KioskGuide,
     PasswordModal,
+    AlertModal,
   },
   props: {
     mode: String, // 사용자가 선택했던 기능 : UseMachine(장비이용), PointCharge(포인트 충전), UseKioskList(키오스크 이용내역 조회)
@@ -128,6 +136,10 @@ export default {
           else this.done();
         })
         .catch(() => {
+          if (this.mode === 'UseList') {
+            this.$refs.alert.show(true);
+            return;
+          }
           if (this.useUserPassword) this.type = 'newUser';
           else this.done();
         });

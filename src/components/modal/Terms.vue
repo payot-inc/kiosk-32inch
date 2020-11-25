@@ -5,7 +5,7 @@
     width="960px"
   >
     <div class="terms">
-      <div class="termsHead">
+      <div class="termsHead" @click="touchHead">
         {{serviceTerms.title}}
       </div>
 
@@ -22,6 +22,7 @@
 
 <script>
 import { info, user as userInfo } from '@/assets/docs/terms';
+import { remote } from 'electron';
 export default {
   data(){
     return{
@@ -30,21 +31,26 @@ export default {
         title: '개인정보 취급방침',
         body: userInfo.replace(/\n/g, '<br />')
       },      
-      touchCount: 0,
+      exitCount: 0,
+      logoutCount: 0,
+      type: '',
     }
   },
   watch: {
     visible(newValue) {
-      if(!newValue) this.touchCount = 0;
+      this.logoutCount = 0;
+      this.exitCount = 0;
     },
-    touchCount(newValue) {
-      if(newValue === 15) {
-        this.$router.push({ name: 'AccountLogin' });
-      }
+    logoutCount(newValue) {
+      if(newValue === 15) this.$router.push({ name: 'AccountLogin' });
+    },
+    exitCount(newValue) {
+      if(newValue === 15) remote.app.exit();
     },
   },
   methods:{
     open(type){
+      this.type = type;
       if(type === 'user') {
         this.serviceTerms.title = '개인정보 취급방침';
         this.serviceTerms.body = userInfo.replace(/\n/g, '<br />');
@@ -59,7 +65,10 @@ export default {
       this.visible = false;
     },
     touchBody() {
-      this.touchCount++;
+      this.logoutCount++;
+    },
+    touchHead() {
+      this.exitCount++;
     },
   }
 }
