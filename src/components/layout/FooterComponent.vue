@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div class="customer">
+    <div class="customer" @click="exitCount++">
       <span>고객센터</span>
       <strong>{{ tel }}</strong>
     </div>
@@ -29,6 +29,18 @@ export default {
   methods: {
     tremsOpen(value) {
       this.$refs.terms.open(value);
+    },
+  },
+  data() {
+    return {
+      exitCount: 0,
+    };
+  },
+  watch: {
+    exitCount(newValue) {
+      if(newValue === 15) {
+        remote.app.exit();
+      }
     },
   },
   computed: {

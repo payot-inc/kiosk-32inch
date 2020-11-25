@@ -197,6 +197,7 @@ export default {
      * 이벤트는 2초를 대기후 마지막 신호를 정상으로 판단한다
      * */
     serverPaymentRequest: debounce(async function(realAmount = 0, payMethod = 'point') {
+      realAmount = Number(realAmount);
       // 결제 정보 검증
       if (payMethod === 'point') {
         this.appendAction({
@@ -225,7 +226,7 @@ export default {
           usePoint,
           machineId,
         });
-      } else if(payMethod === 'card') {
+      } else if (payMethod === 'card') {
         const eventRate = this.$store.getters.getEventRate(payMethod, realAmount);
         const appendPoint = Math.floor(realAmount * eventRate);
         const totalPoint = realAmount + appendPoint - this.userAction.inputAmount;

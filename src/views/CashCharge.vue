@@ -108,7 +108,7 @@ export default {
       this.appendAction({ realAmount, appendPoint, eventRate, totalPoint });
 
       const pay = await this.pay();
-
+      this.$refs.progress.show(false);
       this.$router.push({ name: 'Result', params: { response: pay } });
     }, 2000),
     cantBack() {

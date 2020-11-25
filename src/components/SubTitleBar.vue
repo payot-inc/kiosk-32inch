@@ -31,13 +31,15 @@ export default {
   computed: {
     ...mapState({
       cardPay: state => state.kiosk.payType.card,
+      cashPay: state => state.kiosk.payType.cash,
     }),
   },
   methods: {
     backPage() {
       this.$sound.playTouchSound();
       if(['ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name) ||
-         (this.$route.name === 'CashCharge' && !this.cardPay)) {
+         (this.$route.name === 'CashCharge' && !this.cardPay) ||
+         (this.$route.name === 'CardCharge' && !this.cashPay)) {
         this.$refs.confirm.show(true);
       } else if(this.$route.name === 'UserLogin') {
         this.$router.replace({ name: 'Main' });

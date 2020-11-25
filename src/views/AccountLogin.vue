@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="contents">
-      <div class="loginTitle">KIOSK<span>PRO</span></div>
+      <div class="loginTitle" @click="exitCount++">KIOSK<span>PRO</span></div>
 
       <div class="loginBox">
         <label>키오스크 로그인</label>
@@ -24,6 +24,7 @@
 <script>
 import { mapActions } from 'vuex';
 import Joi from 'joi';
+import { remote } from 'electron';
 
 const LoginFormValidate = Joi.object({
   email: Joi.string()
@@ -51,7 +52,15 @@ export default {
         title: '',
         message: '',
       },
+      exitCount: 0,
     };
+  },
+  watch: {
+    exitCount(newValue) {
+      if(newValue === 15) {
+        remote.app.exit();
+      }
+    },
   },
   methods: {
     ...mapActions({
