@@ -137,6 +137,21 @@ export default {
   }
 }
 .list {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #ced4da;
+
+    &:hover {
+      background-color: #adb5bd;
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+  }
   height: 100%;
   margin-top: 40px;
   border-radius: 30px;
@@ -144,6 +159,7 @@ export default {
   background: #f2f2f2;
   box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
   overflow-y: scroll;
+  max-height: 1100px;
   ul {
     padding: 0px;
 

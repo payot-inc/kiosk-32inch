@@ -38,6 +38,7 @@ parser.on('data', data => {
 });
 
 ipcMain.handle('cash-open', (event, isOpen) => {
+  console.log('handle cash-open');
   eventer = event;
   const command = isOpen ? 'RUN' : 'STOP';
   sender(command);
@@ -59,7 +60,7 @@ const input10000 = inputEvent.pipe(
     const totalTime = buffer[buffer.length - 1].timestamp - buffer[0].timestamp;
     const averageTime = totalTime / (buffer.length - 1);
 
-    if (averageTime <= 150 && buffer.length <= 10) return 10000;
+    if (averageTime <= 150 && buffer.length < 10) return 10000;
     else if (averageTime <= 150 && buffer.length >= 10) return 50000;
     else return buffer.reduce((acc, { value }) => acc + value, 0);
   }),

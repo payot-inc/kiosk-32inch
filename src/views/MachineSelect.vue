@@ -167,7 +167,7 @@ export default {
             '선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay',
             machine,
           );
-          this.appendAction(Object.assign({}, { machineId }));
+          this.appendAction(Object.assign({}, { machineId, productId: null }));
           this.$router.push({ name: 'CustomPay' });
         }
       } catch (error) {
@@ -180,7 +180,7 @@ export default {
       }
     },
     nextPage(product) {
-      let { machineId, amount: inputAmount } = product;
+      let { machineId, amount: inputAmount, id: productId } = product;
       inputAmount = Number(inputAmount);
 
       console.log(machineId, inputAmount);
@@ -188,7 +188,7 @@ export default {
         '선택한 상품 vuex에 userAction에 추가\n상품선택 방법: prodcut 다음페이지: ProductPay',
         product,
       );
-      this.appendAction(Object.assign({}, { machineId, inputAmount, type: 'use' }));
+      this.appendAction(Object.assign({}, { machineId, inputAmount, productId, type: 'use' }));
       this.$router.push({ name: 'PaymentConfirm', params: { productName: product.name } });
     },
     backList() {
@@ -276,6 +276,21 @@ export default {
         align-items: center;
       }
       .itemList {
+        &::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 5px;
+          background-color: #ced4da;
+
+          &:hover {
+            background-color: #adb5bd;
+          }
+        }
+        &::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0);
+        }
         display: flex;
         flex: 1;
         flex-direction: column;
@@ -306,6 +321,21 @@ export default {
       flex-direction: column;
       height: 100%;
       .itemList {
+        &::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 5px;
+          background-color: #ced4da;
+
+          &:hover {
+            background-color: #adb5bd;
+          }
+        }
+        &::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0);
+        }
         display: flex;
         flex: 1;
         flex-direction: column;
