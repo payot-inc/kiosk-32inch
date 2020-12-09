@@ -10,7 +10,7 @@
             <v-btn text @click="$router.push({ name: 'ChargeType' })">포인트충전</v-btn>
           </div>
           <div class="pointView">
-            <span>{{ point | numeral(0, 0) }}P</span>
+            <span>{{ point | numeral('0,0') }}P</span>
             <v-btn outlined @click="$refs.pointUseModal.open(true)">포인트 사용하기</v-btn>
           </div>
 
@@ -34,12 +34,12 @@
           </dl>
           <dl>
             <dt>투입 예정금액</dt>
-            <dd>{{ inputAmount | numeral(0, 0) }} 원</dd>
+            <dd>{{ inputAmount | numeral('0,0') }} 원</dd>
           </dl>
           <div class="divider"></div>
           <dl class="pointUse">
             <dt>포인트사용</dt>
-            <dd>{{ usePoint | numeral(0, 0) }} P</dd>
+            <dd>{{ usePoint | numeral('0,0') }} P</dd>
           </dl>
           <div class="divider"></div>
           <!-- <dl>
@@ -48,7 +48,7 @@
           </dl> -->
           <dl class="lastPrice">
             <dt>최종결제금액</dt>
-            <dd>{{ realAmount | numeral(0, 0) }} 원</dd>
+            <dd>{{ parseInt(realAmount, 10) | numeral('0,0') }} 원</dd>
           </dl>
         </div>
         <!-- orderInfo -->
@@ -146,7 +146,8 @@ export default {
   mounted() {
     if (this.point > 0) {
       this.$refs.confirm.show(true);
-      this.$sound.singlePlay('./sound/pay_point_use.mp3');
+      // this.$sound.singlePlay('./sound/has_point_and_use.mp3');
+      this.$soundManager.singlePlay('has_point_and_use.mp3');
     }
   },
   methods: {
@@ -197,7 +198,7 @@ export default {
      * 이벤트는 2초를 대기후 마지막 신호를 정상으로 판단한다
      * */
     serverPaymentRequest: debounce(async function(realAmount = 0, payMethod = 'point') {
-      realAmount = Number(realAmount);
+      realAmount = parseInt(realAmount, 10);
       // 결제 정보 검증
       if (payMethod === 'point') {
         this.appendAction({
@@ -238,7 +239,7 @@ export default {
         this.$router.push({ name: 'Result', params: { response: pay } });
       } catch (error) {
         if (error.response.status === 400) {
-          console.log('전액포인트 결제시 장비연결실패');
+          // console.log('전액포인트 결제시 장비연결실패');
           this.appendAction({
             inputAmount: 0,
             machineId: null,
@@ -253,7 +254,7 @@ export default {
       }
     }, 2000),
     payment(realAmount = 0, payMethod = 'point') {
-      console.log('realAmount', realAmount, 'payMethod', payMethod);
+      // console.log('realAmount', realAmount, 'payMethod', payMethod);
       this.$refs.progress.show(true);
       this.serverPaymentRequest(realAmount, payMethod);
     },

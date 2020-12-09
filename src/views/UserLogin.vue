@@ -88,13 +88,17 @@ export default {
     },
     type(newValue) {
       if (newValue === 'findUser') {
-        this.$sound.singlePlay('./sound/input_phone_number.mp3');
+        // this.$sound.singlePlay('./sound/input_phone_number.mp3');
+        this.$soundManager.singlePlay('input_phone_number.mp3');
       } else if (newValue === 'matchPassword' || newValue === 'newUserPassword') {
-        this.$sound.singlePlay('./sound/input_password.mp3');
+        // this.$sound.singlePlay('./sound/input_password.mp3');
+        this.$soundManager.singlePlay('input_password.mp3');
       } else if (newValue === 'matchResetPassword') {
-        this.$sound.singlePlay('./sound/forgot_password_send.mp3');
+        // this.$sound.singlePlay('./sound/forgot_password_send.mp3');
+        this.$soundManager.singlePlay('forgot_password_send.mp3');
       } else if (newValue === 'inValideResetPassword' || newValue === 'newUser') {
-        this.$sound.singlePlay('./sound/set_password.mp3');
+        // this.$sound.singlePlay('./sound/set_password.mp3');
+        this.$soundManager.singlePlay('set_password.mp3');
       }
     },
   },
@@ -103,17 +107,24 @@ export default {
     // * 2. 충전하기 : ChargeType
     // * 3. 조회하기 : UseList
     const mode = this.$route.params.mode;
-    console.log(mode);
+    // console.log(mode);
     if (mode === 'MachineSelect') {
-      const soundList = ['./sound/machine_use.mp3', './sound/input_phone_number.mp3'];
+      // const soundList = ['./sound/machine_use.mp3', './sound/input_phone_number.mp3'];
+      // const delayList = [0];
+      // this.$sound.listPlay(soundList, delayList);
+      const soundList = ['machine_use.mp3', 'input_phone_number.mp3'];
       const delayList = [0];
-      this.$sound.listPlay(soundList, delayList);
+      this.$soundManager.listPlay(soundList, delayList);
     } else if (mode === 'PointCharge') {
-      const soundList = ['./sound/point_append.mp3', './sound/input_phone_number.mp3'];
+      // const soundList = ['./sound/point_append.mp3', './sound/input_phone_number.mp3'];
+      // const delayList = [0];
+      // this.$sound.listPlay(soundList, delayList);
+      const soundList = ['point_append.mp3', 'input_phone_number.mp3'];
       const delayList = [0];
-      this.$sound.listPlay(soundList, delayList);
+      this.$soundManager.listPlay(soundList, delayList);
     } else if (mode === 'UseList') {
-      this.$sound.singlePlay('./sound/input_phone_number.mp3');
+      // this.$sound.singlePlay('./sound/input_phone_number.mp3');
+      this.$soundManager.singlePlay('input_phone_number.mp3');
     }
   },
   methods: {
@@ -180,7 +191,7 @@ export default {
         const valideNewPassword = this.user.password === password;
         valideNewPassword && this.done();
       } else {
-        console.log('로그인 시도', password);
+        // console.log('로그인 시도', password);
         this.validePassword({ password })
           .then(() => {
             this.done();

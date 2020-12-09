@@ -75,7 +75,7 @@ export default {
     },
     appendPoint() {
       const { eventRate, realAmount } = this;
-      console.log(eventRate);
+      // console.log(eventRate);
       return Math.floor(eventRate * realAmount);
     },
   },
@@ -89,7 +89,7 @@ export default {
       pay: 'pay',
     }),
     onInputMoneyEvent(event, money) {
-      console.log('money', money);
+      // console.log('money', money);
       this.realAmount += money;
     },
     setPrice() {
@@ -112,7 +112,7 @@ export default {
       this.$router.push({ name: 'Result', params: { response: pay } });
     }, 2000),
     cantBack() {
-      console.log("can't back in CashCharge.vue");
+      // console.log("can't back in CashCharge.vue");
       this.$refs.backAlert.show(true);
     },
     delay(millisec) {
@@ -120,14 +120,17 @@ export default {
     },
   },
   mounted() {
-    console.log('cash charge mount');
+    // console.log('cash charge mount');
     ipcRenderer.invoke('cash-open', true);
 
     ipcRenderer.on('cash-input', this.onInputMoneyEvent);
 
-    const soundList = ['./sound/select_cash.mp3', './sound/point_append_cash_helper.mp3'];
+    // const soundList = ['./sound/select_cash.mp3', './sound/point_append_cash_helper.mp3'];
+    // const delayList = [250];
+    // this.$sound.listPlay(soundList, delayList);
+    const soundList = ['select_cash.mp3', 'point_append_cash_helper.mp3'];
     const delayList = [250];
-    this.$sound.listPlay(soundList, delayList);
+    this.$soundManager.listPlay(soundList, delayList);
   },
   beforeDestroy() {
     ipcRenderer.invoke('cash-open', false);

@@ -8,7 +8,7 @@
           >님의</span
         >
         <span
-          >남은 포인트는 <strong style="color:#0085DE">{{ user.point | numeral(0, 0) }}</strong
+          >남은 포인트는 <strong style="color:#0085DE">{{ user.point | numeral('0,0') }}</strong
           >점입니다</span
         >
       </div>
@@ -29,19 +29,19 @@
             <div class="itemBody">
               <dl class="order">
                 <dt>결제금액</dt>
-                <dd>{{ history.realAmount | numeral(0, 0) }} 원</dd>
+                <dd>{{ history.realAmount | numeral('0,0') }} 원</dd>
               </dl>
               <dl>
                 <dt>사용포인트</dt>
-                <dd>{{ history.inputAmount | numeral(0, 0) }}</dd>
+                <dd>{{ history.inputAmount | numeral('0,0') }}</dd>
               </dl>
               <dl>
                 <dt>적립포인트</dt>
-                <dd>{{ history.appendPoint | numeral(0, 0) }}</dd>
+                <dd>{{ history.appendPoint | numeral('0,0') }}</dd>
               </dl>
               <dl class="oddPoint">
                 <dt>변동포인트</dt>
-                <dd>{{ history.totalPoint | numeral(0, 0) }}</dd>
+                <dd>{{ history.totalPoint | numeral('0,0') }}</dd>
               </dl>
             </div>
           </li>

@@ -42,6 +42,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'LoginBox',
   props: {
@@ -59,7 +60,8 @@ export default {
   },
   methods: {
     inputKey(value) {
-      this.$sound.playTouchSound();
+      // this.$sound.playTouchSound();
+      this.$soundManager.playTouchSound();
       if (typeof value === 'number' && this.phone[2].length < 4) {
         if (this.phone[1].length < 4) {
           this.phone[1] += value;

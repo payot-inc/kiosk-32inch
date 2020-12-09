@@ -19,12 +19,12 @@
             </dl>
             <dl>
               <dt>최종결제금액</dt>
-              <dd>{{ userAction.realAmount | numeral(0, 0) }} 원</dd>
+              <dd>{{ userAction.realAmount | numeral('0,0') }} 원</dd>
             </dl>
             <div class="divider"></div>
             <dl>
               <dt>추가적립 포인트</dt>
-              <dd>{{ userAction.appendPoint | numeral(0, 0) }} 포인트</dd>
+              <dd>{{ userAction.appendPoint | numeral('0,0') }} 포인트</dd>
             </dl>
             <!-- <dl>
               <dt>현금 초과 적립포인트</dt>
@@ -32,7 +32,7 @@
             </dl> -->
             <dl class="myPoint">
               <dt>나의 남은 포인트</dt>
-              <dd>{{ (user.point + userAction.totalPoint) | numeral(0, 0) }} 포인트</dd>
+              <dd>{{ afterPoint | numeral('0,0') }} 포인트</dd>
             </dl>
           </div>
 
@@ -77,23 +77,35 @@ export default {
 
     if (this.pointPayError) {
       // 포인트전액결제 에러(400)
-      const soundList = ['./sound/machine_run_error.mp3', './sound/sorry.mp3'];
+      // const soundList = ['./sound/machine_run_error.mp3', './sound/sorry.mp3'];
+      // const delayList = [0];
+      // this.$sound.listPlay(soundList, delayList);
+      const soundList = ['machine_run_error.mp3', 'sorry.mp3'];
       const delayList = [0];
-      this.$sound.listPlay(soundList, delayList);
+      this.$soundManager.listPlay(soundList, delayList);
     } else if (this.resultStatus) {
       if (this.response.type === 'charge') {
-        const soundList = ['./sound/point_append_finish.mp3', './sound/thank_you.mp3'];
+        // const soundList = ['./sound/point_append_finish.mp3', './sound/thank_you.mp3'];
+        // const delayList = [0];
+        // this.$sound.listPlay(soundList, delayList);
+        const soundList = ['point_append_finish.mp3', 'thank_you.mp3'];
         const delayList = [0];
-        this.$sound.listPlay(soundList, delayList);
+        this.$soundManager.listPlay(soundList, delayList);
       } else if (this.response.type === 'use') {
-        const soundList = ['./sound/machine_input_finish.mp3', './sound/thank_you.mp3'];
+        // const soundList = ['./sound/machine_input_finish.mp3', './sound/thank_you.mp3'];
+        // const delayList = [0];
+        // this.$sound.listPlay(soundList, delayList);
+        const soundList = ['machine_input_finish.mp3', 'thank_you.mp3'];
         const delayList = [0];
-        this.$sound.listPlay(soundList, delayList);
+        this.$soundManager.listPlay(soundList, delayList);
       }
     } else if (!this.resultStatus) {
-      const soundList = ['./sound/machine_run_error.mp3', './sound/error_payback.mp3', './sound/sorry.mp3'];
+      // const soundList = ['./sound/machine_run_error.mp3', './sound/error_payback.mp3', './sound/sorry.mp3'];
+      // const delayList = [0, 0];
+      // this.$sound.listPlay(soundList, delayList);
+      const soundList = ['machine_run_error.mp3', 'error_payback.mp3', './sound/sorry.mp3'];
       const delayList = [0, 0];
-      this.$sound.listPlay(soundList, delayList);
+      this.$soundManager.listPlay(soundList, delayList);
     }
   },
   watch: {
@@ -125,6 +137,11 @@ export default {
     selectedMachine() {
       const machines = this.$store.state.machines;
       return machines.find(machine => machine.id === this.userAction.machineId);
+    },
+    afterPoint() {
+      const { point } = this.user;
+      const { totalPoint } = this.userAction;
+      return (parseInt(point, 10) + parseInt(totalPoint, 10));
     },
   },
   methods: {

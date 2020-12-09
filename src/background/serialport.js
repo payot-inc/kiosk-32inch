@@ -33,12 +33,12 @@ parser.on('data', data => {
     .split(':');
 
   if (cmd !== 'BILL' || !eventer) return;
-  console.log(data);
+  // console.log(data);
   inputEvent.next(parseInt(message, 10));
 });
 
 ipcMain.handle('cash-open', (event, isOpen) => {
-  console.log('handle cash-open');
+  // console.log('handle cash-open');
   eventer = event;
   const command = isOpen ? 'RUN' : 'STOP';
   sender(command);
@@ -68,5 +68,5 @@ const input10000 = inputEvent.pipe(
 
 merge(inputOther, input10000).subscribe(
   amount => eventer.sender.send('cash-input', amount),
-  console.log,
+  // console.log,
 );

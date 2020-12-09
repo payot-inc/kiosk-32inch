@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import path from 'path';
 
 class AudioManager extends Audio {
   info_volum = 0.7;
@@ -8,11 +9,14 @@ class AudioManager extends Audio {
     super();
     this.speak_volum = infoVolum;
     this.warring_volum = warringVolume;
+    this.touchSound = new Audio('./sound/touch.mp3');
+    this.touchSound.volume = 0.7;
   }
 
-  warningPlay() {
+  warningPlay(source = '/sound/alertSound.mp3') {
     this.volume = this.warring_volum;
-    this.src = './sound/warning.mp3';
+    this.src = process.env.BASE_URL + source;
+    // this.src = path.join('app://', process.env.BASE_URL, source);
     this.play();
     this.onended = () => {};
   }
@@ -59,9 +63,7 @@ class AudioManager extends Audio {
   // }
 
   playTouchSound() {
-    let touchSound = new Audio('./sound/touch.mp3');
-    touchSound.volume = 0.7;
-    touchSound.play();
+    this.touchSound.play();
   }
 }
 

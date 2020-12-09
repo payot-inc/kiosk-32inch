@@ -62,8 +62,10 @@ export default {
   },
   watch: {
     visible(newValue) {
-      if (newValue) this.$sound.singlePlay('./sound/use_point.mp3');
-      else this.$sound.singlePlay('./sound/pay_use_machine.mp3');
+      // if (newValue) this.$sound.singlePlay('./sound/use_point.mp3');
+      // else this.$sound.singlePlay('./sound/pay_use_machine.mp3');
+      if (newValue) this.$soundManager.singlePlay('use_point.mp3');
+      else this.$soundManager.singlePlay('pay_use_machine.mp3');
     },
   },
   methods: {

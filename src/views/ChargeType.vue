@@ -56,14 +56,16 @@ export default {
   },
   methods: {
     nextStep(type) {
-      this.$sound.playTouchSound();
+      // this.$sound.playTouchSound();
+      this.$soundManager.playTouchSound();
 
       const routeName = type === 'cash' ? 'CashCharge' : 'CardCharge';
       this.$router.push({ name: routeName });
     },
   },
   mounted() {
-    this.$sound.singlePlay('./sound/select_pay_type.mp3');
+    // this.$sound.singlePlay('./sound/select_pay_type.mp3');
+    this.$soundManager.singlePlay('select_pay_type.mp3');
   },
 };
 </script>

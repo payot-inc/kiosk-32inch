@@ -79,7 +79,7 @@ const routes = [
         name: 'CashCharge',
         component: CashCharge,
         beforeEnter: (to, from, next) => {
-          console.log(to, from ,next);
+          // console.log(to, from ,next);
           store.commit('APPEND_ACTION', {
             type: 'charge',
             payMethod: 'cash',

@@ -97,6 +97,7 @@
 <script>
 import { mapState } from 'vuex';
 import Footer from '@/components/layout/FooterComponent.vue';
+import { ipcRenderer } from 'electron';
 /**
  *
  * 메인페이지
@@ -128,7 +129,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.adsIndex = 1;
-    }, 4000);
+    }, 20000);
   },
   computed: {
     ...mapState({
@@ -160,7 +161,7 @@ export default {
           this.pageChangeAD();
         };
       } else {
-        setTimeout(this.pageChangeAD, 4000);
+        setTimeout(this.pageChangeAD, 20000);
       }
     },
     pageChangeAD() {
@@ -169,7 +170,8 @@ export default {
     },
     /** 다음 단계로 이동 */
     nextStep({ name, redirectRouteName }) {
-      this.$sound.playTouchSound();
+      // this.$sound.playTouchSound();
+      this.$soundManager.playTouchSound();
       this.$router.push({
         name: 'UserLogin',
         params: {
@@ -243,7 +245,9 @@ export default {
     border-radius: 30px;
     overflow: hidden;
     background: #000;
+    border:3px solid #292929;
     box-shadow: 10px 10px 45px rgba(0, 0, 0, 0.3);
+
     .slide-item {
       display: flex;
       align-items: center;

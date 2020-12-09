@@ -18,19 +18,19 @@
         </dl>
         <dl>
           <dt>결제금액</dt>
-          <dd>{{ selectedItem.price | numeral(0, 0) }} 원</dd>
+          <dd>{{ parseInt(selectedItem.price, 10) | numeral('0,0') }} 원</dd>
         </dl>
         <dl>
           <dt>나의포인트</dt>
-          <dd>{{ user.point | numeral(0, 0) }}</dd>
+          <dd>{{ parseInt(user.point, 10) | numeral('0,0') }}</dd>
         </dl>
         <dl>
           <dt>추가적립금</dt>
-          <dd>{{ selectedItem.bonus | numeral(0, 0) }}</dd>
+          <dd>{{ parseInt(selectedItem.bonus, 10) | numeral('0,0') }}</dd>
         </dl>
         <dl class="lastPoint"> 
           <dt>최종포인트</dt>
-          <dd>{{ (user.point + selectedItem.bonus) | numeral(0, 0) }}</dd>
+          <dd>{{ (parseInt(user.point, 10) + parseInt(selectedItem.bonus, 10)) | numeral('0,0') }}</dd>
         </dl>
       </div>
       <div class="guide">

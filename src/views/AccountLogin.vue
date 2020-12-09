@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import Joi from 'joi';
 import { remote } from 'electron';
 
@@ -61,6 +61,9 @@ export default {
         remote.app.exit();
       }
     },
+  },
+  mounted() {
+    this.$store.commit('CLEAR_KIOSK');
   },
   methods: {
     ...mapActions({

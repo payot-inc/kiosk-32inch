@@ -42,7 +42,9 @@ export default {
       this.exitCount = 0;
     },
     logoutCount(newValue) {
-      if(newValue === 15) this.$router.push({ name: 'AccountLogin' });
+      if(newValue === 15) {
+        this.$router.push({ name: 'AccountLogin' });
+      }
     },
     exitCount(newValue) {
       if(newValue === 15) remote.app.exit();
@@ -92,6 +94,22 @@ export default {
     border-bottom:2px solid #e2e2e2
   }
   .termsBody{
+    &::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: #ced4da;
+
+      &:hover {
+        background-color: #adb5bd;
+      }
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0);
+    }
+
     height:1200px;
     padding:40px;
     overflow-y:auto;

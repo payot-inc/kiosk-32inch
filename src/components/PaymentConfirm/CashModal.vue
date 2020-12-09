@@ -14,11 +14,11 @@
       <div class="priceInfo">
         <dl>
           <dt>결제금액</dt>
-          <dd>{{ realAmount | numeral(0, 0) }}원</dd>
+          <dd>{{ parseInt(realAmount, 10) | numeral('0,0') }}원</dd>
         </dl>
         <dl class="nowPrice">
           <dt>투입금액</dt>
-          <dd>{{ currentMoney | numeral(0, 0) }}원</dd>
+          <dd>{{ parseInt(currentMoney, 10) | numeral('0,0') }}원</dd>
         </dl>
       </div>
       <div class="guide">
@@ -72,9 +72,12 @@ export default {
     visible(newValue) {
       if (newValue) {
         ipcRenderer.invoke('cash-open', true);
-        const soundList = ['./sound/select_cash.mp3', './sound/input_cash_use_machine.mp3'];
+        // const soundList = ['./sound/select_cash.mp3', './sound/input_cash_use_machine.mp3'];
+        // const delayList = [0];
+        // this.$sound.listPlay(soundList, delayList);
+        const soundList = ['select_cash.mp3', 'input_cash_use_machine.mp3'];
         const delayList = [0];
-        this.$sound.listPlay(soundList, delayList);
+        this.$soundManager.listPlay(soundList, delayList);
       } else if (!newValue) {
         ipcRenderer.invoke('cash-open', false);
       }
@@ -110,7 +113,8 @@ export default {
       if(this.currentMoney > 0) {
         this.$emit('submit', this.currentMoney);
       } else {
-        this.$sound.singlePlay('./sound/cancel_pay.mp3');
+        // this.$sound.singlePlay('./sound/cancel_pay.mp3');
+        this.$soundManager.singlePlay('cancel_pay.mp3');
       }
     },
     onInputEvent(event, money) {

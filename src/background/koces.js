@@ -53,9 +53,9 @@ async function payment(companyName, amount) {
   // return await request(params);
 
   const req = await request(params);
-  console.log(req);
+  // console.log(req);
 
-  return req;
+  return amount;
 }
 
 ipcMain.handle('card-pay', async (event, companyName, amount) => {

@@ -36,7 +36,8 @@ export default {
   },
   methods: {
     backPage() {
-      this.$sound.playTouchSound();
+      // this.$sound.playTouchSound();
+      this.$soundManager.playTouchSound();
       if(['ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name) ||
          (this.$route.name === 'CashCharge' && !this.cardPay) ||
          (this.$route.name === 'CardCharge' && !this.cashPay)) {

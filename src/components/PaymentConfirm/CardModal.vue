@@ -18,19 +18,19 @@
         </dl> -->
         <dl>
           <dt>결제금액</dt>
-          <dd>{{ realAmount | numeral(0, 0) }} 원</dd>
+          <dd>{{ parseInt(realAmount, 10) | numeral('0,0') }} 원</dd>
         </dl>
         <dl>
           <dt>나의포인트</dt>
-          <dd>{{ user.point | numeral(0, 0) }}</dd>
+          <dd>{{ parseInt(user.point, 10) | numeral('0,0') }}</dd>
         </dl>
         <dl>
           <dt>추가적립금</dt>
-          <dd>{{ appendPoint | numeral(0, 0) }}</dd>
+          <dd>{{ parseInt(appendPoint, 10) | numeral('0,0') }}</dd>
         </dl>
         <dl class="lastPoint">
           <dt>최종포인트</dt>
-          <dd>{{ (appendPoint + user.point) | numeral(0, 0) }}</dd>
+          <dd>{{ (parseInt(appendPoint, 10) + parseInt(user.point, 10)) | numeral('0,0') }}</dd>
         </dl>
       </div>
       <div class="guide">
@@ -73,18 +73,23 @@ export default {
   watch: {
     visible(newValue) {
       if (newValue) {
-        const soundList = ['./sound/select_card.mp3', './sound/card_use_helper.mp3'];
+        // const soundList = ['./sound/select_card.mp3', './sound/card_use_helper.mp3'];
+        // const delayList = [0];
+        // this.$sound.listPlay(soundList, delayList);
+        const soundList = ['select_card.mp3', 'card_use_helper.mp3'];
         const delayList = [0];
-        this.$sound.listPlay(soundList, delayList);
+        this.$soundManager.listPlay(soundList, delayList);
+        
         
 
         ipcRenderer.invoke('card-pay', null, this.realAmount)
           .then(value => {
-            this.$emit('submit', Number(value));
+            this.$emit('submit', parseInt(value, 10));
             this.visible = false;
           }).catch(error => {
-            console.log(error.message);
-            this.$sound.singlePlay('./sound/cancel_pay.mp3');
+            // console.log(error.message);
+            // this.$sound.singlePlay('./sound/cancel_pay.mp3');
+            this.$soundManager.singlePlay('cancel_pay.mp3');
             this.visible = false;
           });
 

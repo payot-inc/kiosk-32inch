@@ -69,7 +69,8 @@ export default {
   },
   methods: {
     inputKey(value) {
-      this.$sound.playTouchSound();
+      // this.$sound.playTouchSound();
+      this.$soundManager.playTouchSound();
       if (typeof value === 'number' && this.password.length < 4) {
         this.password += value;
       } else if (value === 'delete') {

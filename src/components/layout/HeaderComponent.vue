@@ -45,7 +45,8 @@ export default {
   },
   methods: {
     goHome() {
-      this.$sound.playTouchSound();
+      // this.$sound.playTouchSound();
+      this.$soundManager.playTouchSound();
       if(this.$route.name === 'UserLogin') {
         this.$router.replace({ name: 'Main' });
       } else {

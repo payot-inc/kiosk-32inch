@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify';
 
 import './plugins/network_event';
 import './plugins/sound';
+import './plugins/howler';
 import './plugins/idle';
 import './plugins/hooks';
 import './plugins/auto_reboot';

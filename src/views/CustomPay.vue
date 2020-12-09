@@ -15,7 +15,7 @@
         <div class="numberView">
           <label>세탁기에<br />투입될금액</label>
           <div class="price">
-            <strong>{{ inputAmount | numeral('0,0') }}</strong>
+            <strong>{{ parseInt(inputAmount, 10) | numeral('0,0') }}</strong>
             <span>원</span>
           </div>
         </div>
@@ -63,7 +63,7 @@
           <li v-for="item in selectedMachine.products" :key="item.id">
             <label>{{ item.name }}</label>
             <div class="price">
-              <strong>{{ Number(item.amount) | numeral('0,0') }}원</strong>
+              <strong>{{ parseInt(item.amount, 10) | numeral('0,0') }}원</strong>
             </div>
           </li>
         </ul>
@@ -107,7 +107,7 @@ export default {
       this.inputAmount = 0;
     },
     nextPage() {
-      console.log('입력완료', this.inputAmount);
+      // console.log('입력완료', this.inputAmount);
       if (this.inputAmount <= 0) return;
 
       const type = 'use';
@@ -117,7 +117,8 @@ export default {
     },
   },
   mounted() {
-    this.$sound.singlePlay('./sound/input_machine_amount.mp3');
+    // this.$sound.singlePlay('./sound/input_machine_amount.mp3');
+    this.$soundManager.singlePlay('input_machine_amount.mp3');
   },
 };
 </script>

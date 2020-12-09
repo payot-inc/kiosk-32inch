@@ -41,7 +41,8 @@ export default {
   },
   watch: {
     visible(newValue) {
-      if (newValue) this.$sound.singlePlay('./sound/select_pay_type.mp3');
+      // if (newValue) this.$sound.singlePlay('./sound/select_pay_type.mp3');
+      if (newValue) this.$soundManager.singlePlay('select_pay_type.mp3');
     },
   },
   methods: {

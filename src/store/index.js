@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { createPersistedState } from 'vuex-electron';
 import { coreAPI, kioskAPI } from '../plugins/axios';
+// import sound from '../plugins/sound';
+import soundManager from '../plugins/howler';
 
 Vue.use(Vuex);
 
@@ -67,6 +69,11 @@ export default new Vuex.Store({
     /** 키오스크 장비 목록 갱신 */
     SET_MACHINES(state, value) {
       state.machines = value;
+    },
+    CLEAR_KIOSK(state) {
+      state.company = {};
+      state.kiosk = {};
+      state.machines = {};
     },
     /** 회원 정보 변경 */
     SET_USER(state, value) {
@@ -135,19 +142,19 @@ export default new Vuex.Store({
     /** 회원 비밀번호 확인 */
     async userLogin({ state }, { password }) {
       const { id } = state.user;
-      console.log('id', id, 'password', password);
+      // console.log('id', id, 'password', password);
       const res = await kioskAPI({
         method: 'POST',
         url: `/${id}/user/login`,
         data: { password },
       });
-      console.log(res);
+      // console.log(res);
     },
 
     /** 회원 비밀번호 변경 및 초기화 */
     async updateUserPassword({ commit, state }, { mode = 'forgot', password = null }) {
       const { id } = state.user;
-      console.log('id', id, 'mode', mode, 'password', password);
+      // console.log('id', id, 'mode', mode, 'password', password);
       const { data: user } = await kioskAPI({
         method: 'PUT',
         url: `/${id}/password`,
@@ -160,7 +167,7 @@ export default new Vuex.Store({
 
     /** 회원 가입 */
     async userSignUp({ state }, { phone, password }) {
-      console.log(phone, password);
+      // console.log(phone, password);
       const { id: companyId } = state.company;
       const { data: user } = await kioskAPI({
         method: 'POST',
@@ -195,9 +202,12 @@ export default new Vuex.Store({
         data: { params: form },
       });
 
-      console.log('data', data);
+      // console.log('data', data);
       return data;
     },
+    async warningPlay({state}, src = 'alertSound.mp3') {
+      soundManager.warningPlay(src);
+    }
   },
   modules: {},
 });

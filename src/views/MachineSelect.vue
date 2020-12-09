@@ -141,9 +141,12 @@ export default {
   mounted() {
     this.machinesByCategory = groupBy(sortBy(this.machines, 'sort'), machine => machine.category);
 
-    if (this.useDeviceInputMode === 'custom') this.$sound.singlePlay('./sound/select_machine.mp3');
+    // if (this.useDeviceInputMode === 'custom') this.$sound.singlePlay('./sound/select_machine.mp3');
+    // else if (this.useDeviceInputMode === 'product')
+    //   this.$sound.singlePlay('./sound/select_machine_product.mp3');
+    if (this.useDeviceInputMode === 'custom') this.$soundManager.singlePlay('select_machine.mp3');
     else if (this.useDeviceInputMode === 'product')
-      this.$sound.singlePlay('./sound/select_machine_product.mp3');
+      this.$soundManager.singlePlay('select_machine_product.mp3');
   },
   methods: {
     ...mapMutations({
@@ -155,7 +158,7 @@ export default {
     async nextList(machine) {
       const { id: machineId } = machine;
       try {
-        console.log('try');
+        // console.log('try');
         this.$refs.progress.show(true);
         await this.deviceNetworkTest(machine.mac);
         this.eqListMove = 'off';
@@ -163,32 +166,32 @@ export default {
         this.selectedMachine = machine;
         this.selectedMachine.products = sortBy(this.selectedMachine.products, 'sort');
         if (this.useDeviceInputMode === 'custom') {
-          console.log(
-            '선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay',
-            machine,
-          );
-          this.appendAction(Object.assign({}, { machineId, productId: null }));
+          // console.log(
+          //   '선택장비와 통신 가능한지 확인 & 선택장비 userAction에 추가\n상품선택 방법: custom 다음페이지: CustomPay',
+          //   machine,
+          // );
+          this.appendAction(Object.assign({}, { machineId, ProductId: null }));
           this.$router.push({ name: 'CustomPay' });
         }
       } catch (error) {
-        console.log('catch');
+        // console.log('catch');
         this.$refs.progress.show(false);
         this.$refs.alter.show(true);
       } finally {
-        console.log('finally');
+        // console.log('finally');
         this.$refs.progress.show(false);
       }
     },
     nextPage(product) {
-      let { machineId, amount: inputAmount, id: productId } = product;
-      inputAmount = Number(inputAmount);
+      let { machineId, amount: inputAmount, id: ProductId } = product;
+      inputAmount = parseInt(inputAmount, 10);
 
-      console.log(machineId, inputAmount);
-      console.log(
-        '선택한 상품 vuex에 userAction에 추가\n상품선택 방법: prodcut 다음페이지: ProductPay',
-        product,
-      );
-      this.appendAction(Object.assign({}, { machineId, inputAmount, productId, type: 'use' }));
+      // console.log(machineId, inputAmount);
+      // console.log(
+      //   '선택한 상품 vuex에 userAction에 추가\n상품선택 방법: prodcut 다음페이지: ProductPay',
+      //   product,
+      // );
+      this.appendAction(Object.assign({}, { machineId, inputAmount, ProductId, type: 'use' }));
       this.$router.push({ name: 'PaymentConfirm', params: { productName: product.name } });
     },
     backList() {

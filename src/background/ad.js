@@ -25,7 +25,7 @@ const AD_DIR =
 
 /** 광고 리소스 디렉토리가 없으면 생성 */
 hasDirectory(AD_DIR)
-  .then(console.log)
+  // .then(console.log)
   .catch(() => createDirectory(AD_DIR));
 
 ipcMain.handle('ad_list', async eventer => {

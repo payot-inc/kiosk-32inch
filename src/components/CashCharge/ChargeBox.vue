@@ -10,20 +10,20 @@
       </dl>
       <dl>
         <dt>현재 나의 포인트</dt>
-        <dd>{{ point | numeral(0, 0) }} P</dd>
+        <dd>{{ parseInt(point, 10) | numeral('0,0') }} P</dd>
       </dl>
       <dl>
         <dt>투입된 금액</dt>
       </dl>
-      <div class="getPrice">{{ realAmount | numeral(0, 0) }} 원</div>
+      <div class="getPrice">{{ parseInt(realAmount, 10) | numeral('0,0') }} 원</div>
       
       <dl style="margin-top:40px;">
         <dt>추가적립 포인트</dt>
-        <dd>{{ appendPoint | numeral(0, 0) }} P</dd>
+        <dd>{{ parseInt(appendPoint, 10) | numeral('0,0') }} P</dd>
       </dl>
       <dl>
         <dt>최종 나의 포인트</dt>
-        <dd>{{ (point + appendPoint + realAmount) | numeral(0, 0) }}</dd>
+        <dd>{{ (parseInt(point, 10) + parseInt(appendPoint, 10) + parseInt(realAmount, 10)) | numeral('0,0') }}</dd>
       </dl>
       <v-btn outlined @click="setPrice">투입완료</v-btn>
     </div>

@@ -5,7 +5,7 @@ import store from '../store';
 import { reboot } from 'electron-shutdown-command';
 
 function nowNetworkStatus() {
-  console.log(navigator);
+  // console.log(navigator);
   // return navigator.onLine === 'online';
   return navigator.onLine;
 }
@@ -24,7 +24,7 @@ networkStatusChange$
   .subscribe(
     () => {
       // 오류 페이지로 이동
-      console.log('go');
+      // console.log('go');
       router.replace({
         name: 'Error',
         params: {

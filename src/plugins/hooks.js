@@ -15,6 +15,9 @@ function subscribe() {
 
 ipcRenderer.on('hook', (event, { topic, message: payload }) => {
   const [, , , action] = topic.split('/');
+  let soundList = [];
+  let delayList = [];
+  // console.log('받은 mqtt :', action);
   switch (action) {
     case 'shutdown':
       // 키오스크 PC 종료
@@ -27,6 +30,7 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
     case 'restart':
       // 키오스크 프로그램 재실행
       remote.app.relaunch();
+      remote.app.exit();
       break;
     case 'exit':
       // 키오스크 프로그램 종료
@@ -47,12 +51,18 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
       });
       break;
     case 'warning':
-      console.log('warning');
-      sound.warningPlay();
+      // sound.warningPlay();
+      store.dispatch('warningPlay');
       break;
+    case 'warningExit':
+      store.dispatch('warningPlay', 'warning_exit.mp3');
+      break;
+    case 'warningCCTV':
+      store.dispatch('warningPlay', 'warning_cctv.mp3');
+      break;      
     default:
       // 키오스크 상태 정보 갱신
-      console.log(payload, '갱신');
+      // console.log(payload, '갱신');
       store.dispatch('refreshKioskConfig');
       break;
   }
