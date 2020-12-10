@@ -102,7 +102,7 @@
 <script>
 import SubTitleBar from '@/components/SubTitleBar.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
-import ConfirmModal from '@/components/modal/ConfirmModal.vue';
+import ConfirmModal from '@/components/modal/ConfirmModalPoint.vue';
 import CreditSelectModal from '@/components/PaymentConfirm/CreditSelectModal.vue';
 import PointUseModal from '@/components/PaymentConfirm/PointUseModal.vue';
 import CashModal from '@/components/PaymentConfirm/CashModal.vue';

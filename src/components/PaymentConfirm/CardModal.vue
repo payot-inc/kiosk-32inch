@@ -22,15 +22,15 @@
         </dl>
         <dl>
           <dt>나의포인트</dt>
-          <dd>{{ parseInt(user.point, 10) | numeral('0,0') }}</dd>
+          <dd>{{ parseInt(user.point, 10) | numeral('0,0') }} P</dd>
         </dl>
         <dl>
           <dt>추가적립금</dt>
-          <dd>{{ parseInt(appendPoint, 10) | numeral('0,0') }}</dd>
+          <dd>{{ parseInt(appendPoint, 10) | numeral('0,0') }} P</dd>
         </dl>
         <dl class="lastPoint">
           <dt>최종포인트</dt>
-          <dd>{{ (parseInt(appendPoint, 10) + parseInt(user.point, 10)) | numeral('0,0') }}</dd>
+          <dd>{{ (parseInt(appendPoint, 10) + parseInt(user.point, 10)) | numeral('0,0') }} P</dd>
         </dl>
       </div>
       <div class="guide">

@@ -18,7 +18,7 @@
               </div>
               <div class="pointInfo">
                 <span>적립보너스</span>
-                <strong>+{{ 100 | numeral('0,0') }}</strong>
+                <strong>+{{ bonus[i] | numeral('0,0') }} P</strong>
               </div>
             </div>
           </v-col>
@@ -50,7 +50,7 @@ import { ipcRenderer } from 'electron';
 import SubTitleBar from '@/components/SubTitleBar.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import CardModal from '@/components/CardCharge/CardModal.vue';
-import ConfirmModal from '@/components/modal/ConfirmModal.vue';
+import ConfirmModal from '@/components/modal/ConfirmModalPoint.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
 import { mapActions, mapMutations } from 'vuex';
 import { debounce } from 'lodash';

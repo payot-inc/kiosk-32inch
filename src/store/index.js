@@ -52,9 +52,11 @@ export default new Vuex.Store({
       return kioskEvent.rule[type][index] / 100;
     },
     kioskEvent(state) {
-      return state.kiosk.events
-        .sort((a, b) => b.weekDay - a.weekDay)
-        .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
+      if(state.kiosk.events) {
+        return state.kiosk.events
+          .sort((a, b) => b.weekDay - a.weekDay)
+          .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
+      }
     },
   },
   mutations: {

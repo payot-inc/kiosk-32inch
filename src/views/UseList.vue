@@ -9,7 +9,7 @@
         >
         <span
           >남은 포인트는 <strong style="color:#0085DE">{{ user.point | numeral('0,0') }}</strong
-          >점입니다</span
+          >점 입니다</span
         >
       </div>
       <div class="list" ref="listDiv">
@@ -19,7 +19,7 @@
               <div>
                 <span v-if="history.type === 'use'" class="cate use">사용</span>
                 <span v-if="history.type === 'charge'" class="cate chage">충전</span>
-                <span v-if="history.type === 'edit'" class="cate edit">EDIT</span>
+                <span v-if="history.type === 'edit'" class="cate edit">관리자변동</span>
                 <span class="date">{{ history.createdAt | moment("YYYY-MM-DD HH:mm") }}</span>
               </div>
               <div>
@@ -33,15 +33,16 @@
               </dl>
               <dl>
                 <dt>사용포인트</dt>
-                <dd>{{ history.inputAmount | numeral('0,0') }}</dd>
+                <dd>{{ history.inputAmount | numeral('0,0') }} P</dd>
               </dl>
               <dl>
                 <dt>적립포인트</dt>
-                <dd>{{ history.appendPoint | numeral('0,0') }}</dd>
+                <dd>{{ history.appendPoint | numeral('0,0') }} P</dd>
+                <!-- <dd>없음</dd> -->
               </dl>
               <dl class="oddPoint">
                 <dt>변동포인트</dt>
-                <dd>{{ history.totalPoint | numeral('0,0') }}</dd>
+                <dd>{{ history.totalPoint | numeral('0,0') }} P</dd>
               </dl>
             </div>
           </li>
