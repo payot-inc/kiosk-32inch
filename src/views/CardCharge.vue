@@ -30,7 +30,6 @@
       ref="cardModal" 
       :selectedItem="selectedItem"
       @onVisible="cardPay" 
-      @onDismiss="cardClose"
     />
     <ConfirmModal
       :title="`${selectedItem.name}를 선택하셨습니다`"
@@ -41,6 +40,12 @@
       @submit="$refs.cardModal.show(true)"
     />
     <ProgressModal ref="progress" title="포인트를 적립 중 입니다" />
+    <AlertModal 
+      ref="alertModal"
+      mode="alert"
+      title="결제 실패"
+      :message="alertMessage"
+    />
   </div>
 </template>
 
@@ -51,6 +56,7 @@ import SubTitleBar from '@/components/SubTitleBar.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import CardModal from '@/components/CardCharge/CardModal.vue';
 import ConfirmModal from '@/components/modal/ConfirmModalPoint.vue';
+import AlertModal from '@/components/modal/AlertModal.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
 import { mapActions, mapMutations } from 'vuex';
 import { debounce } from 'lodash';
@@ -62,9 +68,11 @@ export default {
     CardModal,
     ConfirmModal,
     ProgressModal,
+    AlertModal,
   },
   data() {
     return {
+      alertMessage: '',
       selectedItem: {},
       pointGoods: [
         {
@@ -131,7 +139,7 @@ export default {
     async cardPay() {
       // this.$sound.singlePlay('./sound/card_use_helper.mp3');
       this.$soundManager.singlePlay('card_use_helper.mp3');
-      await this.delay(500);
+      await this.delay(1000);
       ipcRenderer.invoke('card-pay', null, this.selectedItem.price)
         .then((value) => {
           value = parseInt(value, 10);
@@ -145,7 +153,10 @@ export default {
           this.serverChargeRequest();
         })
         .catch(err => {
+          console.log(err.toString(), JSON.stringify(err, null, 2));
           // console.log(err.message);
+          this.alertMessage = err.message.substr(err.message.lastIndexOf(':') + 1);
+          this.$refs.alertModal.show(true);
           // this.$sound.singlePlay('./sound/cancel_pay.mp3');
           this.$soundManager.singlePlay('cancel_pay.mp3');
           this.$refs.cardModal.show(false);
@@ -153,9 +164,6 @@ export default {
     },
     delay(ms) {
       return new Promise((resolve, reject) => setTimeout(resolve, ms));
-    },
-    cardClose() {
-      ipcRenderer.invoke('card-close');
     },
     serverChargeRequest: debounce(async function() {
       const pay = await this.pay();

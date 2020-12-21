@@ -79,7 +79,19 @@
     />
 
     <CashModal ref="cashModal" :realAmount="realAmount" @submit="payment($event, 'cash')" />
-    <CardModal ref="cardModal" :realAmount="realAmount" @submit="payment($event, 'card')" />
+    <CardModal 
+      ref="cardModal" 
+      :realAmount="realAmount" 
+      @submit="payment($event, 'card')" 
+      @fail="failCardPay($event)"
+    />
+
+    <AlertModal 
+      ref="alertModal"
+      mode="alert"
+      title="결제 실패"
+      :message="alertMessage"
+    />
 
     <ProgressModal ref="progress" title="결제를 진행중입니다" />
 
@@ -103,6 +115,7 @@
 import SubTitleBar from '@/components/SubTitleBar.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
 import ConfirmModal from '@/components/modal/ConfirmModalPoint.vue';
+import AlertModal from '@/components/modal/AlertModal.vue';
 import CreditSelectModal from '@/components/PaymentConfirm/CreditSelectModal.vue';
 import PointUseModal from '@/components/PaymentConfirm/PointUseModal.vue';
 import CashModal from '@/components/PaymentConfirm/CashModal.vue';
@@ -115,6 +128,7 @@ export default {
   components: {
     SubTitleBar,
     ProgressModal,
+    AlertModal,
     PointUseModal,
     CreditSelectModal,
     ConfirmModal,
@@ -125,6 +139,7 @@ export default {
     return {
       productName: this.$route.params.productName,
       usePoint: 0,
+      alertMessage: '',
     };
   },
   computed: {
@@ -144,10 +159,12 @@ export default {
     },
   },
   mounted() {
-    if (this.point > 0) {
+    if (this.point >= 500) {
       this.$refs.confirm.show(true);
       // this.$sound.singlePlay('./sound/has_point_and_use.mp3');
       this.$soundManager.singlePlay('has_point_and_use.mp3');
+    } else {
+      this.$soundManager.singlePlay('pay_use_machine.mp3');
     }
   },
   methods: {
@@ -266,6 +283,10 @@ export default {
         this.appendAction({ payMethod: 'card', usePoint: this.usePoint });
         this.$refs.cardModal.open(true);
       }
+    },
+    failCardPay(message) {
+      this.alertMessage = message.substr(message.lastIndexOf(':') + 1);
+      this.$refs.alertModal.show(true);
     },
   },
 };

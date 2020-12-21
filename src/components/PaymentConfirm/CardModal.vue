@@ -89,6 +89,7 @@ export default {
           }).catch(error => {
             // console.log(error.message);
             // this.$sound.singlePlay('./sound/cancel_pay.mp3');
+            this.$emit('fail', error.message);
             this.$soundManager.singlePlay('cancel_pay.mp3');
             this.visible = false;
           });

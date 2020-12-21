@@ -209,7 +209,7 @@ export default new Vuex.Store({
     },
     async warningPlay({state}, src = 'alertSound.mp3') {
       soundManager.warningPlay(src);
-    }
+    },
   },
   modules: {},
 });

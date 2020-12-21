@@ -59,7 +59,7 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
       break;
     case 'warningCCTV':
       store.dispatch('warningPlay', 'warning_cctv.mp3');
-      break;      
+      break;    
     default:
       // 키오스크 상태 정보 갱신
       // console.log(payload, '갱신');
