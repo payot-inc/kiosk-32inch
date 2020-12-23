@@ -202,6 +202,7 @@ export default new Vuex.Store({
         method: 'POST',
         url: `/pay`,
         data: { params: form },
+        timeout: parseInt(form.inputAmount / 500, 10) * 3000 ,
       });
 
       // console.log('data', data);
