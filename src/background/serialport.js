@@ -38,7 +38,6 @@ parser.on('data', data => {
 });
 
 ipcMain.handle('cash-open', (event, isOpen) => {
-  // console.log('handle cash-open');
   eventer = event;
   const command = isOpen ? 'RUN' : 'STOP';
   sender(command);

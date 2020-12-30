@@ -10,7 +10,7 @@ module.exports = {
         productName: 'PayOT 키오스크',
         win: {
           icon: 'icon.ico',
-          publish: 'never',
+          // publish: 'never',
           target: [{ target: 'nsis', arch: ['x64'] }],
         },
       }

@@ -14,8 +14,7 @@
             @click="backList"
             translate="fade"
             :ripple="true"
-            >{{ category }}</v-tab
-          >
+            >{{ category }}</v-tab>
         </v-tabs>
       </div>
 
