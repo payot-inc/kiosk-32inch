@@ -1,6 +1,6 @@
 'use strict';
 
-import { app, protocol, BrowserWindow } from 'electron';
+import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import AutoLaunch from 'auto-launch';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
@@ -143,3 +143,20 @@ if (isDevelopment) {
     });
   }
 }
+
+
+ipcMain.handle('exit-app', (event) => {
+  if (!isDevelopment) {
+    const autoLaunch = new AutoLaunch({
+      name: app.getName(),
+      path: app.getPath('exe'),
+    });
+    autoLaunch.isEnabled().then(state => {
+      if (state) {
+        return autoLaunch.disable();
+      }
+    }).then(() => {
+      app.exit();
+    });
+  }
+});

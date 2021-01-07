@@ -24,7 +24,7 @@
 <script>
 import { mapActions, mapMutations } from 'vuex';
 import Joi from 'joi';
-import { remote } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 
 const LoginFormValidate = Joi.object({
   email: Joi.string()
@@ -58,7 +58,8 @@ export default {
   watch: {
     exitCount(newValue) {
       if(newValue === 15) {
-        remote.app.exit();
+        ipcRenderer.invoke('exit-app');
+        // remote.app.exit();
       }
     },
   },

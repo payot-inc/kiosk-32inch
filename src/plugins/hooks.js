@@ -18,6 +18,7 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
   let soundList = [];
   let delayList = [];
   // console.log('받은 mqtt :', action);
+  console.log(action);
   switch (action) {
     case 'shutdown':
       // 키오스크 PC 종료

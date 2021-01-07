@@ -22,7 +22,7 @@
 
 <script>
 import { info, user as userInfo } from '@/assets/docs/terms';
-import { remote } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 export default {
   data(){
     return{
@@ -47,7 +47,10 @@ export default {
       }
     },
     exitCount(newValue) {
-      if(newValue === 15) remote.app.exit();
+      if(newValue === 15) {
+        ipcRenderer.invoke('exit-app');
+        // remote.app.exit();
+      }
     },
   },
   methods:{
