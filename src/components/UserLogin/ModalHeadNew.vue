@@ -13,7 +13,6 @@
         elevation="0"
         outlined
         v-bind:class="{active: joinAgree}"
-        @click="toggleJoinAgree"
       >
         <v-icon>mdi-check</v-icon>
       </v-btn>
@@ -32,7 +31,7 @@ export default {
   },
   data() {
     return {
-      joinAgree: false,
+      joinAgree: true,
     };
   },
   methods: {
