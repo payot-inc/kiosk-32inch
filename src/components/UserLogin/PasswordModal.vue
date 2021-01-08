@@ -72,12 +72,12 @@ export default {
   data() {
     return {
       password: '',
-      joinAgree: false,
+      joinAgree: true,
     };
   },
   computed: {
     completeNew() {
-      return this.joinAgree === true && this.password.length === 4;
+      return this.password.length === 4;
     },
   },
   watch: {
@@ -115,7 +115,7 @@ export default {
   methods: {
     resetData() {
       this.password = '';
-      this.joinAgree = false;
+      this.joinAgree = true;
     },
     setJoinAgree(state) {
       this.joinAgree = state;
