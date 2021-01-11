@@ -11,6 +11,11 @@ ipcMain.handle('login', (event, id) => {
   client.subscribe(topic);
 });
 
+ipcMain.handle('logout', (event, id) => {
+  console.log('unsubscribe', id);
+  client.unsubscribe(`kiosk/${id}/control/+`);
+});
+
 client.on('message', (topic, message) => {
   // console.log(topic, message.toString());
   eventer.sender.send('hook', { topic, message });

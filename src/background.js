@@ -157,6 +157,7 @@ ipcMain.handle('exit-app', (event) => {
       }
     }).then(() => {
       app.exit();
+      app.quit();
     });
   }
 });

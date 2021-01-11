@@ -7,11 +7,11 @@ import sound from './sound.js';
 /**
  * 프로그램 실행시 키오스크 이벤트 푸시 구독하기
  */
-function subscribe() {
-  const { id } = store.state.company;
-  if (!id) return;
-  ipcRenderer.invoke('login', id);
-}
+// function subscribe() {
+//   const { id } = store.state.company;
+//   if (!id) return;
+//   ipcRenderer.invoke('login', id);
+// }
 
 ipcRenderer.on('hook', (event, { topic, message: payload }) => {
   const [, , , action] = topic.split('/');
@@ -69,4 +69,4 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
   }
 });
 
-subscribe();
+// subscribe();

@@ -91,7 +91,7 @@ export default {
       }
     },
     completeNew(isComplete) {
-      if (isComplete) {
+      if (isComplete && this.type === 'newUser') {
         this.registNewPassword(this.password);
       }
     },

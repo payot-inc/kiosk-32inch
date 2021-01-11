@@ -11,6 +11,11 @@ import './plugins/idle';
 import './plugins/hooks';
 import './plugins/auto_reboot';
 import './plugins/ad';
+import { ipcRenderer } from 'electron';
+
+if(store.state.company?.id) {
+  ipcRenderer.invoke('login', store.state.company.id);
+}
 
 Vue.config.productionTip = false;
 

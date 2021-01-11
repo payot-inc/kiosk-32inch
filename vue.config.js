@@ -11,7 +11,7 @@ module.exports = {
         win: {
           icon: 'icon.ico',
           // publish: 'never',
-          target: [{ target: 'nsis', arch: ['x64'] }],
+          target: [{ target: 'nsis' }],
         },
       }
     },

@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { createPersistedState } from 'vuex-electron';
@@ -73,6 +74,7 @@ export default new Vuex.Store({
       state.machines = value;
     },
     CLEAR_KIOSK(state) {
+      ipcRenderer.invoke('logout', state.company.id);
       state.company = {};
       state.kiosk = {};
       state.machines = {};
@@ -105,6 +107,7 @@ export default new Vuex.Store({
       commit('SET_COMPANY', company);
       commit('SET_KIOSK', kiosk);
       commit('SET_MACHINES', machines);
+      ipcRenderer.invoke('login', company.id);
 
       return data;
     },

@@ -1,13 +1,13 @@
 {
   "name": "payot-kiosk-premium",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:koces": "vue-cli-service electron:build --win --ia32",
-    "build:kicc": "vue-cli-service electron:build --win -p always",
+    "build:kicc": "vue-cli-service electron:build --win --x64 -p always",
     "electron:serve": "vue-cli-service electron:serve",
     "rebuild": "electron-builder install-app-deps",
     "postinstall": "electron-builder install-app-deps",
