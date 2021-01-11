@@ -28,9 +28,9 @@
       <div class="counter">
         <span>{{ count }}</span>
       </div>
-      <!-- <V-btn class="closeBtn" width="120px" height="120px" outlined @click="close">
-        <v-icon>mdi-close</v-icon>
-      </V-btn> -->
+      <v-btn class="closeBtn" width="120px" height="120px" outlined @click="close" v-if="currentMoney === 0">
+        <v-icon size="90">mdi-close-circle</v-icon>
+      </v-btn>
     </div>
   </v-dialog>
 </template>

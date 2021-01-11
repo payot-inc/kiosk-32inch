@@ -78,7 +78,12 @@
       :max="this.inputAmount"
     />
 
-    <CashModal ref="cashModal" :realAmount="realAmount" @submit="payment($event, 'cash')" />
+    <CashModal 
+      ref="cashModal" 
+      :realAmount="realAmount" 
+      @submit="payment($event, 'cash')" 
+    />
+    
     <CardModal 
       ref="cardModal" 
       :realAmount="realAmount" 
