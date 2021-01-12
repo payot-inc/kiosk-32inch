@@ -64,6 +64,8 @@ export default {
         ipcRenderer.invoke('cash-open', false);
         this.visible = false;
         this.$emit('submit', newValue);
+      } else if(!this.visible) {
+        this.$emit('submit', newValue);
       }
     },
     count(newValue) {
