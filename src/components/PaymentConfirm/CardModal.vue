@@ -81,7 +81,9 @@ export default {
         this.$soundManager.listPlay(soundList, delayList);
         
         
-
+        // 테스트용 카드결제 없이 바로 결제됨
+        // this.$emit('submit', this.realAmount);
+        // this.visible = false;
         ipcRenderer.invoke('card-pay', null, this.realAmount)
           .then(value => {
             this.$emit('submit', parseInt(value, 10));

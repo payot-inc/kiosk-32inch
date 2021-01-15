@@ -40,7 +40,7 @@ const routes = [
     name: 'Main',
     component: Main,
     // 메인페이지 이동시 회원 정보 초기화
-    beforeRouteEnter(to, from, next) {
+    beforeEnter: (to, from, next) => {
       store.commit('CLEAR_ACTION');
       next();
     },

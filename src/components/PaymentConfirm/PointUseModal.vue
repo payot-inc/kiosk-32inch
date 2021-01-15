@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     addPoint(value) {
-      if (this.usePoint + value <= this.max) this.usePoint += value;
+      if (this.usePoint + value <= this.max && this.usePoint + value <= this.point) this.usePoint += value;
     },
     open(state) {
       this.visible = state;

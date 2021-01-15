@@ -12,6 +12,12 @@ module.exports = {
           icon: 'icon.ico',
           // publish: 'never',
           target: [{ target: 'nsis' }],
+          // target: [
+          //   {
+          //     target: 'nsis',
+          //     arch: ['x64', 'ia32'],
+          //   }
+          // ]
         },
       }
     },

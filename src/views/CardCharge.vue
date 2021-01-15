@@ -140,6 +140,7 @@ export default {
       // this.$sound.singlePlay('./sound/card_use_helper.mp3');
       this.$soundManager.singlePlay('card_use_helper.mp3');
       await this.delay(1000);
+
       ipcRenderer.invoke('card-pay', null, this.selectedItem.price)
         .then((value) => {
           value = parseInt(value, 10);

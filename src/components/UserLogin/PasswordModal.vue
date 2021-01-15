@@ -24,7 +24,6 @@
         <ModalHeadNew
           v-if="type === 'newUser'"
           :phone="$store.state.user.phone"
-          :setJoinAgree="setJoinAgree"
         />
         <ModalHeadRepeat 
           v-if="type === 'newUserPassword'" 
@@ -72,7 +71,6 @@ export default {
   data() {
     return {
       password: '',
-      joinAgree: true,
     };
   },
   computed: {
@@ -115,10 +113,6 @@ export default {
   methods: {
     resetData() {
       this.password = '';
-      this.joinAgree = true;
-    },
-    setJoinAgree(state) {
-      this.joinAgree = state;
     },
     setPassword(value) {
       this.password = value;

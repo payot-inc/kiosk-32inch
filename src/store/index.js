@@ -84,6 +84,9 @@ export default new Vuex.Store({
       state.user = value;
       state.userAction = generateDefaultAction(state.company.id, value.id);
     },
+    APPEND_USER(state, value) {
+      state.user = Object.assign({}, state.user, value);
+    },
     /** 사용자 키오스크 액션 추가 */
     APPEND_ACTION(state, value) {
       state.userAction = Object.assign({}, state.userAction, value);
@@ -172,7 +175,6 @@ export default new Vuex.Store({
 
     /** 회원 가입 */
     async userSignUp({ state }, { phone, password }) {
-      // console.log(phone, password);
       const { id: companyId } = state.company;
       const { data: user } = await kioskAPI({
         method: 'POST',
@@ -180,8 +182,8 @@ export default new Vuex.Store({
         data: { phone, password },
       });
       const { id: userId } = user;
+      this.commit('APPEND_USER', { id: userId });
       this.commit('APPEND_ACTION', { userId });
-      // this.dispatch('pay');
 
       return user;
     },

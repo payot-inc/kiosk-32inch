@@ -12,7 +12,7 @@
         height="60px"
         elevation="0"
         outlined
-        v-bind:class="{active: joinAgree}"
+        class="active"
       >
         <v-icon>mdi-check</v-icon>
       </v-btn>
@@ -27,19 +27,7 @@
 export default {
   props: {
     phone: String,
-    setJoinAgree: Function,
   },
-  data() {
-    return {
-      joinAgree: true,
-    };
-  },
-  methods: {
-    toggleJoinAgree() {
-      this.joinAgree = !this.joinAgree;
-      this.setJoinAgree(this.joinAgree);
-    },
-  }
 }
 </script>
 

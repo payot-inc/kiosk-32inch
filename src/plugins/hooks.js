@@ -15,10 +15,11 @@ import sound from './sound.js';
 
 ipcRenderer.on('hook', (event, { topic, message: payload }) => {
   const [, , , action] = topic.split('/');
+  // console.log(topic);
   let soundList = [];
   let delayList = [];
   // console.log('받은 mqtt :', action);
-  console.log(action);
+  // console.log(action);
   switch (action) {
     case 'shutdown':
       // 키오스크 PC 종료
