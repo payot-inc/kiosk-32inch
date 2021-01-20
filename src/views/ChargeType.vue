@@ -23,7 +23,7 @@
               </div>
               <dl>
                 <dt>현금(지폐)로 결제하기</dt>
-                <dd>포인트 추가적립 10%</dd>
+                <dd v-if="maxCash > 0">포인트 추가적립 최대 {{ maxCash }}%</dd>
               </dl>
             </div>
           </v-col>
@@ -34,7 +34,7 @@
               </div>
               <dl>
                 <dt>신용카드로 결제하기</dt>
-                <dd>포인트 추가적립 5%</dd>
+                <dd v-if="maxCard > 0">포인트 추가적립 최대 {{ maxCard }}%</dd>
               </dl>
             </div>
           </v-col>
@@ -47,6 +47,7 @@
 <script>
 import SubTitleBar from '@/components/SubTitleBar.vue';
 import UserInfo from '@/components/UserInfo.vue';
+import { max } from 'lodash';
 
 export default {
   name: 'PayTypeSelect',
@@ -54,9 +55,14 @@ export default {
     SubTitleBar,
     UserInfo,
   },
+  data() {
+    return {
+      maxCash: 0,
+      maxCard: 0,
+    };
+  },
   methods: {
     nextStep(type) {
-      // this.$sound.playTouchSound();
       this.$soundManager.playTouchSound();
 
       const routeName = type === 'cash' ? 'CashCharge' : 'CardCharge';
@@ -66,6 +72,11 @@ export default {
   mounted() {
     // this.$sound.singlePlay('./sound/select_pay_type.mp3');
     this.$soundManager.singlePlay('select_pay_type.mp3');
+    const cashEvent = this.$store.getters.kioskEvent.rule.cash;
+    const cardEvent = this.$store.getters.kioskEvent.rule.card;
+    
+    this.maxCash = max(cashEvent) || 0;
+    this.maxCard = max(cardEvent) || 0;
   },
 };
 </script>
@@ -98,6 +109,7 @@ export default {
     padding: 80px 0;
     border-radius: 30px;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+    height: 646px;
     .btnImg {
       width: 320px;
       height: 320px;

@@ -9,7 +9,7 @@
             <dt><img src="@/assets/img/coin.png" /></dt>
             <dd>
               <label><b>현금</b>으로 결제하기</label>
-              <span>최대 10% 추가적립</span>
+              <span v-if="maxCash > 0">최대 {{ maxCash }}% 추가적립</span>
             </dd>
           </dl>
         </v-list-item>
@@ -19,7 +19,7 @@
             <dt><img src="@/assets/img/card.png" /></dt>
             <dd>
               <label><b>신용카드</b>로 결제하기</label>
-              <span>최대 5% 추가적립</span>
+              <span v-if="maxCard > 0">최대 {{ maxCard }}% 추가적립</span>
             </dd>
           </dl>
         </v-list-item>
@@ -33,17 +33,27 @@
 </template>
 
 <script>
+import { max } from 'lodash';
+
 export default {
   data() {
     return {
       visible: false,
+      maxCash: 0,
+      maxCard: 0,
     };
   },
   watch: {
     visible(newValue) {
-      // if (newValue) this.$sound.singlePlay('./sound/select_pay_type.mp3');
       if (newValue) this.$soundManager.singlePlay('select_pay_type.mp3');
     },
+  },
+  mounted() {
+    const cashEvent = this.$store.getters.kioskEvent.rule.cash;
+    const cardEvent = this.$store.getters.kioskEvent.rule.card;
+    
+    this.maxCash = max(cashEvent) || 0;
+    this.maxCard = max(cardEvent) || 0;
   },
   methods: {
     open(value) {

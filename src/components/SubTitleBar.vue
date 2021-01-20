@@ -38,14 +38,17 @@ export default {
     backPage() {
       // this.$sound.playTouchSound();
       this.$soundManager.playTouchSound();
-      if(['ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name) ||
-         (this.$route.name === 'CashCharge' && !this.cardPay) ||
-         (this.$route.name === 'CardCharge' && !this.cashPay)) {
-        this.$refs.confirm.show(true);
+
+
+      if(this.realAmount > 0) {
+        this.$emit('cantBack');
+      } else if(
+        ['ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name) ||
+        (this.$route.name === 'CashCharge' && !this.cardPay) ||
+        (this.$route.name === 'CardCharge' && !this.cashPay)) {
+          this.$refs.confirm.show(true);
       } else if(this.$route.name === 'UserLogin') {
         this.$router.replace({ name: 'Main' });
-      } else if(this.realAmount > 0) {
-        this.$emit('cantBack');
       } else {
         this.$router.go(-1);
       }

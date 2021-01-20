@@ -38,6 +38,8 @@
               class="ad"
               :src="`file://${path}`"
               muted
+              autoplay
+              :loop="ads.length === 1"
               style="height: 100%; width: auto;"
             />
             <img v-else class="ad" :src="`file://${path}`" />
@@ -125,12 +127,14 @@ export default {
   },
   async created() {
     await this.initalAd();
+    if(this.ads.length > 1) {
+      setTimeout(() => {
+        this.adsIndex = 1;
+      }, 20000);
+    }
   },
-  mounted() {
-    setTimeout(() => {
-      this.adsIndex = 1;
-    }, 20000);
-  },
+  // mounted() {
+  // },
   computed: {
     ...mapState({
       companyName: state => state.company.name,

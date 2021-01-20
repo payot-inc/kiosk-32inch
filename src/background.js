@@ -11,9 +11,22 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 import './background/serialport';
 import './background/mqtt';
 import './background/ad';
-import './background/kicc';
+// import './background/kicc';
 // import './background/koces';
 // !isDevelopment || require('./background/koces').default;
+
+console.log(process.arch);
+if(process.arch === 'x64') {
+  import('./background/kicc')
+    .then(() => {
+      //
+    });
+} else {
+  import('./background/koces')
+    .then(() => {
+      //
+    });
+}
 
 let window;
 
@@ -144,7 +157,7 @@ if (isDevelopment) {
   }
 }
 
-
+// 앱에서 히든 종료 했을때, 레지스트리 제거(자동 재시작 비활성)
 ipcMain.handle('exit-app', (event) => {
   if (!isDevelopment) {
     const autoLaunch = new AutoLaunch({
