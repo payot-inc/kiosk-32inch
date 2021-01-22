@@ -58,7 +58,7 @@ export default {
     const updateTime = () => {
       this.now = Date.now();
     };
-    this.listener = setInterval(updateTime, 1000);
+    this.listener = setInterval(updateTime, 60000);
   },
   beforeDestroy() {
     clearInterval(this.listener);

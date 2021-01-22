@@ -69,7 +69,7 @@ export default {
   name: 'Result',
   data() {
     return {
-      counter: 20,
+      counter: 10,
     };
   },
   mounted() {

@@ -5,6 +5,7 @@ import { createPersistedState } from 'vuex-electron';
 import { coreAPI, kioskAPI } from '../plugins/axios';
 // import sound from '../plugins/sound';
 import soundManager from '../plugins/howler';
+import { sortBy } from 'lodash';
 
 Vue.use(Vuex);
 
@@ -71,7 +72,11 @@ export default new Vuex.Store({
     },
     /** 키오스크 장비 목록 갱신 */
     SET_MACHINES(state, value) {
-      state.machines = value;
+      const sortedProductsMachines = value.map(m => {
+        const { products } = m;
+        return { ...m, products: sortBy(products, ['sort', 'id']) };
+      });
+      state.machines = sortBy(sortedProductsMachines, ['category', 'sort', 'id']);
     },
     CLEAR_KIOSK(state) {
       ipcRenderer.invoke('logout', state.company.id);
