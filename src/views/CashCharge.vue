@@ -18,6 +18,7 @@
     </div>
 
     <ProgressModal ref="progress" title="포인트를 적립 중 입니다" />
+    <ProgressModal ref="idleProgress" title="응답이 없어 처리 중 입니다" />
     <AlertModal
       ref="alert"
       title="투입된 금액이 0원 입니다"
@@ -118,6 +119,20 @@ export default {
     delay(millisec) {
       return new Promise(resolve => setTimeout(resolve, millisec));
     },
+    async idleFinish() {
+      ipcRenderer.invoke('cash-open', false);
+      this.$refs.idleProgress.show(true);
+      await this.delay(2000);
+
+      this.$refs.idleProgress.show(false);
+      const { realAmount } = this;
+      if(realAmount > 0) {
+        this.$refs.progress.show(true);
+        this.serverChargeRequest();
+      } else {
+        this.$router.replace({ name: 'Main' });
+      }
+    }
   },
   mounted() {
     // console.log('cash charge mount');
@@ -135,6 +150,9 @@ export default {
   beforeDestroy() {
     ipcRenderer.invoke('cash-open', false);
     ipcRenderer.removeListener('cash-input', this.onInputMoneyEvent);
+  },
+  onIdle() {
+    this.idleFinish();
   },
 };
 </script>

@@ -11,7 +11,6 @@ export default {
     return {
       ignoreIdlePageName: [
         'AccountLogin', // 키오스크 로그인 페이지
-        'Main', // 메인페이지
         'CashCharge', // 포인트 충전(현금)
         'PaymentConfirm', // 장비 사용 결제이전 페이지
         'Error', // 에러 페이지
