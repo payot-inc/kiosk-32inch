@@ -101,6 +101,9 @@ export default new Vuex.Store({
       state.user = {};
       state.userAction = generateDefaultAction(state.company.id, null);
     },
+    SET_IS_SALES(state, value) {
+      state.remote.isSales = value;
+    },
   },
   actions: {
     /** 키오스크 계정 로그인 */

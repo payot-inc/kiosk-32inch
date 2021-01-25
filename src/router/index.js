@@ -168,10 +168,28 @@ router.beforeEach((to, from, next) => {
   const loginLessPageName = ['AccountLogin', 'Error'].includes(to.name);
 
   if (!isAccountLogin && !loginLessPageName) {
-    next({ name: 'AccountLogin' });
-  } else {
-    next();
+    return next({ name: 'AccountLogin' });
+  } 
+
+  const isOnline = navigator.onLine;
+  if(!isOnline && to.name !== 'Error') {
+    return next({ name: 'Error', params: {
+      title: '불편을 끼쳐드려 죄송합니다',
+      message: '네트워크의 문제로 지금은 이용하실 수 없습니다',
+    }});
   }
+
+  if(!store.state.remote.isSales && to.name != 'Error') {
+    return next({
+      name: 'Error',
+      params: {
+        title: '점검중 입니다',
+        message: '이용에 불편을드려 죄송합니다',
+      },
+    });
+  }
+
+  return next();
 });
 
 export default router;

@@ -2,7 +2,6 @@ import { ipcRenderer, remote } from 'electron';
 import { reboot, shutdown } from 'electron-shutdown-command';
 import store from '../store';
 import router from '../router';
-import sound from './sound.js';
 
 /**
  * 프로그램 실행시 키오스크 이벤트 푸시 구독하기
@@ -40,10 +39,12 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
       break;
     case 'sale':
       // 키오스크 이용 가능 상태 변경
+      store.commit('SET_IS_SALES', true);
       router.replace({ name: 'Main' });
       break;
     case 'fix':
       // 키오스크 이용 불가 상태 변경
+      store.commit('SET_IS_SALES', false);
       router.replace({
         name: 'Error',
         params: {
