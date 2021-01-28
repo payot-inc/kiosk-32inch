@@ -14,6 +14,7 @@ export default {
         'CashCharge', // 포인트 충전(현금)
         'PaymentConfirm', // 장비 사용 결제이전 페이지
         'Error', // 에러 페이지
+        'Main',
       ],
     };
   },

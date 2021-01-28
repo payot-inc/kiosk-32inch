@@ -216,6 +216,7 @@ export default new Vuex.Store({
         url: `/pay`,
         data: { params: form },
         timeout: parseInt(form.inputAmount / 500, 10) * 3000 ,
+        // timeout: 1,
       });
 
       // console.log('data', data);

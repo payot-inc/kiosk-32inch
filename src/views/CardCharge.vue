@@ -154,7 +154,7 @@ export default {
           this.serverChargeRequest();
         })
         .catch(err => {
-          console.log(err.toString(), JSON.stringify(err, null, 2));
+          // console.log(err.toString(), JSON.stringify(err, null, 2));
           // console.log(err.message);
           this.alertMessage = err.message.substr(err.message.lastIndexOf(':') + 1);
           this.$refs.alertModal.show(true);

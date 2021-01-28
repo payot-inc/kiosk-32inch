@@ -129,6 +129,7 @@ export default {
     ipcRenderer.removeListener('cash-input', this.onInputEvent);
   },
   mounted() {
+    // console.log('cash-input on!');
     ipcRenderer.on('cash-input', this.onInputEvent);
   },
 };

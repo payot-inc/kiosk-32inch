@@ -136,9 +136,9 @@ export default {
   },
   mounted() {
     // console.log('cash charge mount');
+    ipcRenderer.on('cash-input', this.onInputMoneyEvent);
     ipcRenderer.invoke('cash-open', true);
 
-    ipcRenderer.on('cash-input', this.onInputMoneyEvent);
 
     // const soundList = ['./sound/select_cash.mp3', './sound/point_append_cash_helper.mp3'];
     // const delayList = [250];
@@ -151,9 +151,9 @@ export default {
     ipcRenderer.invoke('cash-open', false);
     ipcRenderer.removeListener('cash-input', this.onInputMoneyEvent);
   },
-  onIdle() {
-    this.idleFinish();
-  },
+  // onIdle() {
+  //   this.idleFinish();
+  // },
 };
 </script>
 

@@ -12,7 +12,7 @@ ipcMain.handle('login', (event, id) => {
 });
 
 ipcMain.handle('logout', (event, id) => {
-  console.log('unsubscribe', id);
+  // console.log('unsubscribe', id);
   client.unsubscribe(`kiosk/${id}/control/+`);
 });
 

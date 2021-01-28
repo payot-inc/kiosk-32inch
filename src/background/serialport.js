@@ -23,8 +23,25 @@ SerialPort.list()
   .then(path => new SerialPort(path, { autoOpen: true, baudRate: 9600 }))
   .then(port => {
     port.pipe(parser);
+    port.on('open', async () => {
+      console.log('port is open');
+      for(let i=0; i<5; i++) {
+        await checksumParser();
+      }
+    });
     sender = message => port.write(`${message}\r\n`);
   });
+
+
+
+async function checksumParser() {
+  await delay(2000);
+  sender('STAT');
+}
+
+function delay(millisec) {
+  return new Promise(resolve => setTimeout(resolve, millisec));
+}
 
 parser.on('data', data => {
   const [cmd, message] = data
@@ -32,6 +49,7 @@ parser.on('data', data => {
     .trim()
     .split(':');
 
+  console.log("!!!CMD START[", cmd, "]CMD END!!!");
   if (cmd !== 'BILL' || !eventer) return;
   // console.log(data);
   inputEvent.next(parseInt(message, 10));
@@ -58,6 +76,7 @@ const input10000 = inputEvent.pipe(
     if (buffer.length === 1) return 10000;
     const totalTime = buffer[buffer.length - 1].timestamp - buffer[0].timestamp;
     const averageTime = totalTime / (buffer.length - 1);
+    console.log(buffer.length);
 
     if (averageTime <= 150 && buffer.length < 10) return 10000;
     else if (averageTime <= 150 && buffer.length >= 10) return 50000;
@@ -69,3 +88,4 @@ merge(inputOther, input10000).subscribe(
   amount => eventer.sender.send('cash-input', amount),
   // console.log,
 );
+

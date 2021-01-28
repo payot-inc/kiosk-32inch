@@ -8,23 +8,20 @@ import path from 'path';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // import './background/logger';
-import './background/serialport';
+import CoinMachineInit from './background/coin-machine';
+// import './background/serialport';
 import './background/mqtt';
 import './background/ad';
-// import './background/kicc';
-// import './background/koces';
-// !isDevelopment || require('./background/koces').default;
 
-console.log(process.arch);
 if(process.arch === 'x64') {
   import('./background/kicc')
     .then(() => {
-      //
+      // console.log('kicc import');
     });
 } else {
   import('./background/koces')
     .then(() => {
-      //
+      // console.log('koces import');
     });
 }
 
@@ -53,7 +50,6 @@ app.on('second-instance', () => {
 });
 
 /**  */
-
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -69,11 +65,12 @@ async function createWindow() {
       enableRemoteModule: true,
     },
   });
-  
+
   if(!isDevelopment) {
     win.setMenu(null);
   }
   window = win;
+  CoinMachineInit(win.webContents);
   // win.webContents.openDevTools();
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
