@@ -195,11 +195,16 @@ function deleteOldLog() {
     'exitApp'
   );
   const list = fs.readdirSync(rootDir);
-  list.forEach(date => {
-    if(moment(date).add(30, 'days') < moment()) {
-      fs.rmdirSync(path.join(rootDir, date), { recursive: true });
-    }
-  });
+  list
+    .filter(name => {
+      return /^\d{4}-\d{2}-\{2}$/.test(name);
+    })
+    .filter(date => moment(date).isValid())
+    .forEach(date => {
+      if(moment(date).add(30, 'days') < moment()) {
+        fs.rmdirSync(path.join(rootDir, date), { recursive: true });
+      }
+    });
 }
 
 function hasTodayDirOrCreate() {
