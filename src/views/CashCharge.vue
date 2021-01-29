@@ -151,9 +151,9 @@ export default {
     ipcRenderer.invoke('cash-open', false);
     ipcRenderer.removeListener('cash-input', this.onInputMoneyEvent);
   },
-  // onIdle() {
-  //   this.idleFinish();
-  // },
+  onIdle() {
+    this.idleFinish();
+  },
 };
 </script>
 
