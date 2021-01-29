@@ -4,7 +4,9 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron';
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib';
 import AutoLaunch from 'auto-launch';
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer';
+import fs from 'fs';
 import path from 'path';
+import moment from 'moment';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // import './background/logger';
@@ -156,6 +158,7 @@ if (isDevelopment) {
 
 // 앱에서 히든 종료 했을때, 레지스트리 제거(자동 재시작 비활성)
 ipcMain.handle('exit-app', (event) => {
+  saveLog();
   if (!isDevelopment) {
     const autoLaunch = new AutoLaunch({
       name: app.getName(),
@@ -171,3 +174,27 @@ ipcMain.handle('exit-app', (event) => {
     });
   }
 });
+
+function saveLog() {
+  hasTodayDirOrCreate();
+  const savePath = path.join(
+    'C:',
+    'kiosk',
+    'exitApp',
+    moment().format('YYYY-MM-DD'),
+    `${moment().format('a_hh_mm_ss')}.json`
+  );
+  fs.writeFileSync(savePath, JSON.stringify({ result: true }, null, 2));
+}
+
+function hasTodayDirOrCreate() {
+  const todayDir = path.join(
+    'C:',
+    'kiosk',
+    'exitApp',
+    moment().format('YYYY-MM-DD'),
+  );
+  const hasDir = fs.existsSync(todayDir);
+  if(hasDir) return;
+  fs.mkdirSync(todayDir, { recursive: true });
+}
