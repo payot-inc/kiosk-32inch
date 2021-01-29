@@ -95,6 +95,11 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('quit', () => {
+  saveLog();
+  console.log('프로그램 종료');
+});
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -158,7 +163,7 @@ if (isDevelopment) {
 
 // 앱에서 히든 종료 했을때, 레지스트리 제거(자동 재시작 비활성)
 ipcMain.handle('exit-app', (event) => {
-  saveLog();
+  // saveLog();
   if (!isDevelopment) {
     const autoLaunch = new AutoLaunch({
       name: app.getName(),
