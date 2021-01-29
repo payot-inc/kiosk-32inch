@@ -181,8 +181,8 @@ ipcMain.handle('exit-app', (event) => {
 });
 
 function saveLog() {
-  deleteOldLog();
   hasTodayDirOrCreate();
+  deleteOldLog();
   const savePath = path.join(
     'C:',
     'kiosk',
