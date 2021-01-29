@@ -176,6 +176,7 @@ ipcMain.handle('exit-app', (event) => {
 });
 
 function saveLog() {
+  deleteOldLog();
   hasTodayDirOrCreate();
   const savePath = path.join(
     'C:',
@@ -185,6 +186,20 @@ function saveLog() {
     `${moment().format('a_hh_mm_ss')}.json`
   );
   fs.writeFileSync(savePath, JSON.stringify({ result: true }, null, 2));
+}
+
+function deleteOldLog() {
+  const rootDir = path.join(
+    'C:',
+    'kiosk',
+    'exitApp'
+  );
+  const list = fs.readdirSync(rootDir);
+  list.forEach(date => {
+    if(moment(date).add(30, 'days') < moment()) {
+      fs.rmdirSync(path.join(rootDir, date), { recursive: true });
+    }
+  });
 }
 
 function hasTodayDirOrCreate() {
