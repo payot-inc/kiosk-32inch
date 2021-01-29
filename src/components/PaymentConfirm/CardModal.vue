@@ -1,51 +1,64 @@
 <template>
-  <v-dialog
-    v-model="visible"
-    width="800px"
-    transition="slide-y-transition"
-    overlay-opacity="0.8"
-    overlay-color="#000"
-    persistent
-  >
-    <div class="paymentModal">
-      <div class="paymentImg">
-        <img src="@/assets/img/paymentCard.png" />
+  <div>
+    <v-dialog
+      v-model="visible"
+      width="800px"
+      transition="slide-y-transition"
+      overlay-opacity="0.8"
+      overlay-color="#000"
+      persistent
+    >
+      <div class="paymentModal">
+        <div class="paymentImg">
+          <img src="@/assets/img/paymentCard.png" />
+        </div>
+        <div class="priceInfo">
+          <!-- <dl v-if="userAction.type === 'charge'">
+            <dt>선택상품</dt>
+            <dd>....</dd>
+          </dl> -->
+          <dl>
+            <dt>결제금액</dt>
+            <dd>{{ parseInt(realAmount, 10) | numeral('0,0') }} 원</dd>
+          </dl>
+          <dl>
+            <dt>나의포인트</dt>
+            <dd>{{ parseInt(user.point, 10) | numeral('0,0') }} P</dd>
+          </dl>
+          <dl>
+            <dt>추가적립금</dt>
+            <dd>{{ parseInt(appendPoint, 10) | numeral('0,0') }} P</dd>
+          </dl>
+          <dl class="lastPoint">
+            <dt>최종포인트</dt>
+            <dd>{{ (parseInt(appendPoint, 10) + parseInt(user.point, 10)) | numeral('0,0') }} P</dd>
+          </dl>
+        </div>
+        <div class="guide">
+          <strong>IC카드를 투입구에 넣어주세요</strong>
+          <p>삑소리 이후에 카드를 투입하시고, <br />결제가 끝날때까지 카드를 빼지 마세요</p>
+        </div>
       </div>
-      <div class="priceInfo">
-        <!-- <dl v-if="userAction.type === 'charge'">
-          <dt>선택상품</dt>
-          <dd>....</dd>
-        </dl> -->
-        <dl>
-          <dt>결제금액</dt>
-          <dd>{{ parseInt(realAmount, 10) | numeral('0,0') }} 원</dd>
-        </dl>
-        <dl>
-          <dt>나의포인트</dt>
-          <dd>{{ parseInt(user.point, 10) | numeral('0,0') }} P</dd>
-        </dl>
-        <dl>
-          <dt>추가적립금</dt>
-          <dd>{{ parseInt(appendPoint, 10) | numeral('0,0') }} P</dd>
-        </dl>
-        <dl class="lastPoint">
-          <dt>최종포인트</dt>
-          <dd>{{ (parseInt(appendPoint, 10) + parseInt(user.point, 10)) | numeral('0,0') }} P</dd>
-        </dl>
-      </div>
-      <div class="guide">
-        <strong>IC카드를 투입구에 넣어주세요</strong>
-        <p>삑소리 이후에 카드를 투입하시고, <br />결제가 끝날때까지 카드를 빼지 마세요</p>
-      </div>
-    </div>
-  </v-dialog>
+    </v-dialog>
+    <Alert 
+      ref="alert" 
+      mode="alert"
+      title="카드결제 점검 시간 입니다" 
+      message="이용에 불편을 드려 죄송합니다(00:00~00:59)"
+    />
+  </div>
 </template>
 
 <script>
 import { ipcRenderer } from 'electron';
 import { mapGetters, mapState } from 'vuex';
+import Alert from '@/components/modal/AlertModal';
+
 export default {
   name: 'CardModal',
+  components: {
+    Alert,
+  },
   props: {
     realAmount: Number,
   },
@@ -103,6 +116,10 @@ export default {
   },
   methods: {
     open(state) {
+      if(new Date().getHours() === 0) {
+        this.$refs.alert.show(true);
+        return;
+      }
       this.visible = state;
     },
     close() {
