@@ -59,7 +59,7 @@ const request = params =>
   });
 
 /** 결제 요청 */
-ipcMain.handle('card-pay', (event, companyName, amount, timeout = 30) => {
+ipcMain.handle('card-pay-kicc', (event, companyName, amount, timeout = 30) => {
   const params = new Array(32).fill('');
   params[0] = 'D1'; // 전문내용 : 승인
   params[2] = parseInt(amount, 10).toString() // 결제금액

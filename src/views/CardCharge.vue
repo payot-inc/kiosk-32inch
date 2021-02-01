@@ -58,7 +58,7 @@ import CardModal from '@/components/CardCharge/CardModal.vue';
 import ConfirmModal from '@/components/modal/ConfirmModalPoint.vue';
 import AlertModal from '@/components/modal/AlertModal.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
-import { mapActions, mapMutations } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import { debounce } from 'lodash';
 export default {
   name: 'CardCharge',
@@ -116,6 +116,9 @@ export default {
         return price * this.$store.getters.getEventRate('card', price);
       });
     },
+    ...mapState({
+      cardModule: state => state.cardModule.type,
+    }),
   },
   mounted() {
     // const soundList = ['./sound/select_card.mp3', './sound/point_append_card_helper.mp3'];
@@ -141,27 +144,33 @@ export default {
       this.$soundManager.singlePlay('card_use_helper.mp3');
       await this.delay(1000);
 
-      ipcRenderer.invoke('card-pay', null, this.selectedItem.price)
-        .then((value) => {
-          value = parseInt(value, 10);
-          const realAmount = value;
-          const eventRate = this.$store.getters.getEventRate('card', value);
-          const appendPoint = value * eventRate;
-          const totalPoint = realAmount + appendPoint;
+      if(this.cardModule === 'koces' || this.cardModule === 'kicc') {
+        ipcRenderer.invoke(`card-pay-${this.cardModule}`, null, this.selectedItem.price)
+          .then((value) => {
+            value = parseInt(value, 10);
+            const realAmount = value;
+            const eventRate = this.$store.getters.getEventRate('card', value);
+            const appendPoint = value * eventRate;
+            const totalPoint = realAmount + appendPoint;
 
-          this.appendAction({ realAmount, appendPoint, totalPoint, eventRate });
-          this.$refs.progress.show(true);
-          this.serverChargeRequest();
-        })
-        .catch(err => {
-          // console.log(err.toString(), JSON.stringify(err, null, 2));
-          // console.log(err.message);
-          this.alertMessage = err.message.substr(err.message.lastIndexOf(':') + 1);
-          this.$refs.alertModal.show(true);
-          // this.$sound.singlePlay('./sound/cancel_pay.mp3');
-          this.$soundManager.singlePlay('cancel_pay.mp3');
-          this.$refs.cardModal.show(false);
-        });
+            this.appendAction({ realAmount, appendPoint, totalPoint, eventRate });
+            this.$refs.progress.show(true);
+            this.serverChargeRequest();
+          })
+          .catch(err => {
+            // console.log(err.toString(), JSON.stringify(err, null, 2));
+            // console.log(err.message);
+            this.alertMessage = err.message.substr(err.message.lastIndexOf(':') + 1);
+            this.$refs.alertModal.show(true);
+            // this.$sound.singlePlay('./sound/cancel_pay.mp3');
+            this.$soundManager.singlePlay('cancel_pay.mp3');
+            this.$refs.cardModal.show(false);
+          });
+      } else {
+        this.alertMessage = '카드모듈이 선택되어있지 않습니다';
+        this.$refs.alertModal.show(true);
+        this.$refs.cardModal.show(false);
+      }
     },
     delay(ms) {
       return new Promise((resolve, reject) => setTimeout(resolve, ms));

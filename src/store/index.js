@@ -38,6 +38,9 @@ export default new Vuex.Store({
     remote: {
       isSales: true, // 키오스크 가동 여부
     },
+    cardModule: {
+      type: null,
+    },
   },
   getters: {
     getEventRate: (state, getters) => (type, amount) => {
@@ -83,6 +86,7 @@ export default new Vuex.Store({
       state.company = {};
       state.kiosk = {};
       state.machines = {};
+      state.cardModule.type = null;
     },
     /** 회원 정보 변경 */
     SET_USER(state, value) {
@@ -103,6 +107,9 @@ export default new Vuex.Store({
     },
     SET_IS_SALES(state, value) {
       state.remote.isSales = value;
+    },
+    SET_CARD_MODULE(state, value) {
+      state.cardModule.type = value;
     },
   },
   actions: {

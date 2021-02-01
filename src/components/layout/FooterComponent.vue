@@ -11,7 +11,7 @@
       <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn" @click="$refs.terms.open('info')">
         키오스크 이용약관</v-btn
       >
-      <div class="version">V{{ version }}</div>
+      <div class="version">V{{ version }} ({{ cardVersion }})</div>
     </div>
 
     <Terms ref="terms" />
@@ -34,10 +34,14 @@ export default {
   computed: {
     ...mapState({
       tel: state => state.company.phone,
+      cardModule: state => state.cardModule.type,
     }),
     version() {
       return remote.app.getVersion();
     },
+    cardVersion() {
+      return this.cardModule ? this.cardModule.toUpperCase() : '';
+    }
   },
 };
 </script>

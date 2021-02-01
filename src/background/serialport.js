@@ -49,7 +49,7 @@ parser.on('data', data => {
     .trim()
     .split(':');
 
-  console.log("!!!CMD START[", cmd, "]CMD END!!!");
+  // console.log("!!!CMD START[", cmd, "]CMD END!!!");
   if (cmd !== 'BILL' || !eventer) return;
   // console.log(data);
   inputEvent.next(parseInt(message, 10));

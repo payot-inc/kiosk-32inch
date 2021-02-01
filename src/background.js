@@ -14,18 +14,21 @@ import CoinMachineInit from './background/coin-machine';
 // import './background/serialport';
 import './background/mqtt';
 import './background/ad';
+// import './background/cardModule';
+import './background/koces';
+import './background/kicc';
 
-if(process.arch === 'x64') {
-  import('./background/kicc')
-    .then(() => {
-      // console.log('kicc import');
-    });
-} else {
-  import('./background/koces')
-    .then(() => {
-      // console.log('koces import');
-    });
-}
+// if(process.arch === 'x64') {
+//   import('./background/kicc')
+//     .then(() => {
+//       // console.log('kicc import');
+//     });
+// } else {
+//   import('./background/koces')
+//     .then(() => {
+//       // console.log('koces import');
+//     });
+// }
 
 let window;
 
@@ -95,9 +98,13 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.on('quit', () => {
-  saveLog();
-  console.log('프로그램 종료');
+// app.on('quit', () => {
+//   saveLog();
+//   console.log('프로그램 종료');
+// });
+
+app.on('browser-window-blur', () => {
+  app.focus();
 });
 
 app.on('activate', () => {
@@ -180,46 +187,46 @@ ipcMain.handle('exit-app', (event) => {
   }
 });
 
-function saveLog() {
-  deleteOldLog();
-  hasTodayDirOrCreate();
-  const savePath = path.join(
-    'C:',
-    'kiosk',
-    'exitApp',
-    moment().format('YYYY-MM-DD'),
-    `${moment().format('a_hh_mm_ss')}.json`
-  );
-  fs.writeFileSync(savePath, JSON.stringify({ result: true }, null, 2));
-}
+// function saveLog() {
+//   hasTodayDirOrCreate();
+//   deleteOldLog();
+//   const savePath = path.join(
+//     'C:',
+//     'kiosk',
+//     'exitApp',
+//     moment().format('YYYY-MM-DD'),
+//     `${moment().format('a_hh_mm_ss')}.json`
+//   );
+//   fs.writeFileSync(savePath, JSON.stringify({ result: true }, null, 2));
+// }
 
-function deleteOldLog() {
-  const rootDir = path.join(
-    'C:',
-    'kiosk',
-    'exitApp'
-  );
-  const list = fs.readdirSync(rootDir);
-  list
-    .filter(name => {
-      return /^\d{4}-\d{2}-\{2}$/.test(name);
-    })
-    .filter(date => moment(date).isValid())
-    .forEach(date => {
-      if(moment(date).add(30, 'days') < moment()) {
-        fs.rmdirSync(path.join(rootDir, date), { recursive: true });
-      }
-    });
-}
+// function deleteOldLog() {
+//   const rootDir = path.join(
+//     'C:',
+//     'kiosk',
+//     'exitApp'
+//   );
+//   const list = fs.readdirSync(rootDir);
+//   list
+//     .filter(name => {
+//       return /^\d{4}-\d{2}-\{2}$/.test(name);
+//     })
+//     .filter(date => moment(date).isValid())
+//     .forEach(date => {
+//       if(moment(date).add(30, 'days') < moment()) {
+//         fs.rmdirSync(path.join(rootDir, date), { recursive: true });
+//       }
+//     });
+// }
 
-function hasTodayDirOrCreate() {
-  const todayDir = path.join(
-    'C:',
-    'kiosk',
-    'exitApp',
-    moment().format('YYYY-MM-DD'),
-  );
-  const hasDir = fs.existsSync(todayDir);
-  if(hasDir) return;
-  fs.mkdirSync(todayDir, { recursive: true });
-}
+// function hasTodayDirOrCreate() {
+//   const todayDir = path.join(
+//     'C:',
+//     'kiosk',
+//     'exitApp',
+//     moment().format('YYYY-MM-DD'),
+//   );
+//   const hasDir = fs.existsSync(todayDir);
+//   if(hasDir) return;
+//   fs.mkdirSync(todayDir, { recursive: true });
+// }

@@ -11,20 +11,22 @@
           class="textInput"
           placeholder="비밀번호"
           v-model="form.password"
-          @keydown.enter="kioskLogin"
         />
-        <v-btn block outlined height="90px" class="loginBtn" dark @click="kioskLogin">로그인</v-btn>
+        <div class="loginBtns">
+          <v-btn outlined height="90px" class="loginBtn" dark @click="kioskLogin('koces')">KOCES 로그인(32BIT)</v-btn>
+          <v-btn outlined height="90px" class="loginBtn" dark @click="kioskLogin('kicc')">KICC 로그인</v-btn>
+        </div>
       </div>
     </div>
 
-    <AlertModal ref="error" :title="error.title" :message="error.message" />
+    <AlertModal ref="error" mode="alert" :title="error.title" :message="error.message" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapMutations } from 'vuex';
 import Joi from 'joi';
-import { ipcRenderer, remote } from 'electron';
+import { ipcRenderer } from 'electron';
 
 const LoginFormValidate = Joi.object({
   email: Joi.string()
@@ -70,7 +72,17 @@ export default {
     ...mapActions({
       login: 'accountLogin',
     }),
-    kioskLogin() {
+    ...mapMutations({
+      setCardModule: 'SET_CARD_MODULE',
+    }),
+    kioskLogin(cardModule) {
+      if(cardModule === 'koces' && process.arch !== 'ia32') {
+        this.error.mode = 'alert';
+        this.error.title = '로그인 할 수 없습니다';
+        this.error.message = '32비트 전용 로그인 입니다';
+        this.$refs.error.show(true);
+        return;
+      }
       LoginFormValidate.validateAsync(this.form)
         .catch(({ message }) => {
           this.error.title = '정보 입력 오류';
@@ -78,6 +90,9 @@ export default {
           this.$refs.error.show(true);
         })
         .then(this.login)
+        .then(() => {
+          this.setCardModule(cardModule);
+        })
         .then(() => this.$router.replace({ name: 'Main' }))
         .catch(err => {
           if (err.response) {
@@ -193,11 +208,16 @@ export default {
       }
     }
   }
-  .loginBtn {
-    font-size: 32px;
-    border-radius: 10px;
-    background: #3f29d9;
-    border: 0px;
+  .loginBtns{
+    display: flex;
+    justify-content: space-between;
+    .loginBtn {
+      font-size: 32px;
+      border-radius: 10px;
+      background: #3f29d9;
+      border: 0px;
+      width: 48%;
+    }
   }
 }
 </style>
