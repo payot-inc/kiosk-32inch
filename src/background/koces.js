@@ -35,7 +35,7 @@ function saveLog(res, isSuccess) {
 
 const path = 'C:\\Koces\\PayotKoces.dll';
 let lib;
-if(process.arch === 'ia32') {
+if(process.arch === 'ia32' && fs.existsSync(path)) {
   lib = edge.func(path);
 }
 
