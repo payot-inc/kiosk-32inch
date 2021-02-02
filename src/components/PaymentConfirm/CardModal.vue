@@ -46,6 +46,12 @@
       title="카드결제 점검 시간 입니다" 
       message="이용에 불편을 드려 죄송합니다(00:00~00:59)"
     />
+    <Alert 
+      ref="cardModuleAlert" 
+      mode="alert"
+      title="이용 하실 수 없습니다" 
+      message="카드모듈이 선택되어있지 않습니다"
+    />
   </div>
 </template>
 
@@ -71,6 +77,7 @@ export default {
     ...mapState({
       user: state => state.user,
       userAction: state => state.userAction,
+      cardModule: state => state.cardModule.type,
     }),
     ...mapGetters({
       kioskEvent: 'kioskEvent',
@@ -97,17 +104,22 @@ export default {
         // 테스트용 카드결제 없이 바로 결제됨
         // this.$emit('submit', this.realAmount);
         // this.visible = false;
-        ipcRenderer.invoke('card-pay', null, this.realAmount)
-          .then(value => {
-            this.$emit('submit', parseInt(value, 10));
-            this.visible = false;
-          }).catch(error => {
-            // console.log(error.message);
-            // this.$sound.singlePlay('./sound/cancel_pay.mp3');
-            this.$emit('fail', error.message);
-            this.$soundManager.singlePlay('cancel_pay.mp3');
-            this.visible = false;
-          });
+        if(this.cardModule === 'koces' || this.cardModule === 'kicc') {
+          ipcRenderer.invoke(`card-pay-${this.cardModule}`, null, this.realAmount)
+            .then(value => {
+              this.$emit('submit', parseInt(value, 10));
+              this.visible = false;
+            }).catch(error => {
+              // console.log(error.message);
+              // this.$sound.singlePlay('./sound/cancel_pay.mp3');
+              this.$emit('fail', error.message);
+              this.$soundManager.singlePlay('cancel_pay.mp3');
+              this.visible = false;
+            });
+        } else {
+          this.$refs.cardModuleAlert.show(true);
+          this.visible = false;
+        }
 
       } else {
         ipcRenderer.invoke('card-close');
