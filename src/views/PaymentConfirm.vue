@@ -222,18 +222,18 @@ export default {
     serverPaymentRequest: debounce(async function(realAmount = 0, payMethod = 'point') {
       realAmount = parseInt(realAmount, 10);
       // 결제 정보 검증
-      if (payMethod === 'point') {
+      if (payMethod === 'point') { // 포인트 전액결제
         this.appendAction({
           payMethod: 'point',
           usePoint: this.usePoint,
           totalPoint: -this.usePoint,
         });
-      } else if (payMethod === 'cash' && this.inputAmount <= this.usePoint + realAmount) {
+      } else if (payMethod === 'cash' && this.inputAmount <= this.usePoint + realAmount) { // 현금결제 + 포인트사용이 투입해야할 금액보다 큰 경우 차액 충전
         const eventRate = this.$store.getters.getEventRate(payMethod, realAmount);
         const appendPoint = Math.floor(realAmount * eventRate);
         const totalPoint = realAmount + appendPoint - this.userAction.inputAmount;
         this.appendAction({ realAmount, eventRate, appendPoint, totalPoint });
-      } else if (payMethod === 'cash' && this.inputAmount > this.usePoint + realAmount) {
+      } else if (payMethod === 'cash' && this.inputAmount > this.usePoint + realAmount) { // 현금결제 + 포인트사용이 투입해야할 금액보다 작은 경우 전액 충전
         const eventRate = this.$store.getters.getEventRate(payMethod, realAmount);
         const appendPoint = Math.floor(realAmount * eventRate);
         const totalPoint = realAmount + appendPoint;

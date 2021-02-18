@@ -13,7 +13,7 @@
           <dd>투입할 금액을 입력해주세요</dd>
         </dl>
         <div class="numberView">
-          <label>세탁기에<br />투입될금액</label>
+          <label><br />투입될금액</label>
           <div class="price">
             <strong>{{ parseInt(inputAmount, 10) | numeral('0,0') }}</strong>
             <span>원</span>
