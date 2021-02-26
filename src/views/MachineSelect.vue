@@ -74,7 +74,21 @@
                           <dt>{{ product.name }}</dt>
                           <dd>{{ product.notice }}</dd>
                         </dl>
-                        <strong>{{ product.amount | numeral('0,0') }}원</strong>
+
+                        <span 
+                          v-if="disscountRate > 0"
+                          class="originalPrice"
+                        >
+                          {{ product.amount | numeral('0,0') }}원
+                        </span>
+                        <span 
+                          v-if="disscountRate > 0"
+                          class="disscountBadge"
+                        >할인금액</span>
+
+                        <strong>
+                          {{ parseInt(product.amount, 10) * (1 - disscountRate) | numeral('0,0') }}원
+                        </strong>
                       </div>
                     </v-list-item>
                   </v-list-item-group>
@@ -133,6 +147,9 @@ export default {
       useDeviceInputMode: state => state.kiosk.useDeviceInputMode,
       categories: state => state.kiosk.tabs,
     }),
+    disscountRate() {
+      return this.$store.getters.getDisscountRate();
+    },
     // categories() {
     //   return Object.keys(this.machinesByCategory);
     // },
@@ -184,13 +201,14 @@ export default {
     nextPage(product) {
       let { machineId, amount: inputAmount, id: ProductId } = product;
       inputAmount = parseInt(inputAmount, 10);
+      const publishAmount = inputAmount;
 
       // console.log(machineId, inputAmount);
       // console.log(
       //   '선택한 상품 vuex에 userAction에 추가\n상품선택 방법: prodcut 다음페이지: ProductPay',
       //   product,
       // );
-      this.appendAction(Object.assign({}, { machineId, inputAmount, ProductId, type: 'use' }));
+      this.appendAction(Object.assign({}, { machineId, inputAmount: inputAmount * (1 - this.disscountRate), ProductId, type: 'use', publishAmount }));
       this.$router.push({ name: 'PaymentConfirm', params: { productName: product.name } });
     },
     backList() {
@@ -387,13 +405,30 @@ export default {
             color: #888;
           }
         }
+        .originalPrice {
+          color: #888;
+          text-decoration: line-through;
+          font-size: 30px;
+        }
+        .disscountBadge {
+          color: white;
+          font-size: 30px;
+          background: #f93636;
+          border-radius: 12px;
+          display: inline-block;
+          width: 130px;
+          text-align: center;
+          margin-left: 20px;
+          margin-right: 5px;
+        }
         strong {
           display: block;
-          width: 200px;
+          // width: 200px;
           text-align: right;
-          font-size: 34px;
+          font-size: 50px;
           font-weight: 600;
           color: #ee2073;
+          padding-bottom: 5px;
         }
       }
     }

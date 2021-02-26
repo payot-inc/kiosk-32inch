@@ -34,7 +34,16 @@
           </dl>
           <dl>
             <dt>투입 예정금액</dt>
-            <dd>{{ inputAmount | numeral('0,0') }} 원</dd>
+            <dd 
+              v-if="inputAmount === publishAmount"
+            >{{ inputAmount | numeral('0,0') }} 원</dd>
+            <dd
+              v-if="inputAmount !== publishAmount"
+            >
+              <span class="originalPrice">{{ publishAmount | numeral('0,0') }} 원</span>
+              <span class="discountBadge">할인금액</span>
+              <strong>{{ inputAmount | numeral('0,0') }} 원</strong>
+            </dd>
           </dl>
           <div class="divider"></div>
           <dl class="pointUse">
@@ -154,6 +163,7 @@ export default {
       userAction: state => state.userAction,
       inputAmount: state => state.userAction.inputAmount,
       payType: state => state.kiosk.payType,
+      publishAmount: state => state.userAction.publishAmount,
     }),
     selectedMachine() {
       const machines = this.$store.state.machines;
@@ -395,6 +405,26 @@ export default {
       dd {
         font-size: 32px;
         color: #292929;
+        .originalPrice {
+          color: #888;
+          text-decoration: line-through;
+          font-size: 28px;
+        }
+        .discountBadge {
+          font-size: 20px;
+          color: white;
+          background: #f93636;
+          border-radius: 12px;
+          display: inline-block;
+          width: 100px;
+          text-align: center;
+          margin-left: 20px;
+          margin-right: 10px;
+        }
+        strong {
+          font-weight: 500;
+          font-size: 40px;
+        }
       }
     }
     dl.pointUse {

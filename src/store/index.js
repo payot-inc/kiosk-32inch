@@ -24,7 +24,12 @@ function generateDefaultAction(companyId, userId) {
     appendPoint: 0, // 추가 적립금액
     eventRate: 0, // 추가지급률
     totalPoint: 0, // 총 변동 포인트
+    publishAmount: 0, // 장비에 퍼블리싱 되어야 하는 금액
   };
+}
+
+function hoursAndMinutesToMinutes(hours, minutes) {
+  return (hours * 60) + minutes;
 }
 
 export default new Vuex.Store({
@@ -60,7 +65,34 @@ export default new Vuex.Store({
       if(state.kiosk.events) {
         return state.kiosk.events
           .sort((a, b) => b.weekDay - a.weekDay)
-          .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
+          .find(({ weekDay }) => weekDay === -1);
+          // .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
+      }
+    },
+    disscountEvent(state) {
+      if(state.kiosk.events) {
+        return state.kiosk.events
+          .sort((a, b) => b.weekDay - a.weekDay)
+          .find(({ weekDay }) => weekDay === new Date().getDay());
+      }
+    },
+    getDisscountRate: (state, getters) => () => {
+      const kioskEvent = getters.disscountEvent;
+      if(!kioskEvent) return 0;
+      // console.log('할인정책', kioskEvent);
+      const { startTime, endTime } = kioskEvent;
+      const [starthours, startminutes] = startTime.split(':');
+      const [endhours, endminutes] = endTime.split(':');
+      const now = new Date();
+      const startM = hoursAndMinutesToMinutes(parseInt(starthours, 10), parseInt(startminutes));
+      const endM = hoursAndMinutesToMinutes(parseInt(endhours, 10), parseInt(endminutes));
+      const nowM = hoursAndMinutesToMinutes(now.getHours(), now.getMinutes());
+
+      // console.log(startM, nowM, endM);
+      if(nowM >= startM && nowM <= endM) {
+        return kioskEvent.rule.cash[0] / 100;
+      } else {
+        return 0;
       }
     },
   },
@@ -220,7 +252,7 @@ export default new Vuex.Store({
       }
       const { data } = await kioskAPI({
         method: 'POST',
-        url: `/pay`,
+        url: `/pay/discount`,
         data: { params: form },
         timeout: parseInt(form.inputAmount / 500, 10) * 3000 ,
         // timeout: 1,

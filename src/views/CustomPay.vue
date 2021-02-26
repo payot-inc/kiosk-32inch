@@ -15,7 +15,11 @@
         <div class="numberView">
           <label><br />투입될금액</label>
           <div class="price">
-            <strong>{{ parseInt(inputAmount, 10) | numeral('0,0') }}</strong>
+            <span class="originalPrice" v-if="this.inputAmount > 0 && this.disscountRate > 0">
+              {{ parseInt(inputAmount, 10) | numeral('0,0') }}원
+              <span class="discountBadge">할인금액</span>
+            </span>
+            <strong>{{ parseInt(inputAmount, 10) * (1 - this.disscountRate) | numeral('0,0') }}</strong>
             <span>원</span>
           </div>
         </div>
@@ -95,6 +99,9 @@ export default {
       const machines = this.$store.state.machines;
       return machines.find(machine => machine.id === this.machineId);
     },
+    disscountRate() {
+      return this.$store.getters.getDisscountRate();
+    }
   },
   methods: {
     ...mapMutations({
@@ -111,8 +118,9 @@ export default {
       if (this.inputAmount <= 0) return;
 
       const type = 'use';
-      const { inputAmount } = this;
-      this.appendAction({ inputAmount, type });
+      const { inputAmount, disscountRate } = this;
+      const publishAmount = inputAmount;
+      this.appendAction({ inputAmount: publishAmount * (1 - disscountRate), type, publishAmount });
       this.$router.push({ name: 'PaymentConfirm' });
     },
   },
@@ -157,6 +165,23 @@ export default {
     .price {
       flex: 1;
       text-align: right;
+      .originalPrice {
+        color: #888;
+        text-decoration: line-through;
+        margin-right: 5px;
+        font-size: 30px;
+
+        .discountBadge {
+          font-size: 30px;
+          color: white;
+          background: #f93636;
+          border-radius: 12px;
+          display: inline-block;
+          width: 130px;
+          text-align: center;
+          margin-left: 30px;
+        }
+      }
       strong {
         font-size: 64px;
         font-weight: 700;
