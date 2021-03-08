@@ -64,6 +64,10 @@ function request(params) {
         } else if (statusStr === '9999') {
           saveLog(results, false);
           return reject(new Error('카드결제 취소'));
+        } else {
+          const { resultString } = results;
+          const errorMessage = resultString.substring(101, 123);
+          return reject(new Error(errorMessage));
         }
       } catch (error) {
         saveLog(results, false);
