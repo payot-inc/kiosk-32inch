@@ -94,7 +94,7 @@
       message="장치와의 통신이 원활하지 않습니다"
       mode="alert"
     />
-    <ProgressModal ref="progress" title="연결상 태 확인 중" />
+    <ProgressModal ref="progress" title="연결상태 확인 중" />
     <OverlayGuide>
       <img src="@/assets/img/overlay_guide01.png" />
     </OverlayGuide>
