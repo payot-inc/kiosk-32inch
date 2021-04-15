@@ -20,9 +20,11 @@ export default async function initCoinDevice(eventer) {
     const [cmd, message] = payload.toString().trim().split(':');
     if (cmd !== 'BILL') return;
 
-    const amount = parseInt(message, 10);
-    // eventer.send('cash-input', amount);
-    inputEvent.next(parseInt(message, 10));
+    if (parseInt(message, 10)) {
+      // const amount = parseInt(message, 10);
+      // eventer.send('cash-input', amount);
+      inputEvent.next(parseInt(message, 10));
+    }
   });
 
   ipcMain.handle('cash-open', (event, isOpen) => {

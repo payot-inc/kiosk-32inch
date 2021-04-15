@@ -128,10 +128,10 @@ export default {
   },
   methods: {
     open(state) {
-      if(new Date().getHours() === 0) {
-        this.$refs.alert.show(true);
-        return;
-      }
+      // if(new Date().getHours() === 0) {
+      //   this.$refs.alert.show(true);
+      //   return;
+      // }
       this.visible = state;
     },
     close() {
