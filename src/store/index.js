@@ -41,6 +41,7 @@ export default new Vuex.Store({
     cardModule: {
       type: null,
     },
+    useGuide: true,
   },
   getters: {
     getEventRate: (state, getters) => (type, amount) => {
@@ -65,6 +66,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    SET_USEGUIDE(state, value) {
+      state.useGuide = value;
+    },
     /** 계정 정보 */
     SET_COMPANY(state, value) {
       state.company = value;

@@ -16,6 +16,9 @@
           <v-btn outlined height="90px" class="loginBtn" dark @click="kioskLogin('koces')">KOCES 로그인(32BIT)</v-btn>
           <v-btn outlined height="90px" class="loginBtn" dark @click="kioskLogin('kicc')">KICC 로그인</v-btn>
         </div>
+        <div class="checkBox">
+          <input type="checkbox" v-model="useGuide" /><span>이용 가이드 오버레이 표시</span>
+        </div>
       </div>
     </div>
 
@@ -55,6 +58,7 @@ export default {
         message: '',
       },
       exitCount: 0,
+      useGuide: this.$store.state.useGuide,
     };
   },
   watch: {
@@ -63,6 +67,9 @@ export default {
         ipcRenderer.invoke('exit-app');
         // remote.app.exit();
       }
+    },
+    useGuide(newValue) {
+      this.$store.commit('SET_USEGUIDE', newValue);
     },
   },
   mounted() {
@@ -217,6 +224,21 @@ export default {
       background: #3f29d9;
       border: 0px;
       width: 48%;
+    }
+  }
+  .checkBox {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    input {
+      width: 36px;
+      height: 36px;
+      vertical-align: middle;
+    }
+    span {
+      margin-left: 20px;
+      font-size: 33px;
+      font-weight: 500;
     }
   }
 }

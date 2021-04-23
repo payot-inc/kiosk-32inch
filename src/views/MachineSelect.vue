@@ -95,7 +95,7 @@
       mode="alert"
     />
     <ProgressModal ref="progress" title="연결상태 확인 중" />
-    <OverlayGuide>
+    <OverlayGuide v-show="useGuide">
       <img src="@/assets/img/overlay_guide01.png" />
     </OverlayGuide>
   </div>
@@ -132,6 +132,7 @@ export default {
       machines: state => state.machines,
       useDeviceInputMode: state => state.kiosk.useDeviceInputMode,
       categories: state => state.kiosk.tabs,
+      useGuide: state => state.useGuide,
     }),
     // categories() {
     //   return Object.keys(this.machinesByCategory);
