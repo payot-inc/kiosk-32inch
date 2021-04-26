@@ -120,7 +120,7 @@ export default {
       ads: [],
       action: [
         { name: 'PointCharge', redirectRouteName: 'ChargeType', title: '충전하기' },
-        { name: 'MachineSelect', redirectRouteName: 'MachineSelect', title: '이용하기' },
+        { name: 'MachineSelect', redirectRouteName: 'CategorySelect', title: '이용하기' },
         { name: 'UseList', redirectRouteName: 'UseList', title: '조회하기' },
       ],
     };

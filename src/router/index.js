@@ -13,6 +13,7 @@ import ChargeType from '../views/ChargeType.vue';
 import CashCharge from '../views/CashCharge.vue';
 import CardCharge from '../views/CardCharge.vue';
 
+import CategorySelect from '../views/CategorySelect.vue';
 import MachineSelect from '../views/MachineSelect.vue';
 import UseMachine from '../views/UseMachine.vue';
 import Result from '../views/Result.vue';
@@ -99,6 +100,12 @@ const routes = [
           });
           next();
         },
+      },
+      /** 장비 카테고리 선택 페이지 */
+      {
+        path: '/CategorySelect',
+        name: 'CategorySelect',
+        component: CategorySelect,
       },
       {
         /** 장비 및 상품선택 페이지 */

@@ -16,9 +16,9 @@
           <v-btn outlined height="90px" class="loginBtn" dark @click="kioskLogin('koces')">KOCES 로그인(32BIT)</v-btn>
           <v-btn outlined height="90px" class="loginBtn" dark @click="kioskLogin('kicc')">KICC 로그인</v-btn>
         </div>
-        <div class="checkBox">
+        <!-- <div class="checkBox">
           <input type="checkbox" v-model="useGuide" /><span>이용 가이드 오버레이 표시</span>
-        </div>
+        </div> -->
       </div>
     </div>
 

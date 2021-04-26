@@ -151,7 +151,7 @@ export default {
     goMachineSelect() {
       const point = this.user.point + this.userAction.totalPoint;
       this.setUser(Object.assign({}, this.user, { point }));
-      this.$router.push({ name: 'MachineSelect' });
+      this.$router.push({ name: 'CategorySelect' });
     },
     replaceMain() {
       // this.$sound.singlePlay('./sound/thank_you.mp3');

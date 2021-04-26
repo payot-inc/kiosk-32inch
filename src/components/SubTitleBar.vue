@@ -43,12 +43,14 @@ export default {
       if(this.realAmount > 0) {
         this.$emit('cantBack');
       } else if(
-        ['ChargeType', 'MachineSelect', 'UseList'].includes(this.$route.name) ||
+        ['ChargeType', 'CategorySelect', 'UseList'].includes(this.$route.name) ||
         (this.$route.name === 'CashCharge' && !this.cardPay) ||
         (this.$route.name === 'CardCharge' && !this.cashPay)) {
           this.$refs.confirm.show(true);
       } else if(this.$route.name === 'UserLogin') {
         this.$router.replace({ name: 'Main' });
+      } else if(this.$route.name === 'CustomPay') {
+        this.$router.go(-2);
       } else {
         this.$router.go(-1);
       }

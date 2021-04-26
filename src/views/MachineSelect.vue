@@ -4,88 +4,73 @@
     <UserInfo />
 
     <div class="productTab">
-      <div class="tabHead">
-        <v-tabs height="120px" v-model="tab" dark hide-slider left background-color="#e2e2e2">
-          <v-tab
-            v-for="category in categories"
-            :key="category"
-            class="tabTitle"
-            active-class="tabTitleActive"
-            @click="backList"
-            translate="fade"
-            :ripple="true"
-            >{{ category }}</v-tab>
-        </v-tabs>
-      </div>
 
-      <v-tabs-items v-model="tab" light touchless>
-        <v-tab-item v-for="(category, i) in categories" :key="i" class="tabContents">
-          <div class="listWrap">
-            <div class="eqList" :class="eqListMove">
-              <div class="listTitle">
-                <v-icon size="60" color="#fff" class="mr-4">mdi-washing-machine</v-icon>
-                <span>사용하실 장비를 선택해주세요</span>
-                </div>
-              <div class="itemList">
-                <v-list flat three-line>
-                  <v-list-item-group>
-                    <v-list-item
-                      v-for="machine in machinesByCategory[category]"
-                      :key="machine.id"
-                      @click="nextList(machine)"
-                    >
-                      <div class="eqItem">
-                        <dl>
-                          <dt>{{ machine.name }}</dt>
-                          <dd>용량 {{ machine.size }}</dd>
-                        </dl>
-                        <v-icon size="60">mdi-chevron-right</v-icon>
-                      </div>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-              </div>
-            </div>
-            <!-- eqList -->
-
-            <div class="goodsList" :class="goodsListMove">
-              <div class="listTitle">
-                <v-btn width="100px" height="100px" elevation="0" class="backBtn" @click="backList">
-                  <v-icon size="50" color="#fff">mdi-chevron-left</v-icon>
-                </v-btn>
-                <dl>
-                  <dt>
-                    <span>{{ selectedMachine.name }}</span
-                    >(을)/를 선택하셨습니다
-                  </dt>
-                  <dd>상품을 선택해주세요</dd>
-                </dl>
-              </div>
-              <div class="itemList">
-                <v-list flat three-line>
-                  <v-list-item-group>
-                    <v-list-item
-                      v-for="product in selectedMachine.products"
-                      :key="product.id"
-                      @click="nextPage(product)"
-                    >
-                      <div class="goodsItem">
-                        <dl>
-                          <dt>{{ product.name }}</dt>
-                          <dd>{{ product.notice }}</dd>
-                        </dl>
-                        <strong>{{ product.amount | numeral('0,0') }}원</strong>
-                      </div>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-              </div>
-            </div>
-            <!-- goodsList -->
+      <div class="listWrap">
+        <div class="eqList" :class="eqListMove">
+          <div class="listTitle">
+            <v-icon>fa-washer</v-icon>사용하실 장비를 선택해주세요
           </div>
-          <!--listWrap -->
-        </v-tab-item>
-      </v-tabs-items>
+          <div class="itemList">
+            <v-list flat three-line>
+              <v-list-item-group>
+                <v-list-item
+                  v-for="machine in machinesByCategory"
+                  :key="machine.id"
+                  @click="nextList(machine)"
+                >
+                  <div class="eqItem">
+                    <dl>
+                      <dt>{{ machine.name }}</dt>
+                      <dd>용량 {{ machine.size }}</dd>
+                    </dl>
+                    <v-icon size="50">mdi-chevron-right</v-icon>
+                  </div>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </div>
+        </div>
+        <!-- eqList -->
+
+        <div class="goodsList" :class="goodsListMove">
+          <div class="listTitle">
+            <v-btn
+              width="100px"
+              height="100px"
+              elevation="0"
+              class="backBtn"
+              @click="backList"
+            >
+              <v-icon size="45">mdi-arrow-left</v-icon>
+            </v-btn>
+            <dl>
+              <dt><span>{{ selectedMachine.name }}</span></dt>
+              <dd>상품을 선택해주세요</dd>
+            </dl>
+          </div>
+          <div class="itemList">
+            <v-list flat three-line>
+              <v-list-item-group>
+                <v-list-item
+                  v-for="product in selectedMachine.products"
+                  :key="product.id"
+                  @click="nextPage(product)"
+                >
+                  <div class="goodsItem">
+                    <dl>
+                      <dt>{{ product.name }}</dt>
+                      <dd>{{ product.notice }}</dd>
+                    </dl>
+                    <strong>{{ product.amount | numeral('0,0') }}원</strong>
+                  </div>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </div>
+        </div>
+        <!-- goodsList -->
+      </div>
+      <!--listWrap -->
     </div>
 
     <AlertModal
@@ -95,9 +80,6 @@
       mode="alert"
     />
     <ProgressModal ref="progress" title="연결상태 확인 중" />
-    <OverlayGuide v-show="useGuide">
-      <img src="@/assets/img/overlay_guide01.png" />
-    </OverlayGuide>
   </div>
 </template>
 
@@ -106,7 +88,6 @@ import SubTitleBar from '@/components/SubTitleBar.vue';
 import UserInfo from '@/components/UserInfo.vue';
 import AlertModal from '@/components/modal/AlertModal.vue';
 import ProgressModal from '@/components/modal/ProgressModal.vue';
-import OverlayGuide from '@/components/MachineSelect/OverlayGuide.vue';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import { groupBy, sortBy } from 'lodash';
 export default {
@@ -116,11 +97,9 @@ export default {
     UserInfo,
     AlertModal,
     ProgressModal,
-    OverlayGuide,
   },
   data() {
     return {
-      tab: null,
       eqListMove: '',
       goodsListMove: '',
       machinesByCategory: {},
@@ -131,15 +110,15 @@ export default {
     ...mapState({
       machines: state => state.machines,
       useDeviceInputMode: state => state.kiosk.useDeviceInputMode,
-      categories: state => state.kiosk.tabs,
-      useGuide: state => state.useGuide,
     }),
     // categories() {
     //   return Object.keys(this.machinesByCategory);
     // },
   },
   mounted() {
-    this.machinesByCategory = groupBy(sortBy(this.machines, 'sort'), machine => machine.category);
+    const { category } = this.$route.params;
+    this.machinesByCategory = this.machines.filter(machine => machine.category === category);
+    // this.machinesByCategory = groupBy(sortBy(this.machines, 'sort'), machine => machine.category);
 
     // if (this.useDeviceInputMode === 'custom') this.$sound.singlePlay('./sound/select_machine.mp3');
     // else if (this.useDeviceInputMode === 'product')
@@ -209,177 +188,68 @@ export default {
   flex-direction: column;
   width: 100%;
   position: relative;
-  margin-top: 60px;
+  padding:60px;
 }
-.tabHead {
-  padding: 0 60px;
-  background: #e2e2e2;
-  position: relative;
-  height: 118px;
-  padding-top: 22px;
-}
-.v-tab {
-  width: 280px;
-  background: unset;
-  font-size: 36px;
-  letter-spacing: 0;
-  height: 100px;
-  border-radius: 20px 20px 0 0;
-}
-.tabTitle {
-  background: #e2e2e2;
-  overflow: hidden;
-  color: #888 !important;
-}
-.tabTitleActive {
-  background:#fff;
-  border-radius: 20px 20px 0 0;
-  border: 0px;
-  color: #0085de !important ;
-}
-.v-tabs-items {
-  flex: 1;
-}
-.tabContents {
-  position: relative;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  height: 100%;
-  padding: 60px;
 
-  .listWrap {
-    position: relative;
-    height: 1100px;
+.listWrap {
+  position: relative;
+  flex:1;
+  width: 100%;
+  border: 2px solid #d2d2d2;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
+
+  .eqList {
+    position: absolute;
     width: 100%;
-    border: 2px solid #d2d2d2;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.1);
-    .eqList {
-      position: absolute;
-      width: 100%;
-      top: 0px;
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      height: 100%;
-      z-index: 10;
-      border-right: 1px solid #e2e2e2;
-      .listTitle {
-        display: flex;
-        font-size: 36px;
-        height: 160px;
-        background: #0085de;
-        color: #fff;
-        justify-content: center;
-        align-items: center;
-      }
-      .itemList {
-        &::-webkit-scrollbar {
-          width: 10px;
-          height: 10px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 5px;
-          background-color: #ced4da;
+    top: 0px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    z-index: 10;
+    border-right: 1px solid #e2e2e2;
+    
 
-          &:hover {
-            background-color: #adb5bd;
-          }
-        }
-        &::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0);
-        }
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background: #f2f2f2;
-        overflow-y: scroll;
-        .eqItem {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          dl {
-            dt {
-              font-size: 36px;
-            }
-            dd {
-              font-size: 28px;
-              color: #888;
-            }
-          }
-        }
-      }
+    .listTitle {
+      display: flex;
+      font-size: 36px;
+      height: 160px;
+      background: #0085de;
+      color: #fff;
+      justify-content: center;
+      align-items: center;
     }
-    .goodsList {
-      position: absolute;
-      width: 100%;
-      top: 0px;
+
+    .itemList {
+      &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: #0085de;
+
+        &:hover {
+          background-color: #0085de;
+        }
+      }
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0);
+      }
       display: flex;
       flex: 1;
       flex-direction: column;
-      height: 100%;
-      .itemList {
-        &::-webkit-scrollbar {
-          width: 10px;
-          height: 10px;
-        }
-        &::-webkit-scrollbar-thumb {
-          border-radius: 5px;
-          background-color: #ced4da;
+      background: #f2f2f2;
+      overflow-y: scroll;
 
-          &:hover {
-            background-color: #adb5bd;
-          }
-        }
-        &::-webkit-scrollbar-track {
-          background: rgba(0, 0, 0, 0);
-        }
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-        background: #f2f2f2;
-        overflow-y: scroll;
-      }
-      .listTitle {
-        padding: 30px;
-        height: 160px;
-        display: flex;
-        background: #0085de;
-        color: #fff;
-        align-items: center;
-        dl {
-          margin-left: 40px;
-          dt {
-            font-size: 42px;
-            span {
-              color: #fff500;
-            }
-          }
-          dd {
-            font-size: 26px;
-            color: rgba(255, 255, 255, 0.8);
-          }
-        }
-        .backBtn {
-          background: rgba(0, 0, 0, 0.2);
-          border-radius: 10px;
-        }
-      }
-      .goodsItem {
-        flex: 1;
+      .eqItem {
         display: flex;
         justify-content: space-between;
-        align-items: center;
         width: 100%;
+
         dl {
-          display: flex;
-          flex-direction: column;
-          flex: 1;
           dt {
             font-size: 36px;
           }
@@ -388,18 +258,107 @@ export default {
             color: #888;
           }
         }
-        strong {
-          display: block;
-          width: 200px;
-          text-align: right;
-          font-size: 34px;
-          font-weight: 600;
-          color: #ee2073;
+      }
+    }
+  }
+
+  .goodsList {
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+
+    .itemList {
+      &::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: #0085de;
+
+        &:hover {
+          background-color: #327bc4;
         }
+      }
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0);
+      }
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      background: #f2f2f2;
+      overflow-y: scroll;
+    }
+
+    .listTitle {
+      padding: 30px;
+      height: 160px;
+      display: flex;
+      background: #0085de;
+      color: #fff;
+      align-items: center;
+
+      dl {
+        margin-left: 40px;
+
+        dt {
+          font-size: 42px;
+          span {
+            color: #fff500;
+          }
+        }
+        dd {
+          font-size: 26px;
+          color: rgba(255, 255, 255, 0.8);
+        }
+      }
+
+      .v-btn.backBtn{
+        background:#fff;
+        border-radius:15px;
+
+        .v-icon{
+          color:#292929;
+        }
+      }
+    }
+
+    .goodsItem {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+
+      dl {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        dt {
+          font-size: 36px;
+        }
+        dd {
+          font-size: 28px;
+          color: #888;
+        }
+      }
+      strong {
+        display: block;
+        width: 200px;
+        text-align: right;
+        font-size: 34px;
+        font-weight: 600;
+        color: #ee2073;
       }
     }
   }
 }
+
+
 .v-list {
   padding: 0px;
 }
@@ -414,6 +373,7 @@ export default {
 .v-overlay__content {
   width: 100%;
 }
+
 .eqList.on {
   animation: eqListMoveOn 0.3s forwards;
 }
@@ -426,6 +386,7 @@ export default {
 .goodsList.off {
   animation: goodsListMoveOff 0.3s forwards;
 }
+
 @keyframes eqListMoveOn {
   0% {
     left: -100%;
@@ -434,6 +395,7 @@ export default {
     left: 0;
   }
 }
+
 @keyframes eqListMoveOff {
   0% {
     left: 0;
@@ -442,6 +404,7 @@ export default {
     left: -100%;
   }
 }
+
 @keyframes goodsListMoveOn {
   0% {
     left: 100%;
@@ -450,6 +413,7 @@ export default {
     left: 0;
   }
 }
+
 @keyframes goodsListMoveOff {
   0% {
     left: 0;
