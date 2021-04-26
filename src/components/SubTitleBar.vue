@@ -32,6 +32,7 @@ export default {
     ...mapState({
       cardPay: state => state.kiosk.payType.card,
       cashPay: state => state.kiosk.payType.cash,
+      useDeviceInputMode: state => state.kiosk.useDeviceInputMode,
     }),
   },
   methods: {
@@ -51,6 +52,12 @@ export default {
         this.$router.replace({ name: 'Main' });
       } else if(this.$route.name === 'CustomPay') {
         this.$router.go(-2);
+      } else if(this.$route.name === 'PaymentConfirm') {
+        if(this.useDeviceInputMode === 'custom') {
+          this.$router.go(-1);
+        } else {
+          this.$router.go(-2);
+        }
       } else {
         this.$router.go(-1);
       }
