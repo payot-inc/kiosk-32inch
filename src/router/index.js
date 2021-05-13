@@ -170,7 +170,12 @@ const router = new VueRouter({
   routes,
 });
 
-router.beforeEach((to, from, next) => {
+function delay(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+router.beforeEach(async (to, from, next) => {
+  await delay(50);
   const isAccountLogin = store.state.company.id;
   const loginLessPageName = ['AccountLogin', 'Error'].includes(to.name);
 
