@@ -11,7 +11,7 @@
       <div class="pointItems fill-height">
         <v-row>
           <v-col cols="6" v-for="(col, i) in pointGoods" :key="col.id">
-            <div class="pointItem" @click="selectItem(col, bonus[i])" v-ripple>
+            <div class="pointItem" v-touchEvent:end="() => selectItem(col, bonus[i])" v-ripple>
               <div class="priceInfo">
                 <strong>{{ col.name }}</strong>
                 <span>{{ col.price | numeral('0,0') }} 원</span>

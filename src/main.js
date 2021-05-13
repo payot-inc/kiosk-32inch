@@ -13,6 +13,13 @@ import './plugins/auto_reboot';
 import './plugins/ad';
 import { ipcRenderer } from 'electron';
 
+import Vue2TouchEvents from 'vue2-touch-events';
+
+Vue.use(Vue2TouchEvents, {
+  disableClick: false,
+  namespace: 'touchEvent',
+});
+
 if(store.state.company?.id) {
   ipcRenderer.invoke('login', store.state.company.id);
 }

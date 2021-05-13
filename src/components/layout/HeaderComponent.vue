@@ -17,7 +17,7 @@
         width="140px"
         height="140px"
         text-color="#fff"
-        @click="goHome"
+        v-touchEvent:end="goHome"
       >
         <v-icon size="60">mdi-home</v-icon>
       </v-btn>

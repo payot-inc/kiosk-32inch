@@ -42,11 +42,11 @@
         </div>
 
         <div class="finishBtns">
-          <v-btn class="left" height="100px" outlined @click="goMachineSelect">
+          <v-btn class="left" height="100px" outlined v-touchEvent:end="goMachineSelect">
             <v-icon size="36px">mdi-washing-machine</v-icon>
             <span>장비추가이용</span>
           </v-btn>
-          <v-btn class="right" height="100px" outlined @click="replaceMain">
+          <v-btn class="right" height="100px" outlined v-touchEvent:end="replaceMain">
             <v-icon size="36px">mdi-home</v-icon>
             <span>메인으로</span>
           </v-btn>

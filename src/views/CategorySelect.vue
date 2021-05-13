@@ -15,7 +15,7 @@
 
         <div 
           class="btn" 
-          @click="nextPage('MachineSelect', '세탁기')" 
+          v-touchEvent:end="() => nextPage('MachineSelect', '세탁기')" 
           v-ripple 
           v-if="tabs.includes('세탁기')"
         >
@@ -35,7 +35,7 @@
 
         <div 
           class="btn" 
-          @click="nextPage('MachineSelect', '건조기')" 
+          v-touchEvent:end="() => nextPage('MachineSelect', '건조기')" 
           v-ripple 
           v-if="tabs.includes('건조기')"
         >
@@ -57,7 +57,7 @@
           v-for="tab in tabsExceptDefaults"
           :key="tab.id"
           class="btn" 
-          @click="nextPage('MachineSelect', tab)" 
+          v-touchEvent:end="() => nextPage('MachineSelect', tab)" 
           v-ripple
         >
           <dl>

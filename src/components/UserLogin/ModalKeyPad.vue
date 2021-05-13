@@ -19,18 +19,18 @@
           elevation="0"
           v-for="number in numbers"
           :key="number"
-          @click="inputKey(number)"
+          v-touchEvent:end="() => inputKey(number)"
           >{{ number }}</v-btn
         >
       </div>
       <div class="rowLine">
-        <v-btn width="180px" height="90px" class="number del" elevation="0" @click="inputKey('delete')">
+        <v-btn width="180px" height="90px" class="number del" elevation="0" v-touchEvent:end="() => inputKey('delete')">
           <v-icon size="40">mdi-backspace</v-icon>
         </v-btn>
-        <v-btn width="180px" height="90px" class="number" elevation="0" @click="inputKey(0)"
+        <v-btn width="180px" height="90px" class="number" elevation="0" v-touchEvent:end="() => inputKey(0)"
           >0</v-btn
         >
-        <v-btn @click="inputKey('clear')" width="180px" height="90px" class="number all" elevation="0"
+        <v-btn v-touchEvent:end="() => inputKey('clear')" width="180px" height="90px" class="number all" elevation="0"
           >다시입력</v-btn
         >
       </div>

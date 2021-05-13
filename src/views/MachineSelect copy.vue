@@ -11,7 +11,7 @@
             :key="category"
             class="tabTitle"
             active-class="tabTitleActive"
-            @click="backList"
+            v-touchEvent:end="backList"
             translate="fade"
             :ripple="true"
             >{{ category }}</v-tab>
@@ -32,7 +32,7 @@
                     <v-list-item
                       v-for="machine in machinesByCategory[category]"
                       :key="machine.id"
-                      @click="nextList(machine)"
+                      v-touchEvent:end="() => nextList(machine)"
                     >
                       <div class="eqItem">
                         <dl>
@@ -50,7 +50,7 @@
 
             <div class="goodsList" :class="goodsListMove">
               <div class="listTitle">
-                <v-btn width="100px" height="100px" elevation="0" class="backBtn" @click="backList">
+                <v-btn width="100px" height="100px" elevation="0" class="backBtn" v-touchEvent:end="backList">
                   <v-icon size="50" color="#fff">mdi-chevron-left</v-icon>
                 </v-btn>
                 <dl>
@@ -67,7 +67,7 @@
                     <v-list-item
                       v-for="product in selectedMachine.products"
                       :key="product.id"
-                      @click="nextPage(product)"
+                      v-touchEvent:end="() => nextPage(product)"
                     >
                       <div class="goodsItem">
                         <dl>

@@ -27,7 +27,7 @@
               elevation="0"
               class="coinBtn"
               outlined
-              @click="push(500)"
+              v-touchEvent:end="() => push(500)"
               >500원 추가</v-btn
             >
           </div>
@@ -38,11 +38,11 @@
               elevation="0"
               class="coinBtn"
               outlined
-              @click="push(1000)"
+              v-touchEvent:end="() => push(1000)"
               >1,000원 추가</v-btn
             >
           </div>
-          <v-btn width="200px" height="90px" elevation="0" class="clear" outlined @click="clear"
+          <v-btn width="200px" height="90px" elevation="0" class="clear" outlined v-touchEvent:end="clear"
             >초기화</v-btn
           >
         </div>
@@ -52,7 +52,7 @@
           height="90px"
           elevation="0"
           color="#292929"
-          @click="nextPage"
+          v-touchEvent:end="nextPage"
           >입력완료</v-btn
         >
       </div>

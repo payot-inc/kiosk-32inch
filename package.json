@@ -1,6 +1,6 @@
 {
   "name": "payot-kiosk-premium",
-  "version": "5.2.1",
+  "version": "5.3.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -36,6 +36,7 @@
     "vue-moment": "^4.1.0",
     "vue-numeral-filter": "^2.0.0",
     "vue-router": "^3.2.0",
+    "vue2-touch-events": "^3.2.2",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0",
     "vuex-electron": "^1.0.3",

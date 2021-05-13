@@ -62,7 +62,7 @@
 
     <div class="mainBtns">
       <div class="btns-inner">
-        <div class="chage btn" v-ripple @click="nextStep(action[0])">
+        <div class="chage btn" v-ripple v-touchEvent:end="() => nextStep(action[0])">
           <dl>
             <dt>충전하기</dt>
             <dd>미리 금액 충전하고 보너스 받기</dd>
@@ -71,7 +71,7 @@
             mdi-arrow-right-circle
           </v-icon>
         </div>
-        <div class="use btn" v-ripple @click="nextStep(action[1])">
+        <div class="use btn" v-ripple v-touchEvent:end="() => nextStep(action[1])">
           <dl>
             <dt>이용하기</dt>
             <dd>충전금액 사용하기 (충전없이 사용가능)</dd>
@@ -80,7 +80,7 @@
             mdi-arrow-right-circle
           </v-icon>
         </div>
-        <div class="search btn" v-ripple @click="nextStep(action[2])">
+        <div class="search btn" v-ripple v-touchEvent:end="() => nextStep(action[2])">
           <dl>
             <dt>조회하기</dt>
             <dd>나의 포인트 및 사용내역 조회하기</dd>

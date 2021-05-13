@@ -16,7 +16,7 @@
       </dd>
     </dl>
     <v-btn v-if="type !== 'matchResetPassword' && type !== 'inValideResetPassword'" 
-      @click="$refs.confirm.show(true)"
+      v-touchEvent:end="() => $refs.confirm.show(true)"
       height="60"
       class="pa-5"
       style="font-size:24px;border-radius:30px;border:3px solid #d2d2d2;"

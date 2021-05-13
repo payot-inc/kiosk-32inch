@@ -9,7 +9,7 @@
         <div class="myPoint">{{this.user.point | numeral('0,0')}} <span>포인트</span></div>
         <v-btn
           v-if="$route.name !== 'ChargeType' && $route.name !== 'CardCharge'"
-          @click="$router.push({ name: 'ChargeType' })"
+          v-touchEvent:end="() => $router.push({ name: 'ChargeType' })"
           class="pointChageBtn"
           width="160px"
           height="80px"

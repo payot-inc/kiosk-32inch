@@ -9,7 +9,7 @@
     <div class="pointUse">
       <div class="dialogHead">
         <span>포인트사용하기</span>
-        <v-btn icon @click="closeModal" width="80" height="80">
+        <v-btn icon v-touchEvent:end="closeModal" width="80" height="80">
           <v-icon color="#000" size="50">mdi-close</v-icon>
         </v-btn>
       </div>
@@ -27,18 +27,18 @@
 
         <div class="btns">
           <div class="pointBtn">
-            <v-btn outlined @click="addPoint(500)">500 추가</v-btn>
+            <v-btn outlined v-touchEvent:end="() => addPoint(500)">500 추가</v-btn>
           </div>
           <div class="pointBtn">
-            <v-btn @click="addPoint(1000)" click="" outlined>1,000 추가</v-btn>
+            <v-btn v-touchEvent:end="() => addPoint(1000)" click="" outlined>1,000 추가</v-btn>
           </div>
 
-          <v-btn width="150px" outlined @click="usePoint = 0" class="clearBtn">초기화</v-btn>
+          <v-btn width="150px" outlined v-touchEvent:end="() => usePoint = 0" class="clearBtn">초기화</v-btn>
         </div>
 
         <div class="divider"></div>
 
-        <v-btn class="completeBtn" outlined @click="done">
+        <v-btn class="completeBtn" outlined v-touchEvent:end="done">
           포인트 사용하기
         </v-btn>
       </div>

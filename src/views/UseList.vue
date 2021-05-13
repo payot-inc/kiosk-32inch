@@ -49,11 +49,11 @@
         </ul>
       </div>
       <div class="btns">
-        <v-btn text class="eq-use" @click="$router.push({ name: 'MachineSelect' })">
+        <v-btn text class="eq-use" v-touchEvent:end="() => $router.push({ name: 'CategorySelect' })">
           <label>장비사용 바로가기</label>
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>
-        <v-btn text class="chage-use" @click="$router.push({ name: 'ChargeType' })">
+        <v-btn text class="chage-use" v-touchEvent:end="() => $router.push({ name: 'ChargeType' })">
           <label>충전하러 바로가기</label>
           <v-icon>mdi-chevron-right</v-icon>
         </v-btn>

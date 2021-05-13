@@ -5,16 +5,16 @@
     width="960px"
   >
     <div class="terms">
-      <div class="termsHead" @click="touchHead">
+      <div class="termsHead" v-touchEvent:end="touchHead">
         {{serviceTerms.title}}
       </div>
 
-      <div class="termsBody" v-html="serviceTerms.body" @click="touchBody">
+      <div class="termsBody" v-html="serviceTerms.body" v-touchEvent:end="touchBody">
 
       </div>
 
       <div class="termsBottom">
-        <v-btn outlined @click="close">닫기</v-btn>
+        <v-btn outlined v-touchEvent:end="close">닫기</v-btn>
       </div>
     </div>
   </v-dialog>
