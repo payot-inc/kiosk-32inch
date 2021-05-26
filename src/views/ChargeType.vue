@@ -17,7 +17,7 @@
       <div class="paymentBtns">
         <v-row>
           <v-col cols="6">
-            <div class="btn coin" v-touchEvent:end="() => nextStep('cash')" v-ripple>
+            <div class="btn coin" v-touchEvent:tap="() => nextStep('cash')" v-ripple>
               <div class="btnImg">
                 <img src="@/assets/img/coin.png" />
               </div>
@@ -28,7 +28,7 @@
             </div>
           </v-col>
           <v-col cols="6">
-            <div class="btn card" v-touchEvent:end="() => nextStep('card')" v-ripple>
+            <div class="btn card" v-touchEvent:tap="() => nextStep('card')" v-ripple>
               <div class="btnImg">
                 <img src="@/assets/img/card.png" />
               </div>

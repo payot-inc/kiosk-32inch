@@ -28,7 +28,7 @@
       <div class="counter">
         <span>{{ count }}</span>
       </div>
-      <v-btn class="closeBtn" width="120px" height="120px" outlined v-touchEvent:end="close" v-if="currentMoney === 0">
+      <v-btn class="closeBtn" width="120px" height="120px" outlined v-touchEvent:tap="close" v-if="currentMoney === 0">
         <v-icon size="90">mdi-close-circle</v-icon>
       </v-btn>
     </div>

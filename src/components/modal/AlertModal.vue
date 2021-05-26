@@ -7,7 +7,7 @@
         <dd>{{ message }}</dd>
       </dl>
       <div class="msgBottom">
-        <v-btn width="380px" height="90px" outlined v-touchEvent:end="() => visible = false">{{
+        <v-btn width="380px" height="90px" outlined v-touchEvent:tap="() => visible = false">{{
           submitButtonText
         }}</v-btn>
       </div>

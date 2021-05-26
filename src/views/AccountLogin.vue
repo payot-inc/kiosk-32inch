@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="contents">
-      <div class="loginTitle" v-touchEvent:end="() => exitCount++">KIOSK<span>PRO</span></div>
+      <div class="loginTitle" v-touchEvent:tap="() => exitCount++">KIOSK<span>PRO</span></div>
 
       <div class="loginBox">
         <label>키오스크 로그인</label>
@@ -13,8 +13,8 @@
           v-model="form.password"
         />
         <div class="loginBtns">
-          <v-btn outlined height="90px" class="loginBtn" dark v-touchEvent:end="() => kioskLogin('koces')">KOCES 로그인(32BIT)</v-btn>
-          <v-btn outlined height="90px" class="loginBtn" dark v-touchEvent:end="() => kioskLogin('kicc')">KICC 로그인</v-btn>
+          <v-btn outlined height="90px" class="loginBtn" dark v-touchEvent:tap="() => kioskLogin('koces')">KOCES 로그인(32BIT)</v-btn>
+          <v-btn outlined height="90px" class="loginBtn" dark v-touchEvent:tap="() => kioskLogin('kicc')">KICC 로그인</v-btn>
         </div>
         <!-- <div class="checkBox">
           <input type="checkbox" v-model="useGuide" /><span>이용 가이드 오버레이 표시</span>

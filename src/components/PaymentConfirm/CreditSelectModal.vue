@@ -4,7 +4,7 @@
       <h4><span>*</span> 결제방법을 선택해주세요</h4>
 
       <v-list>
-        <v-list-item link v-touchEvent:end="() => upDate('cash')">
+        <v-list-item link v-touchEvent:tap="() => upDate('cash')">
           <dl>
             <dt><img src="@/assets/img/coin.png" /></dt>
             <dd>
@@ -14,7 +14,7 @@
           </dl>
         </v-list-item>
 
-        <v-list-item link v-touchEvent:end="() => upDate('card')">
+        <v-list-item link v-touchEvent:tap="() => upDate('card')">
           <dl>
             <dt><img src="@/assets/img/card.png" /></dt>
             <dd>
@@ -26,7 +26,7 @@
       </v-list>
 
       <div class="bottom">
-        <v-btn outlined v-touchEvent:end="() => open(false)">취소하기</v-btn>
+        <v-btn outlined v-touchEvent:tap="() => open(false)">취소하기</v-btn>
       </div>
     </div>
   </v-dialog>

@@ -7,11 +7,11 @@
         <div class="myPointBox">
           <div class="top">
             <span>내 포인트</span>
-            <v-btn text v-touchEvent:end="() => $router.push({ name: 'ChargeType' })">포인트충전</v-btn>
+            <v-btn text v-touchEvent:tap="() => $router.push({ name: 'ChargeType' })">포인트충전</v-btn>
           </div>
           <div class="pointView">
             <span>{{ point | numeral('0,0') }}P</span>
-            <v-btn outlined v-touchEvent:end="() => $refs.pointUseModal.open(true)">포인트 사용하기</v-btn>
+            <v-btn outlined v-touchEvent:tap="() => $refs.pointUseModal.open(true)">포인트 사용하기</v-btn>
           </div>
 
           <p>사용하실 포인트가 없다면 바로 <b>결제버튼</b>을 터치해주세요</p>
@@ -54,7 +54,7 @@
         <!-- orderInfo -->
 
         <div class="orderBtn">
-          <v-btn width="100%" height="100px" elevation="0" outlined v-touchEvent:end="selectPayment">
+          <v-btn width="100%" height="100px" elevation="0" outlined v-touchEvent:tap="selectPayment">
             <span v-if="usePoint !== inputAmount"
               >{{ realAmount | numeral('0,0') }}원 결제하기</span
             >

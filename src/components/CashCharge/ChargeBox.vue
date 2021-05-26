@@ -25,7 +25,7 @@
         <dt>최종 나의 포인트</dt>
         <dd>{{ (parseInt(point, 10) + parseInt(appendPoint, 10) + parseInt(realAmount, 10)) | numeral('0,0') }} P</dd>
       </dl>
-      <v-btn outlined v-touchEvent:end="setPrice">투입완료</v-btn>
+      <v-btn outlined v-touchEvent:tap="setPrice">투입완료</v-btn>
     </div>
   </div>
 </template>

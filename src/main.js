@@ -18,6 +18,8 @@ import Vue2TouchEvents from 'vue2-touch-events';
 Vue.use(Vue2TouchEvents, {
   disableClick: false,
   namespace: 'touchEvent',
+  tapTolerance: 49,
+  swipeTolerance: 50
 });
 
 if(store.state.company?.id) {

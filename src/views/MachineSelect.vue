@@ -16,7 +16,7 @@
                 <v-list-item
                   v-for="machine in machinesByCategory"
                   :key="machine.id"
-                  v-touchEvent:end="() => nextList(machine)"
+                  v-touchEvent:tap="() => nextList(machine)"
                 >
                   <div class="eqItem">
                     <dl>
@@ -39,7 +39,7 @@
               height="100px"
               elevation="0"
               class="backBtn"
-              v-touchEvent:end="backList"
+              v-touchEvent:tap="backList"
             >
               <v-icon size="45">mdi-arrow-left</v-icon>
             </v-btn>
@@ -54,7 +54,7 @@
                 <v-list-item
                   v-for="product in selectedMachine.products"
                   :key="product.id"
-                  v-touchEvent:end="() => nextPage(product)"
+                  v-touchEvent:tap="() => nextPage(product)"
                 >
                   <div class="goodsItem">
                     <dl>

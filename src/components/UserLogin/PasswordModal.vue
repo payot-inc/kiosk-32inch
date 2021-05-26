@@ -11,7 +11,7 @@
     >
       <div class="modalBody">
         <v-btn
-          v-touchEvent:end="() => show(false)"
+          v-touchEvent:tap="() => show(false)"
           width="140px"
           height="140px"
           class="closeBtn"

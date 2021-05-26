@@ -7,7 +7,7 @@
       z-index="11"
       
     >
-      <a v-touchEvent:end="overlayClose" class="close_bg">
+      <a v-touchEvent:tap="overlayClose" class="close_bg">
         <slot />
       </a>
     </v-overlay>

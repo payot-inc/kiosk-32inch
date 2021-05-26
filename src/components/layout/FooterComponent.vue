@@ -5,10 +5,10 @@
       <strong>{{ tel }}</strong>
     </div>
     <div class="btns">
-      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn" v-touchEvent:end="() => $refs.terms.open('user')">
+      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn" v-touchEvent:tap="() => $refs.terms.open('user')">
         개인정보 취급방침</v-btn
       >
-      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn" v-touchEvent:end="() => $refs.terms.open('info')">
+      <v-btn text height="60px" color="rgba(255,255,255,0.7)" class="footerBtn" v-touchEvent:tap="() => $refs.terms.open('info')">
         키오스크 이용약관</v-btn
       >
       <div class="version">V{{ version }} ({{ cardVersion }})</div>

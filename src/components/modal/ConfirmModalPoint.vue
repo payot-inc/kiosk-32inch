@@ -6,8 +6,8 @@
           <span class="text2">{{ message }}</span>
         </div>
         <div class="bottom">
-          <v-btn outlined class="cancle" v-touchEvent:end="() => visible = false">{{ cancelButtonText }}</v-btn>
-          <v-btn outlined class="ok" v-touchEvent:end="done">{{ submitButtonText }}</v-btn>
+          <v-btn outlined class="cancle" v-touchEvent:tap="() => visible = false">{{ cancelButtonText }}</v-btn>
+          <v-btn outlined class="ok" v-touchEvent:tap="done">{{ submitButtonText }}</v-btn>
         </div>
       </div>
     </v-dialog>

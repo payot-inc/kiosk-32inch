@@ -1,6 +1,6 @@
 <template>
   <div class="pageTitle">
-    <v-btn width="90px" height="90px" color="#0085de" class="back" elevation="0" v-touchEvent:end="backPage">
+    <v-btn width="90px" height="90px" color="#0085de" class="back" elevation="0" v-touchEvent:tap="backPage">
       <v-icon size="50" color="#fff">mdi-arrow-left</v-icon>
     </v-btn>
     <h2>{{ title }}</h2>
