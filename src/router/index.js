@@ -84,6 +84,9 @@ const routes = [
           store.commit('APPEND_ACTION', {
             type: 'charge',
             payMethod: 'cash',
+            machineId: null,
+            inputAmount: 0,
+            usePoint: 0,
           });
           next();
         },
@@ -97,6 +100,9 @@ const routes = [
           store.commit('APPEND_ACTION', {
             type: 'charge',
             payMethod: 'card',
+            machineId: null,
+            inputAmount: 0,
+            usePoint: 0,
           });
           next();
         },

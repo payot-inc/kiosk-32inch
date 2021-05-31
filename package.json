@@ -1,6 +1,6 @@
 {
   "name": "payot-kiosk-premium",
-  "version": "5.3.3",
+  "version": "5.3.4",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

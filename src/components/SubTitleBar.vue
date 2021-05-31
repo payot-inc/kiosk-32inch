@@ -82,6 +82,9 @@ export default {
   .back {
     border-radius: 50px;
     margin-right: 30px;
+    /* position: absolute;
+    right: 0; */
+    // 뒤로가기 우측으로 이동(5.4.1)
   }
 }
 </style>
