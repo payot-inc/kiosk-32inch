@@ -182,6 +182,7 @@ function delay(ms) {
 
 router.beforeEach(async (to, from, next) => {
   await delay(50);
+  store.commit('SET_NOW');
   const isAccountLogin = store.state.company.id;
   const loginLessPageName = ['AccountLogin', 'Error'].includes(to.name);
 

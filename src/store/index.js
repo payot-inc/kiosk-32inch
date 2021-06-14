@@ -6,6 +6,7 @@ import { coreAPI, kioskAPI } from '../plugins/axios';
 // import sound from '../plugins/sound';
 import soundManager from '../plugins/howler';
 import { sortBy } from 'lodash';
+import moment from 'moment';
 
 Vue.use(Vuex);
 
@@ -42,6 +43,7 @@ export default new Vuex.Store({
       type: null,
     },
     useGuide: true,
+    now: moment().format('YYYY-MM-DD HH:mm:ss'),
   },
   getters: {
     getEventRate: (state, getters) => (type, amount) => {
@@ -58,14 +60,31 @@ export default new Vuex.Store({
       return kioskEvent.rule[type][index] / 100;
     },
     kioskEvent(state) {
+      // if(state.kiosk.events) {
+      //   return state.kiosk.events
+      //     .sort((a, b) => b.weekDay - a.weekDay)
+      //     .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
+      // }
       if(state.kiosk.events) {
-        return state.kiosk.events
-          .sort((a, b) => b.weekDay - a.weekDay)
-          .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
+        const currentEvent = state.kiosk.events.find(
+          event => {
+            return event.weekDay === parseInt(moment(state.now).format('d'), 10) &&
+              moment(`${state.now.slice(0, 10)} ${event.startTime}`) <= moment(state.now) &&
+              moment(`${state.now.slice(0, 10)} ${event.endTime}`) >= moment(state.now)
+          });
+
+        if(currentEvent) {
+          return currentEvent;
+        } else {
+          return state.kiosk.events.find(event => event.weekDay === -1);
+        }
       }
     },
   },
   mutations: {
+    SET_NOW(state) {
+      state.now = moment().format('YYYY-MM-DD HH:mm:ss');
+    },
     SET_USEGUIDE(state, value) {
       state.useGuide = value;
     },
