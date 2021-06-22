@@ -9,5 +9,6 @@ export const coreAPI = axios.create({
 
 export const kioskAPI = axios.create({
   baseURL: process.env.VUE_APP_KIOSK_API_HOST,
+  // baseURL: 'http://dailywash.co.kr:3050/kiosk',
   timeout: TIMEOUT_SEC,
 });

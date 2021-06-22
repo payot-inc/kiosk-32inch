@@ -7,6 +7,7 @@ import { coreAPI, kioskAPI } from '../plugins/axios';
 import soundManager from '../plugins/howler';
 import { sortBy } from 'lodash';
 import moment from 'moment';
+import { Howl } from 'howler';
 
 Vue.use(Vuex);
 
@@ -245,15 +246,21 @@ export default new Vuex.Store({
         method: 'POST',
         url: `/pay`,
         data: { params: form },
-        timeout: parseInt(form.inputAmount / 500, 10) * 5000 ,
+        timeout: parseInt(form.inputAmount / 500, 10) * 5000,
         // timeout: 1,
       });
 
-      // console.log('data', data);
       return data;
     },
     async warningPlay({state}, src = 'alertSound.mp3') {
       soundManager.warningPlay(src);
+    },
+    async warningPlayV2({state}, src = 'http://192.168.0.16:3000/sound/alertSound.mp3') {
+      const warning = new Howl({
+        src,
+        volume: 1,
+      });
+      warning.play();
     },
   },
   modules: {},

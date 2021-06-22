@@ -8,7 +8,7 @@
       <div class="listWrap">
         <div class="eqList" :class="eqListMove">
           <div class="listTitle">
-            <v-icon>fa-washer</v-icon>사용하실 장비를 선택해주세요
+            <v-icon size="60" color="#fff">mdi-washing-machine</v-icon>사용하실 장비를 선택해주세요
           </div>
           <div class="itemList">
             <v-list flat three-line>

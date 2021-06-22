@@ -18,5 +18,5 @@ ipcMain.handle('logout', (event, id) => {
 
 client.on('message', (topic, message) => {
   // console.log(topic, message.toString());
-  eventer.sender.send('hook', { topic, message });
+  eventer.sender.send('hook', { topic, message: message.toString() });
 });

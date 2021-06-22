@@ -14,6 +14,7 @@ import router from '../router';
 
 ipcRenderer.on('hook', (event, { topic, message: payload }) => {
   const [, , , action] = topic.split('/');
+  console.log(payload);
   // console.log(topic);
   let soundList = [];
   let delayList = [];
@@ -62,7 +63,10 @@ ipcRenderer.on('hook', (event, { topic, message: payload }) => {
       break;
     case 'warningCCTV':
       store.dispatch('warningPlay', 'warning_cctv.mp3');
-      break;    
+      break;
+    case 'sound':
+      store.dispatch('warningPlayV2', payload);
+      break;
     default:
       // 키오스크 상태 정보 갱신
       // console.log(payload, '갱신');

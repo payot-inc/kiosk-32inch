@@ -69,7 +69,7 @@ export default {
   name: 'Result',
   data() {
     return {
-      counter: 10,
+      counter: 20,
     };
   },
   mounted() {
@@ -139,9 +139,15 @@ export default {
       return machines.find(machine => machine.id === this.userAction.machineId);
     },
     afterPoint() {
-      const { point } = this.user;
-      const { totalPoint } = this.userAction;
-      return (parseInt(point, 10) + parseInt(totalPoint, 10));
+      if(this.pointPayError) {
+        const { point } = this.user;
+        const { totalPoint } = this.userAction;
+        return parseInt(point, 10) + parseInt(totalPoint, 10);
+      } else {
+        const { point } = this.user;
+        const { totalPoint } = this.response;
+        return parseInt(point, 10) + parseInt(totalPoint, 10);
+      }
     },
   },
   methods: {
@@ -149,8 +155,8 @@ export default {
       setUser: 'SET_USER',
     }),
     goMachineSelect() {
-      const point = this.user.point + this.userAction.totalPoint;
-      this.setUser(Object.assign({}, this.user, { point }));
+      // const point = this.user.point + this.userAction.totalPoint;
+      this.setUser(Object.assign({}, this.user, { point: this.afterPoint }));
       this.$router.push({ name: 'CategorySelect' });
     },
     replaceMain() {
