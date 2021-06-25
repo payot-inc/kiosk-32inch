@@ -66,15 +66,16 @@ export default new Vuex.Store({
       //     .sort((a, b) => b.weekDay - a.weekDay)
       //     .find(({ weekDay }) => [-1, new Date().getDay()].includes(weekDay));
       // }
-      if(state.kiosk.events) {
-        const currentEvent = state.kiosk.events.find(
-          event => {
-            return event.weekDay === parseInt(moment(state.now).format('d'), 10) &&
-              moment(`${state.now.slice(0, 10)} ${event.startTime}`) <= moment(state.now) &&
-              moment(`${state.now.slice(0, 10)} ${event.endTime}`) >= moment(state.now)
-          });
+      if (state.kiosk.events) {
+        const currentEvent = state.kiosk.events.find(event => {
+          return (
+            event.weekDay === parseInt(moment(state.now).format('d'), 10) &&
+            moment(`${state.now.slice(0, 10)} ${event.startTime}`) <= moment(state.now) &&
+            moment(`${state.now.slice(0, 10)} ${event.endTime}`) >= moment(state.now)
+          );
+        });
 
-        if(currentEvent) {
+        if (currentEvent) {
           return currentEvent;
         } else {
           return state.kiosk.events.find(event => event.weekDay === -1);
@@ -246,16 +247,17 @@ export default new Vuex.Store({
         method: 'POST',
         url: `/pay`,
         data: { params: form },
-        timeout: parseInt(form.inputAmount / 500, 10) * 5000,
+        timeout:
+          parseInt(form.inputAmount, 10) < 500 ? 5000 : parseInt(form.inputAmount / 500, 10) * 5000,
         // timeout: 1,
       });
 
       return data;
     },
-    async warningPlay({state}, src = 'alertSound.mp3') {
+    async warningPlay({ state }, src = 'alertSound.mp3') {
       soundManager.warningPlay(src);
     },
-    async warningPlayV2({state}, src = 'http://192.168.0.16:3000/sound/alertSound.mp3') {
+    async warningPlayV2({ state }, src = 'http://192.168.0.16:3000/sound/alertSound.mp3') {
       const warning = new Howl({
         src,
         volume: 1,
