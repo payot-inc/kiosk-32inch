@@ -8,6 +8,8 @@ import soundManager from '../plugins/howler';
 import { sortBy } from 'lodash';
 import moment from 'moment';
 import { Howl } from 'howler';
+import path from 'path';
+import fs from 'fs';
 
 Vue.use(Vuex);
 
@@ -27,6 +29,34 @@ function generateDefaultAction(companyId, userId) {
     eventRate: 0, // 추가지급률
     totalPoint: 0, // 총 변동 포인트
   };
+}
+
+const rootDir = path.join(
+  'C:',
+  'server_api_logs',
+);
+
+
+function hasTodayDirOrCreate(isRequest) {
+  const todayDir = path.join(
+    rootDir, 
+    moment().format('YYYY-MM-DD'), 
+    isRequest ? 'request' : 'response',
+  );
+  const hasDir = fs.existsSync(todayDir);
+  if(hasDir) return;
+  fs.mkdirSync(todayDir, { recursive: true });
+}
+
+function saveLog(res, isRequest) {
+  hasTodayDirOrCreate(isRequest);
+  const savePath = path.join(
+    rootDir, 
+    moment().format('YYYY-MM-DD'), 
+    isRequest ? 'request' : 'response',
+    `${moment().format('a_hh_mm_ss_SSS')}.json`
+  );
+  fs.writeFileSync(savePath, JSON.stringify(res, null, 2));
 }
 
 export default new Vuex.Store({
@@ -243,6 +273,7 @@ export default new Vuex.Store({
         const user = await dispatch('userSignUp', { phone, password });
         form.userId = user.id;
       }
+      saveLog(form, true);
       const { data } = await kioskAPI({
         method: 'POST',
         url: `/pay`,
@@ -250,7 +281,8 @@ export default new Vuex.Store({
         timeout:
           parseInt(form.inputAmount, 10) < 500 ? 5000 : parseInt(form.inputAmount / 500, 10) * 5000,
         // timeout: 1,
-      });
+      }).catch((err) => saveLog(err, false));
+      saveLog(data, false);
 
       return data;
     },
